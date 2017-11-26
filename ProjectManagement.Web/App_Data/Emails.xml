@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<emails>
+  
+  <!-- Change the job sheet email details below. Please don't change any text surrounded by a less than and greater than sign e.g. <from> and </from> -->
+  <email name="jobSheet">
+    
+    <!-- Change email 'from' address here. -->
+    <from>no-reply@pmdb.com</from>
+
+    <!-- Change email 'to' addresses here. You can add multiple if you separate them with commas. -->
+    <to>riceboy999@hotmail.com</to>
+
+    <!-- Change email 'cc' addresses here. You can add multiple if you separate them with commas. Leave blank if you don't want to cc anyone. -->
+    <cc></cc>
+    
+    <!-- Change email subject here. -->
+    <subject>Subject</subject>
+
+    <!-- Change email body text here. -->
+    <body>
+      {0} Body {1}
+    </body>
+    
+  </email>
+</emails>
