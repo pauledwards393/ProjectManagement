@@ -32,8 +32,9 @@
                                 <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False" CellPadding="4"
                                     DataKeyNames="Project_ID" ForeColor="#333333" GridLines="None" Height="50px"
                                     Width="510px" AutoGenerateEditButton="False" BackImageUrl="niceforms/images/button.gif"
-                                    OnModeChanging="DetailsView2_ModeChanging" OnItemUpdated="DetailsView2_ItemUpdated"
-                                    OnItemUpdating="DetailsView2_ItemUpdating" OnItemCommand="DetailsView2_ItemCommand">
+                                    OnModeChanging="DetailsView2_ModeChanging" OnItemCommand="DetailsView2_ItemCommand"
+                                    OnItemUpdated="DetailsView2_ItemUpdated" OnItemUpdating="DetailsView2_ItemUpdating"
+                                    OnItemInserting="DetailsView2_ItemInserting" OnDataBound="DetailsView2_DataBound">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                     <RowStyle BackColor="#EFF3FB" />
                                     <FieldHeaderStyle BackColor="#DEE8F5" Font-Bold="True" />
@@ -97,6 +98,13 @@
                                                 <asp:ObjectDataSource ID="StatusDataSource" runat="server" SelectMethod="GetData"
                                                     TypeName="StatusBLL" OldValuesParameterFormatString="original_{0}"></asp:ObjectDataSource>
                                             </EditItemTemplate>
+                                            <InsertItemTemplate>
+                                                <asp:DropDownList Width="200px" ID="DDLStatus" runat="server" DataSourceID="StatusDataSource"
+                                                    DataTextField="Status" DataValueField="Status_ID">
+                                                </asp:DropDownList>
+                                                <asp:ObjectDataSource ID="StatusDataSource" runat="server" SelectMethod="GetData"
+                                                    TypeName="StatusBLL" OldValuesParameterFormatString="original_{0}"></asp:ObjectDataSource>
+                                            </InsertItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Department">
                                             <ItemTemplate>
@@ -109,6 +117,13 @@
                                                 <asp:ObjectDataSource ID="DepartmentDataSource" runat="server" SelectMethod="GetData"
                                                     TypeName="DepartmentBLL"></asp:ObjectDataSource>
                                             </EditItemTemplate>
+                                            <InsertItemTemplate>
+                                                <asp:DropDownList Width="200" ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSource"
+                                                    DataTextField="Name" DataValueField="Dep_ID">
+                                                </asp:DropDownList>
+                                                <asp:ObjectDataSource ID="DepartmentDataSource" runat="server" SelectMethod="GetData"
+                                                    TypeName="DepartmentBLL"></asp:ObjectDataSource>
+                                            </InsertItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Sector">
                                             <ItemTemplate>
@@ -170,6 +185,9 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox runat="server" ID="ChkDetailed" Checked='<%# Eval("Detailed") %>' />
                                             </EditItemTemplate>
+                                            <InsertItemTemplate>
+                                                <asp:CheckBox runat="server" ID="ChkDetailed" />
+                                            </InsertItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="False">
                                             <ItemTemplate>
@@ -187,10 +205,10 @@
                                                     ID="TxtDescription"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:BoundField HeaderText="Created on" DataField="AddedAt" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
-                                        <asp:BoundField HeaderText="Job Sheet" DataField="JobSheetSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
-                                        <asp:BoundField HeaderText="Original Fee Proposal" DataField="FeeProposalSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
-                                        <asp:BoundField HeaderText="Acceptance of Service" DataField="AcceptanceOfServiceSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
+                                        <asp:BoundField HeaderText="Created on" DataField="AddedAt" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
+                                        <asp:BoundField HeaderText="Job Sheet" DataField="JobSheetSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
+                                        <asp:BoundField HeaderText="Original Fee Proposal" DataField="FeeProposalSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
+                                        <asp:BoundField HeaderText="Acceptance of Service" DataField="AcceptanceOfServiceSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
                                     </Fields>
                                     <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                     <EditRowStyle BackColor="#2461BF" />
@@ -203,12 +221,16 @@
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:Button ID="UpdateProject" runat="server" Text="Update" CommandName="Update"></asp:Button>
-                                                <asp:Button ID="CancelEditProject" runat="server" Text="Cancel" CommandName="Cancel"></asp:Button>
+                                                <asp:Button ID="CancelEditProject" runat="server" Text="Cancel" CommandName="Cancel" CausesValidation="false"></asp:Button>
                                             </EditItemTemplate>
+                                            <InsertItemTemplate>
+                                                <asp:Button ID="CreateProject" runat="server" Text="Save" CommandName="Insert"></asp:Button>
+                                                <asp:Button ID="CancelCreateProject" runat="server" Text="Cancel" CommandName="GoBack" CausesValidation="false"></asp:Button>
+                                            </InsertItemTemplate>
                                         </asp:TemplateField>
                                     </Fields>
                                     <FooterTemplate>
-                                        <asp:Button CommandName="GoBack" Text="Go Back" runat="server" ID="BtnBack" />
+                                        <asp:Button CommandName="GoBack" Text="Go Back" runat="server" ID="BtnBack" CausesValidation="false" />
                                         <asp:Button CommandName="JobSheet" Text="Job Sheet" runat="server" ID="BtnSheet" OnClick="BtnSheet_Click" />
                                         <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Design Job Sheet" />
                                         <button type="button" data-toggle="modal" data-target="#upload-job-sheet">Submit Job Sheet/Fee/Acceptance</button>

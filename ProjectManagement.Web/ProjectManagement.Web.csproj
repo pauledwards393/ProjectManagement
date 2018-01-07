@@ -23,6 +23,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -371,6 +372,7 @@
     <Compile Include="MasterPage2.master.designer.cs">
       <DependentUpon>MasterPage2.master</DependentUpon>
     </Compile>
+    <Compile Include="Models\Project.cs" />
     <Compile Include="Old_App_Code\DepartmentBLL.cs" />
     <Compile Include="Old_App_Code\EmailService.cs" />
     <Compile Include="Old_App_Code\Postcode.cs" />
@@ -396,7 +398,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
     <Folder Include="obj\" />
   </ItemGroup>
   <ItemGroup>

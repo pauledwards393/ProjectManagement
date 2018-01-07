@@ -42,21 +42,25 @@ public partial class Detail : System.Web.UI.Page
 
         if (!IsPostBack)
         {
-            if (!string.IsNullOrEmpty(Request.Params["Mode"]))
+            var mode = Request.Params["Mode"];
+            
+            switch (mode)
             {
-                if (Request.Params["Mode"] == "View")
-                {
+                case "View":
                     DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
-                }
-                else if (Request.Params["Mode"] == "Entry")
-                {
+                    break;
+                case "Entry":
                     DetailsView2.ChangeMode(DetailsViewMode.Edit);
-                }
+                    break;
+                default:
+                    DetailsView2.ChangeMode(DetailsViewMode.Insert);
+                    DetailsView2.FooterRow.Visible = false;
+                    break;
             }
 
             DetailsView2Databinding();
         }
-
+        
         lblEmailSuccess.Visible = lblSaveError.Visible = false;        
     }
 
@@ -86,6 +90,18 @@ public partial class Detail : System.Web.UI.Page
 
             HasJobSheet = p.Rows[0]["JobSheetSubmitted"] != DBNull.Value;
             JobSheetMandatoryMarker.Visible = !HasJobSheet;
+        }
+    }
+
+    protected void DetailsView2_DataBound(object sender, EventArgs e)
+    {
+        if (DetailsView2.CurrentMode == DetailsViewMode.Insert)
+        {
+            var lblLat = (Label)DetailsView2.FindControl("LblLat");
+            var lblLng = (Label)DetailsView2.FindControl("LblLng");
+
+            lblLat.Text = Request.Params["lat"];
+            lblLng.Text = Request.Params["lng"];
         }
     }
 
@@ -149,44 +165,57 @@ public partial class Detail : System.Web.UI.Page
         }
     }
 
-    protected void DetailsView2_ItemUpdating(object sender, DetailsViewUpdateEventArgs e)
+    private ProjectManagement.Web.Models.Project PopulateProject()
     {
-        string project_id = ((Label)DetailsView2.FindControl("LBLProjectID")).Text;
-        string projectCode = ((TextBox)DetailsView2.FindControl("TxtProjectCode")).Text.Trim();
-
-        if (!projectBLL.ValidateProjectCode(int.Parse(project_id), projectCode))
-        {
-            lblSaveError.Visible = true;
-            return;
-        }
-
-        TextBox TxtProjectname = (TextBox)DetailsView2.FindControl("TxtPorjectname");
-        TextBox TxtStartDate = (TextBox)DetailsView2.FindControl("TxtStartdate");
-        TextBox TxtEndDate = (TextBox)DetailsView2.FindControl("TxtEndDate");
+        Label LblId = (Label)DetailsView2.FindControl("LBLProjectID");
+        TextBox TxtCode = (TextBox)DetailsView2.FindControl("TxtProjectCode");
+        TextBox TxtProjectname = (TextBox)DetailsView2.FindControl("TxtPorjectname");        
         DropDownList DDLstatus = (DropDownList)DetailsView2.FindControl("DDlstatus");
-        DropDownList DDLDepartment = (DropDownList)DetailsView2.FindControl("DDLDepartment");
-        System.Web.UI.WebControls.ListBox DDLSector = (System.Web.UI.WebControls.ListBox)DetailsView2.FindControl("DDLSector");
+        DropDownList DDLDepartment = (DropDownList)DetailsView2.FindControl("DDLDepartment");        
         TextBox TxtContact = (TextBox)DetailsView2.FindControl("TxtContact");
         TextBox TxtAddress = (TextBox)DetailsView2.FindControl("TxtAddress");
         TextBox TxtCity = (TextBox)DetailsView2.FindControl("TxtCity");
         TextBox TxtAuthority = (TextBox)DetailsView2.FindControl("TxtAuthority");
         CheckBox ChkDetailed = (CheckBox)DetailsView2.FindControl("ChkDetailed");
-        TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");        
-        string ProjectManager = ((TextBox)DetailsView2.FindControl("TxtManager")).Text;
+        TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");
+        TextBox TxtProjectManager = (TextBox)DetailsView2.FindControl("TxtManager");
+        Label LblLat = (Label)DetailsView2.FindControl("LblLat");
+        Label LblLng = (Label)DetailsView2.FindControl("LblLng");
 
-        Nullable<DateTime> startDate = null;
-        Nullable<DateTime> endDate = null;
+        var project = new ProjectManagement.Web.Models.Project
+        {
+            Id = !string.IsNullOrWhiteSpace(LblId.Text) ? int.Parse(LblId.Text) : (int?)null,
+            Code = TxtCode.Text.Trim(),
+            Name = TxtProjectname.Text,
+            Status = int.Parse(DDLstatus.SelectedValue),
+            Department = int.Parse(DDLDepartment.SelectedValue),
+            Contact = TxtContact.Text,
+            Address = TxtAddress.Text,
+            City = TxtCity.Text,
+            Authority = TxtAuthority.Text,
+            Detailed = ChkDetailed.Checked,
+            Description = TxtDescription.Text,
+            ProjectManager = TxtProjectManager.Text,
+            Latitude = !string.IsNullOrWhiteSpace(LblLat.Text) ? double.Parse(LblLat.Text) : (double?)null,
+            Longitude = !string.IsNullOrWhiteSpace(LblLng.Text) ? double.Parse(LblLng.Text) : (double?)null
+        };
+
+        TextBox TxtStartDate = (TextBox)DetailsView2.FindControl("TxtStartdate");
+        TextBox TxtEndDate = (TextBox)DetailsView2.FindControl("TxtEndDate");
+
         if (!string.IsNullOrEmpty(TxtStartDate.Text))
         {
             string[] date = TxtStartDate.Text.Split('/');
-            startDate = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]));
+            project.StartDate = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]));
 
         }
         if (!string.IsNullOrEmpty(TxtEndDate.Text))
         {
             string[] date = TxtEndDate.Text.Split('/');
-            endDate = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]));
+            project.EndDate = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]));
         }
+
+        ListBox DDLSector = (ListBox)DetailsView2.FindControl("DDLSector");
 
         string selectedSectors = "";
         int[] selectedIndices = DDLSector.GetSelectedIndices();
@@ -194,11 +223,37 @@ public partial class Detail : System.Web.UI.Page
         {
             selectedSectors = selectedSectors + "," + DDLSector.Items[selectedIndex].Value;
         }
-        selectedSectors = selectedSectors.Trim(',');
 
-        projectBLL.updateProject(projectCode, int.Parse(DDLstatus.SelectedValue), TxtAddress.Text, TxtCity.Text,
-                                int.Parse(DDLDepartment.SelectedValue), selectedSectors, TxtDescription.Text, int.Parse(project_id), TxtProjectname.Text,
-                                 startDate, endDate, TxtContact.Text, TxtAuthority.Text, ProjectManager);
+        project.Sectors = selectedSectors.Trim(',');
+
+        return project;
+    }
+
+    protected void DetailsView2_ItemInserting(object sender, DetailsViewInsertEventArgs e)
+    {
+        var project = PopulateProject();
+
+        if (project.Latitude == null || project.Longitude == null) return;
+
+        projectBLL.InsertBasics(project.Code, project.Status, project.Department, project.Latitude.Value, project.Longitude.Value, project.Name);
+
+        RedirectToMap();
+    }
+    
+    protected void DetailsView2_ItemUpdating(object sender, DetailsViewUpdateEventArgs e)
+    {
+        var project = PopulateProject();
+
+        if (!projectBLL.ValidateProjectCode(project.Id, project.Code))
+        {
+            lblSaveError.Visible = true;
+            return;
+        }
+
+        projectBLL.updateProject(project.Code, project.Status, project.Address, project.City,
+                                project.Department, project.Sectors, project.Description, project.Id.Value, project.Name,
+                                 project.StartDate, project.EndDate, project.Contact, project.Authority, project.ProjectManager);
+    
         DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
         DetailsView2Databinding();
 
@@ -208,10 +263,7 @@ public partial class Detail : System.Web.UI.Page
     {
         if (e.CommandName == "GoBack")
         {
-            string lat = ((Label)DetailsView2.FindControl("LblLat")).Text;
-            string lng = ((Label)DetailsView2.FindControl("LblLng")).Text;
-            string projectcode = ((Label)DetailsView2.FindControl("LblCode")).Text;
-            Response.Redirect(string.Format("map.aspx?lat={0}&lng={1}&code={2}", lat, lng, projectcode), false);
+            RedirectToMap();
         }
     }
 
@@ -721,5 +773,13 @@ public partial class Detail : System.Web.UI.Page
     public static bool ValidateDeletePassword(string password)
     {
         return password == ConfigurationManager.AppSettings["DeletePassword"];
+    }
+
+    private void RedirectToMap()
+    {
+        string lat = ((Label)DetailsView2.FindControl("LblLat")).Text;
+        string lng = ((Label)DetailsView2.FindControl("LblLng")).Text;
+        string projectcode = ((Label)DetailsView2.FindControl("LblCode")).Text;
+        Response.Redirect(string.Format("map.aspx?lat={0}&lng={1}&code={2}", lat, lng, projectcode), false);
     }
 }

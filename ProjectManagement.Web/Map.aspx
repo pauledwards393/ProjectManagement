@@ -136,7 +136,8 @@
                             var rightclicklistener = google.maps.event.addListener(map, "rightclick", function (event) {
                                 //google.maps.event.removeListener(rightclicklistener);
                                 if (confirm("Would you like to create a project here?")) {
-                                    CreateMarker(event.latLng);
+                                    var url = '/Detail.aspx?lat=' + event.latLng.lat() + '&lng=' + event.latLng.lng();
+                                    window.location.href = url;
                                 }
                             });
 
