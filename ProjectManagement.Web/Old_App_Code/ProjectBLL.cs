@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using ProjectManagement.Web;
 using ProjectManagement.Web.ProjectTableAdapters;
+using System.Data;
 
 /// <summary>
 /// Summary description for ProjectBLL
@@ -144,19 +145,95 @@ public class ProjectBLL
     }
 
 
-    public int updateProject (string _projectCode, int _status, string _address, string _city, int _dep, string _sectors, string _descript, int _projectID, string _projectName, DateTime? _startDate, DateTime? _endDate, string _contact, string _authority,string _ProejctManager)
-    {
-        
-        Project.ProjectDataTable table = Adapter.GetProjectByID((short)_projectID);
-        Project.ProjectRow row = (Project.ProjectRow)table.Rows[0];
-        Adapter.UpdateQuery(_projectCode, _projectName, _startDate, _endDate, _contact, _address, _city, _descript, true,
-                            _authority, _status, _ProejctManager, _dep, _projectID);
-        Adapter.ClearSectors(_projectID);
-        string[] sectors = _sectors.Split(',');
+    //public int updateProject (string _projectCode, int _status, string _address, string _city, int _dep, string _sectors, string _descript, int _projectID, string _projectName, DateTime? _startDate, DateTime? _endDate, string _contact, string _authority,string _ProejctManager,
+    //    int countyId, int planningAuthorityId)
+    //{
+    //    Project.ProjectDataTable table = Adapter.GetProjectByID((short)_projectID);
+    //    Project.ProjectRow row = (Project.ProjectRow)table.Rows[0];
+    //    Adapter.UpdateQuery(_projectCode, _projectName, _startDate, _endDate, _contact, _address, _city, _descript, true,
+    //                        _authority, _status, _ProejctManager, _dep, _projectID, countyId, planningAuthorityId);
+    //    Adapter.ClearSectors(_projectID);
+    //    string[] sectors = _sectors.Split(',');
 
-        foreach (string _sectorID in sectors)
+    //    foreach (string _sectorID in sectors)
+    //    {
+    //        Adapter.AddSector(_projectID, Convert.ToInt32(_sectorID));
+    //    }
+
+    //    return 1;
+    //}
+
+    public int UpdateProject(ProjectManagement.Web.Models.Project project)
+    {   
+        string connectionString = ConfigurationManager.ConnectionStrings["MBProjectConnectionString"].ConnectionString;
+
+        using (SqlConnection conn = new SqlConnection(connectionString))
         {
-            Adapter.AddSector(_projectID, Convert.ToInt32(_sectorID));
+            try {
+                var cmd = new SqlCommand
+                {
+                    Connection = conn
+                };
+
+                conn.Open();
+
+                // Update project
+                cmd.CommandText = "UPDATE Project " +
+                    "SET[Project Code] = @projectcode, [Project Name] = @projectname, StartDate = @startdate, EndDate = @enddate, Contact = @Contact, Address = @address, City = @city, Description = @description, Detailed = @detailed, " +
+                    "Authority = @authority, StatusID = @StatusID, ProjectManager = @ProjectManager, DepartmentID = @DepartmentID, CountyId = @CountyId, PlanningAuthorityId = @PlanningAuthorityId " +
+                    "WHERE(Project_ID = @project_id)";
+
+                cmd.Parameters.AddWithValue("@project_id", project.Id);
+                cmd.Parameters.AddWithValue("@projectcode", project.Code);
+                cmd.Parameters.AddWithValue("@projectname", project.Name);
+                cmd.Parameters.AddWithValue("@startdate", project.StartDate ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@enddate", project.EndDate ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Contact", project.Contact);
+                cmd.Parameters.AddWithValue("@address", project.Address);
+                cmd.Parameters.AddWithValue("@city", project.City);
+                cmd.Parameters.AddWithValue("@description", project.Description);
+                cmd.Parameters.AddWithValue("@detailed", project.Detailed);
+                cmd.Parameters.AddWithValue("@authority", project.Authority);
+                cmd.Parameters.AddWithValue("@StatusID", project.Status);
+                cmd.Parameters.AddWithValue("@ProjectManager", project.ProjectManager);
+                cmd.Parameters.AddWithValue("@DepartmentID", project.Department);
+                cmd.Parameters.AddWithValue("@CountyId", project.CountyId);
+                cmd.Parameters.AddWithValue("@PlanningAuthorityId", project.PlanningAuthorityId);
+                                
+                cmd.ExecuteNonQuery();
+                
+                // Delete current sectors associated with the project
+                cmd.CommandText = "DELETE FROM ProjectSector WHERE Project_ID = @project_id";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@project_id", project.Id);
+
+                cmd.ExecuteNonQuery();
+
+                // Add new sectors
+                var sectors = project.Sectors.Split(',');
+                
+                foreach (var sectorId in sectors)
+                {
+                    cmd.CommandText = "INSERT INTO ProjectSector (Project_ID, Sector_ID) VALUES (@project_id, @sector_id)";
+
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@project_id", project.Id);
+                    cmd.Parameters.AddWithValue("@sector_id", Convert.ToInt32(sectorId));
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
         }
 
         return 1;

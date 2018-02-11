@@ -17,6 +17,8 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Table = iTextSharp.text.Table;
 using ProjectManagement.Web;
+using ProjectManagement.Web.Providers;
+using Newtonsoft.Json;
 
 public partial class Detail : System.Web.UI.Page
 {
@@ -35,7 +37,7 @@ public partial class Detail : System.Web.UI.Page
             ViewState["HasJobSheet"] = value;
         }
     }
-
+    
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager1.RegisterPostBackControl(Button1);
@@ -77,10 +79,10 @@ public partial class Detail : System.Web.UI.Page
             GenerateJobSheet(p);
 
             Dictionary<String, Int16> FieldColumns = new Dictionary<String, Int16>();
-            FieldColumns.Add( "AddedAt", 17 );
-            FieldColumns.Add( "JobSheetSubmitted", 18 );
-            FieldColumns.Add( "FeeProposalSubmitted", 19 );
-            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 20 );
+            FieldColumns.Add( "AddedAt", 19 );
+            FieldColumns.Add( "JobSheetSubmitted", 20 );
+            FieldColumns.Add( "FeeProposalSubmitted", 21 );
+            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 22 );
 
             foreach (KeyValuePair<String, Int16> item in FieldColumns)
                 DetailsView2.Fields[item.Value].Visible = p.Rows[0][item.Key] != DBNull.Value;
@@ -179,6 +181,8 @@ public partial class Detail : System.Web.UI.Page
         CheckBox ChkDetailed = (CheckBox)DetailsView2.FindControl("ChkDetailed");
         TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");
         TextBox TxtProjectManager = (TextBox)DetailsView2.FindControl("TxtManager");
+        DropDownList DDLCounty = (DropDownList)DetailsView2.FindControl("DDLCounty");
+        TextBox TxtPlanningAuthority = (TextBox)DetailsView2.FindControl("txtPlanningAuthority");
         Label LblLat = (Label)DetailsView2.FindControl("LblLat");
         Label LblLng = (Label)DetailsView2.FindControl("LblLng");
 
@@ -196,6 +200,8 @@ public partial class Detail : System.Web.UI.Page
             Detailed = ChkDetailed.Checked,
             Description = TxtDescription.Text,
             ProjectManager = TxtProjectManager.Text,
+            CountyId = int.Parse(DDLCounty.SelectedValue),
+            PlanningAuthorityId = int.Parse(TxtPlanningAuthority.Text),
             Latitude = !string.IsNullOrWhiteSpace(LblLat.Text) ? double.Parse(LblLat.Text) : (double?)null,
             Longitude = !string.IsNullOrWhiteSpace(LblLng.Text) ? double.Parse(LblLng.Text) : (double?)null
         };
@@ -250,9 +256,7 @@ public partial class Detail : System.Web.UI.Page
             return;
         }
 
-        projectBLL.updateProject(project.Code, project.Status, project.Address, project.City,
-                                project.Department, project.Sectors, project.Description, project.Id.Value, project.Name,
-                                 project.StartDate, project.EndDate, project.Contact, project.Authority, project.ProjectManager);
+        projectBLL.UpdateProject(project);
     
         DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
         DetailsView2Databinding();
@@ -266,7 +270,7 @@ public partial class Detail : System.Web.UI.Page
             RedirectToMap();
         }
     }
-
+    
     protected void DeleteProject_Click(object sender, EventArgs e)
     {
         String projectId = ((Label)DetailsView2.FindControl("LBLProjectID")).Text;
@@ -773,6 +777,13 @@ public partial class Detail : System.Web.UI.Page
     public static bool ValidateDeletePassword(string password)
     {
         return password == ConfigurationManager.AppSettings["DeletePassword"];
+    }
+
+    [System.Web.Services.WebMethod]
+    public static string FetchPlanningAuthoritiesForCounty(int countyId)
+    {
+        var planningAuthorities = PlanningAuthorityProvider.GetPlanningAuthoritiesByCounty(countyId);
+        return JsonConvert.SerializeObject(planningAuthorities);
     }
 
     private void RedirectToMap()

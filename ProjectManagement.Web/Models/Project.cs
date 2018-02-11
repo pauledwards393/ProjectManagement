@@ -19,7 +19,9 @@ namespace ProjectManagement.Web.Models
         public bool Detailed { get; set; }
         public string Description { get; set; }
         public string ProjectManager { get; set; }
+        public int CountyId { get; set; }
+        public int PlanningAuthorityId { get; set; }
         public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
+        public double? Longitude { get; set; }        
     }
 }

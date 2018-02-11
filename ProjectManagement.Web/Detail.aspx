@@ -135,7 +135,7 @@
                                                     CssClass="MySelect" DataTextField="Name" OnDataBound="DDLSector_DataBound" DataValueField="Sector_ID"></asp:ListBox>
                                                 <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                                                     SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector]"></asp:SqlDataSource>
-                                                <asp:RequiredFieldValidator ControlToValidate="DDLSector" ID="SectorValidator" runat="server" ErrorMessage="* Please choose at least one sector before saving" Display="None"></asp:RequiredFieldValidator>
+                                                <asp:RequiredFieldValidator ControlToValidate="DDLSector" ID="SectorValidator" runat="server" ErrorMessage="* Please choose at least one sector" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Manager[MBL]">
@@ -170,6 +170,33 @@
                                                 <asp:TextBox runat="server" ID="TxtCity" Text='<%# Eval("City") %>' Width="200"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project County">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("County")%>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList Width="200px" ID="DDLCounty" runat="server" DataSourceID="CountyDataSource" SelectedValue='<%# Eval("CountyId") %>'
+                                                    DataTextField="Name" DataValueField="Id" ClientIDMode="Static" AppendDataBoundItems="true">
+                                                    <Items>
+                                                       <asp:ListItem Text="-- Select project county --" Value="" />
+                                                    </Items>
+                                                </asp:DropDownList>
+                                                <asp:ObjectDataSource ID="CountyDataSource" runat="server" SelectMethod="GetCounties"
+                                                    TypeName="ProjectManagement.Web.Providers.CountyProvider" />
+                                                <asp:RequiredFieldValidator ControlToValidate="DDLCounty" ID="CountyValidator" runat="server" ErrorMessage="* Please choose a county" Display="None"></asp:RequiredFieldValidator>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project Local Planning Authority">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("PlanningAuthority")%>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList Width="200px" ID="DDLPlanningAuthority" runat="server" ClientIDMode="Static">
+                                                </asp:DropDownList>
+                                                <asp:TextBox runat="server" ID="txtPlanningAuthority" Value='<%# Eval("PlanningAuthorityId") %>' ClientIDMode="Static" CssClass="hidden"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="txtPlanningAuthority" ID="PlanningAuthorityValidator" runat="server" ErrorMessage="* Please choose a planning authority" Display="None"></asp:RequiredFieldValidator>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Authority">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Authority")%>'></asp:Label>
@@ -189,7 +216,7 @@
                                                 <asp:CheckBox runat="server" ID="ChkDetailed" />
                                             </InsertItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible="False">
+                                        <asp:TemplateField Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label ID="LblCode" runat="server" Text='<%# Bind("Project_ID") %>'></asp:Label>
                                                 <asp:Label ID="LblLat" runat="server" Text='<%# Bind("lat") %>'> </asp:Label>
@@ -603,6 +630,63 @@
         $('#<%= DeletePassword.ClientID %>').on('keydown', handleDeleteEnter);
 
         //$('#upload-job-sheet').modal('show');
+
+        (function () {
+            var ddCounty = document.getElementById('DDLCounty');
+            var ddPlanningAuthority = document.getElementById('DDLPlanningAuthority');
+            var txtPlanningAuthority = document.getElementById('txtPlanningAuthority');
+      
+            if (!ddCounty || !ddPlanningAuthority || !txtPlanningAuthority) return;
+
+            var handleChangePlanningAuthority = function (e) {
+                txtPlanningAuthority.value = e.target.value;
+            };
+
+            var handleChangeCounty = function (e, isInitialLoad) {
+                ddPlanningAuthority.options.length = 0;
+                
+                var countyId = e.target.value;
+
+                if (countyId === '') {
+                    txtPlanningAuthority.value = '';
+                    return;
+                }
+
+                PageMethods.FetchPlanningAuthoritiesForCounty(parseInt(countyId, 10), function (response) {
+                    var planningAuthorities = JSON.parse(response);
+                    
+                    var appendOption = function (planningAuthority) {
+                        var option = document.createElement('option');
+                        var value = planningAuthority.id.toString();
+
+                        option.value = value;
+                        option.innerHTML = planningAuthority.name;
+
+                        ddPlanningAuthority.appendChild(option);
+                    };
+
+                    appendOption({ id: '', name: '-- Please select --' });
+
+                    planningAuthorities.forEach(appendOption);
+
+                    var planningAuthorityId = txtPlanningAuthority.value;
+
+                    if (isInitialLoad && planningAuthorityId) {
+                        console.log(planningAuthorityId);
+                        ddPlanningAuthority.value = planningAuthorityId;
+                    } else {
+                        txtPlanningAuthority.value = '';
+                    }
+                });
+            };
+                     
+            ddCounty.addEventListener('change', handleChangeCounty, false);
+            ddPlanningAuthority.addEventListener('change', handleChangePlanningAuthority, false);
+
+            if (ddCounty.value) {
+                handleChangeCounty({ target: ddCounty }, true);
+            }            
+        }());
 
     </script>
 </asp:Content>
