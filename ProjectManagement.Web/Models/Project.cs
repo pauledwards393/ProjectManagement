@@ -15,7 +15,6 @@ namespace ProjectManagement.Web.Models
         public string Contact { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
-        public string Authority { get; set; }
         public bool Detailed { get; set; }
         public string Description { get; set; }
         public string ProjectManager { get; set; }

@@ -177,7 +177,6 @@ public partial class Detail : System.Web.UI.Page
         TextBox TxtContact = (TextBox)DetailsView2.FindControl("TxtContact");
         TextBox TxtAddress = (TextBox)DetailsView2.FindControl("TxtAddress");
         TextBox TxtCity = (TextBox)DetailsView2.FindControl("TxtCity");
-        TextBox TxtAuthority = (TextBox)DetailsView2.FindControl("TxtAuthority");
         CheckBox ChkDetailed = (CheckBox)DetailsView2.FindControl("ChkDetailed");
         TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");
         TextBox TxtProjectManager = (TextBox)DetailsView2.FindControl("TxtManager");
@@ -196,7 +195,6 @@ public partial class Detail : System.Web.UI.Page
             Contact = TxtContact.Text,
             Address = TxtAddress.Text,
             City = TxtCity.Text,
-            Authority = TxtAuthority.Text,
             Detailed = ChkDetailed.Checked,
             Description = TxtDescription.Text,
             ProjectManager = TxtProjectManager.Text,

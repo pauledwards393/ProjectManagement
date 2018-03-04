@@ -180,7 +180,7 @@ public class ProjectBLL
                 // Update project
                 cmd.CommandText = "UPDATE Project " +
                     "SET[Project Code] = @projectcode, [Project Name] = @projectname, StartDate = @startdate, EndDate = @enddate, Contact = @Contact, Address = @address, City = @city, Description = @description, Detailed = @detailed, " +
-                    "Authority = @authority, StatusID = @StatusID, ProjectManager = @ProjectManager, DepartmentID = @DepartmentID, CountyId = @CountyId, PlanningAuthorityId = @PlanningAuthorityId " +
+                    "StatusID = @StatusID, ProjectManager = @ProjectManager, DepartmentID = @DepartmentID, CountyId = @CountyId, PlanningAuthorityId = @PlanningAuthorityId " +
                     "WHERE(Project_ID = @project_id)";
 
                 cmd.Parameters.AddWithValue("@project_id", project.Id);
@@ -193,7 +193,6 @@ public class ProjectBLL
                 cmd.Parameters.AddWithValue("@city", project.City);
                 cmd.Parameters.AddWithValue("@description", project.Description);
                 cmd.Parameters.AddWithValue("@detailed", project.Detailed);
-                cmd.Parameters.AddWithValue("@authority", project.Authority);
                 cmd.Parameters.AddWithValue("@StatusID", project.Status);
                 cmd.Parameters.AddWithValue("@ProjectManager", project.ProjectManager);
                 cmd.Parameters.AddWithValue("@DepartmentID", project.Department);
