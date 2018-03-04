@@ -79,10 +79,10 @@ public partial class Detail : System.Web.UI.Page
             GenerateJobSheet(p);
 
             Dictionary<String, Int16> FieldColumns = new Dictionary<String, Int16>();
-            FieldColumns.Add( "AddedAt", 31 );
-            FieldColumns.Add( "JobSheetSubmitted", 32 );
-            FieldColumns.Add( "FeeProposalSubmitted", 33 );
-            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 34 );
+            FieldColumns.Add( "AddedAt", 33 );
+            FieldColumns.Add( "JobSheetSubmitted", 34 );
+            FieldColumns.Add( "FeeProposalSubmitted", 35 );
+            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 36 );
 
             foreach (KeyValuePair<String, Int16> item in FieldColumns)
                 DetailsView2.Fields[item.Value].Visible = p.Rows[0][item.Key] != DBNull.Value;
@@ -167,15 +167,23 @@ public partial class Detail : System.Web.UI.Page
         }
     }
 
+    private string GetLabelFieldValue(string name)
+    {
+        return ((Label)DetailsView2.FindControl(name)).Text.Trim();
+    }
+
+    private string GetTextFieldValue(string name)
+    {
+        return ((TextBox)DetailsView2.FindControl(name)).Text.Trim();
+    }
+
     private ProjectManagement.Web.Models.Project PopulateProject()
     {
         Label LblId = (Label)DetailsView2.FindControl("LBLProjectID");
-        TextBox TxtCode = (TextBox)DetailsView2.FindControl("TxtProjectCode");
-        TextBox TxtProjectname = (TextBox)DetailsView2.FindControl("TxtPorjectname");        
+        TextBox TxtProjectname = (TextBox)DetailsView2.FindControl("TxtPorjectname");
         DropDownList DDLstatus = (DropDownList)DetailsView2.FindControl("DDlstatus");
-        DropDownList DDLDepartment = (DropDownList)DetailsView2.FindControl("DDLDepartment");        
+        DropDownList DDLDepartment = (DropDownList)DetailsView2.FindControl("DDLDepartment");
         TextBox TxtContact = (TextBox)DetailsView2.FindControl("TxtContact");
-        TextBox TxtAddress = (TextBox)DetailsView2.FindControl("TxtAddress");
         TextBox TxtCity = (TextBox)DetailsView2.FindControl("TxtCity");
         CheckBox ChkDetailed = (CheckBox)DetailsView2.FindControl("ChkDetailed");
         TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");
@@ -185,23 +193,53 @@ public partial class Detail : System.Web.UI.Page
         Label LblLat = (Label)DetailsView2.FindControl("LblLat");
         Label LblLng = (Label)DetailsView2.FindControl("LblLng");
 
+        // Client address
+        var clientAddressId = GetLabelFieldValue("LblClientAddressId");
+        var clientAddress = new ProjectManagement.Web.Models.Address
+        {
+            AddressLine1 = GetTextFieldValue("TxtClientAddressLine1"),
+            AddressLine2 = GetTextFieldValue("TxtClientAddressLine2"),
+            CompanyName = GetTextFieldValue("TxtClientCompanyName"),
+            County = GetTextFieldValue("TxtClientCounty"),
+            Id = !string.IsNullOrWhiteSpace(clientAddressId) ? int.Parse(clientAddressId) : (int?)null,
+            Postcode = GetTextFieldValue("TxtClientPostcode"),
+            TownOrCity = GetTextFieldValue("TxtClientTownOrCity")
+        };
+
+        // Invoice address
+        var invoiceAddressId = GetLabelFieldValue("LblInvoiceAddressId");
+        var invoiceAddress = new ProjectManagement.Web.Models.Address
+        {
+            AddressLine1 = GetTextFieldValue("TxtInvoiceAddressLine1"),
+            AddressLine2 = GetTextFieldValue("TxtInvoiceAddressLine2"),
+            CompanyName = GetTextFieldValue("TxtInvoiceCompanyName"),
+            County = GetTextFieldValue("TxtInvoiceCounty"),
+            Id = !string.IsNullOrWhiteSpace(invoiceAddressId) ? int.Parse(invoiceAddressId) : (int?)null,
+            Postcode = GetTextFieldValue("TxtInvoicePostcode"),
+            TownOrCity = GetTextFieldValue("TxtInvoiceTownOrCity")
+        };
+
+        // Project
         var project = new ProjectManagement.Web.Models.Project
         {
-            Id = !string.IsNullOrWhiteSpace(LblId.Text) ? int.Parse(LblId.Text) : (int?)null,
-            Code = TxtCode.Text.Trim(),
-            Name = TxtProjectname.Text,
-            Status = int.Parse(DDLstatus.SelectedValue),
-            Department = int.Parse(DDLDepartment.SelectedValue),
-            Contact = TxtContact.Text,
-            Address = TxtAddress.Text,
+            Address = GetTextFieldValue("TxtAddress"),
             City = TxtCity.Text,
-            Detailed = ChkDetailed.Checked,
-            Description = TxtDescription.Text,
-            ProjectManager = TxtProjectManager.Text,
+            ClientAddress = clientAddress, // New
+            Code = GetTextFieldValue("TxtProjectCode"),
+            Contact = TxtContact.Text,
             CountyId = int.Parse(DDLCounty.SelectedValue),
-            PlanningAuthorityId = int.Parse(TxtPlanningAuthority.Text),
+            Department = int.Parse(DDLDepartment.SelectedValue),
+            Description = TxtDescription.Text,
+            Detailed = ChkDetailed.Checked,
+            Id = !string.IsNullOrWhiteSpace(LblId.Text) ? int.Parse(LblId.Text) : (int?)null,
+            Introducer = GetTextFieldValue("TxtIntroducer"), // New
+            InvoiceAddress = invoiceAddress, // New
             Latitude = !string.IsNullOrWhiteSpace(LblLat.Text) ? double.Parse(LblLat.Text) : (double?)null,
-            Longitude = !string.IsNullOrWhiteSpace(LblLng.Text) ? double.Parse(LblLng.Text) : (double?)null
+            Longitude = !string.IsNullOrWhiteSpace(LblLng.Text) ? double.Parse(LblLng.Text) : (double?)null,
+            Name = TxtProjectname.Text,
+            PlanningAuthorityId = int.Parse(TxtPlanningAuthority.Text),
+            ProjectManager = TxtProjectManager.Text,
+            Status = int.Parse(DDLstatus.SelectedValue),
         };
 
         TextBox TxtStartDate = (TextBox)DetailsView2.FindControl("TxtStartdate");
@@ -250,15 +288,22 @@ public partial class Detail : System.Web.UI.Page
 
         if (!projectBLL.ValidateProjectCode(project.Id, project.Code))
         {
+            lblSaveError.Text = "* Your chosen project code already exists, please choose another.";
             lblSaveError.Visible = true;
             return;
         }
 
-        projectBLL.UpdateProject(project);
-    
-        DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
-        DetailsView2Databinding();
+        var message = projectBLL.UpdateProject(project);
 
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
+            DetailsView2Databinding();
+        } else
+        {
+            lblSaveError.Text = "* " + message;
+            lblSaveError.Visible = true;
+        }
     }
 
     protected void DetailsView2_ItemCommand(object sender, DetailsViewCommandEventArgs e)

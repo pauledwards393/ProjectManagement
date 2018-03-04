@@ -25,7 +25,7 @@
                             </HeaderTemplate>
                             <ContentTemplate>
                                 <asp:Label ID="lblEmailSuccess" runat="server" CssClass="success" Text="* Email sent successfully" Visible="false"></asp:Label>
-                                <asp:Label ID="lblSaveError" runat="server" CssClass="error" Text="* Your chosen project code already exists, please choose another." Visible="false"></asp:Label>
+                                <asp:Label ID="lblSaveError" runat="server" CssClass="error" Visible="false"></asp:Label>
 
                                 <asp:ValidationSummary ID="DetailsValidationSummary" runat="server" DisplayMode ="List" CssClass="details-validation-summary" />
 
@@ -159,6 +159,11 @@
                                                 <asp:TextBox runat="server" ID="TxtContact" Text='<%# Eval("Contact") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="LblClientAddressId" Text='<%# Eval("ClientAddressId") %>'></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Client company">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("ClientCompanyName") %>'></asp:Label>
@@ -204,8 +209,13 @@
                                                 <asp:Label runat="server" Text='<%# Eval("ClientPostcode") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtClientPostcode" Text='<%# Eval("ClientPostcode") %>'></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtClientPostcode" Text='<%# Eval("ClientPostcode") %>' MaxLength="10"></asp:TextBox>
                                             </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="LblInvoiceAddressId" Text='<%# Eval("InvoiceAddressId") %>'></asp:Label>
+                                            </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Invoice company">
                                             <ItemTemplate>
@@ -252,7 +262,7 @@
                                                 <asp:Label runat="server" Text='<%# Eval("InvoicePostcode") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtInvoicePostcode" Text='<%# Eval("InvoicePostcode") %>'></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtInvoicePostcode" Text='<%# Eval("InvoicePostcode") %>' MaxLength="10"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText=" Address">

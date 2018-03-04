@@ -372,6 +372,7 @@
     <Compile Include="MasterPage2.master.designer.cs">
       <DependentUpon>MasterPage2.master</DependentUpon>
     </Compile>
+    <Compile Include="Models\Address.cs" />
     <Compile Include="Models\County.cs" />
     <Compile Include="Models\PlanningAuthority.cs" />
     <Compile Include="Models\Project.cs" />

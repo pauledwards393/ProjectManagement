@@ -2416,21 +2416,22 @@ WHERE     (status.Status_ID = @Param1) AND Project.IsDeleted = 0";
                 "th(\'\')), 3, 1000),\r\n\tProject.AddedAt,\r\n\tJobSheetSubmitted,\r\n\tFeeProposalSubmitte" +
                 "d,\r\n\tAcceptanceOfServiceSubmitted,\r\n\tProject.CountyId,\r\n\tISNULL(County.Name, \'\')" +
                 " AS County,\r\n\tProject.PlanningAuthorityId,\r\n\tISNULL(PlanningAuthority.Name, \'\') " +
-                "AS PlanningAuthority,\r\n\tIntroducer,\r\n\tclientAddress.CompanyName AS ClientCompany" +
-                "Name,\r\n\tclientAddress.AddressLine1 AS ClientAddressLine1,\r\n\tclientAddress.Addres" +
-                "sLine2 AS ClientAddressLine2,\r\n\tclientAddress.TownOrCity AS ClientTownOrCity,\r\n\t" +
-                "clientAddress.County As ClientCounty,\r\n\tclientAddress.Postcode As ClientPostcode" +
-                ",\r\n\tinvoiceAddress.CompanyName AS InvoiceCompanyName,\r\n\tinvoiceAddress.AddressLi" +
-                "ne1 AS InvoiceAddressLine1,\r\n\tinvoiceAddress.AddressLine2 AS InvoiceAddressLine2" +
-                ",\r\n\tinvoiceAddress.TownOrCity AS InvoiceTownOrCity,\r\n\tinvoiceAddress.County As I" +
-                "nvoiceCounty,\r\n\tinvoiceAddress.Postcode As InvoicePostcode\r\nFROM Project\r\nLEFT O" +
-                "UTER JOIN status ON Project.StatusID = status.Status_ID\r\nLEFT OUTER JOIN Departm" +
-                "ent ON Project.DepartmentID = Department.Dep_ID\r\nLEFT OUTER JOIN County ON Proje" +
-                "ct.CountyId = County.Id\r\nLEFT OUTER JOIN PlanningAuthority ON Project.PlanningAu" +
-                "thorityId = PlanningAuthority.Id\r\nLEFT OUTER JOIN Address clientAddress ON Proje" +
-                "ct.ClientAddressId = clientAddress.Id\r\nLEFT OUTER JOIN Address invoiceAddress ON" +
-                " Project.InvoiceAddressId = invoiceAddress.Id\r\nWHERE Project.Project_ID = @Proje" +
-                "ctID";
+                "AS PlanningAuthority,\r\n\tIntroducer,\r\n                   ISNULL(clientAddress.Id," +
+                " \'\') As ClientAddressId,\r\n\tclientAddress.CompanyName AS ClientCompanyName,\r\n\tcli" +
+                "entAddress.AddressLine1 AS ClientAddressLine1,\r\n\tclientAddress.AddressLine2 AS C" +
+                "lientAddressLine2,\r\n\tclientAddress.TownOrCity AS ClientTownOrCity,\r\n\tclientAddre" +
+                "ss.County As ClientCounty,\r\n\tclientAddress.Postcode As ClientPostcode,\r\n        " +
+                "           ISNULL(invoiceAddress.Id,\'\') As InvoiceAddressId,\r\n\tinvoiceAddress.Co" +
+                "mpanyName AS InvoiceCompanyName,\r\n\tinvoiceAddress.AddressLine1 AS InvoiceAddress" +
+                "Line1,\r\n\tinvoiceAddress.AddressLine2 AS InvoiceAddressLine2,\r\n\tinvoiceAddress.To" +
+                "wnOrCity AS InvoiceTownOrCity,\r\n\tinvoiceAddress.County As InvoiceCounty,\r\n\tinvoi" +
+                "ceAddress.Postcode As InvoicePostcode\r\nFROM Project\r\nLEFT OUTER JOIN status ON P" +
+                "roject.StatusID = status.Status_ID\r\nLEFT OUTER JOIN Department ON Project.Depart" +
+                "mentID = Department.Dep_ID\r\nLEFT OUTER JOIN County ON Project.CountyId = County." +
+                "Id\r\nLEFT OUTER JOIN PlanningAuthority ON Project.PlanningAuthorityId = PlanningA" +
+                "uthority.Id\r\nLEFT OUTER JOIN Address clientAddress ON Project.ClientAddressId = " +
+                "clientAddress.Id\r\nLEFT OUTER JOIN Address invoiceAddress ON Project.InvoiceAddre" +
+                "ssId = invoiceAddress.Id\r\nWHERE Project.Project_ID = @ProjectID";
             this._commandCollection[10].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ProjectID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Project_ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11] = new global::System.Data.SqlClient.SqlCommand();

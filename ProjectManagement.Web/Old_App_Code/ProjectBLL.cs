@@ -163,9 +163,10 @@ public class ProjectBLL
     //    return 1;
     //}
 
-    public int UpdateProject(ProjectManagement.Web.Models.Project project)
+    public string UpdateProject(ProjectManagement.Web.Models.Project project)
     {   
         string connectionString = ConfigurationManager.ConnectionStrings["MBProjectConnectionString"].ConnectionString;
+        string message = null;
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
@@ -176,37 +177,10 @@ public class ProjectBLL
                 };
 
                 conn.Open();
-
-                // Update project
-                cmd.CommandText = "UPDATE Project " +
-                    "SET[Project Code] = @projectcode, [Project Name] = @projectname, StartDate = @startdate, EndDate = @enddate, Contact = @Contact, Address = @address, City = @city, Description = @description, Detailed = @detailed, " +
-                    "StatusID = @StatusID, ProjectManager = @ProjectManager, DepartmentID = @DepartmentID, CountyId = @CountyId, PlanningAuthorityId = @PlanningAuthorityId " +
-                    "WHERE(Project_ID = @project_id)";
-
-                cmd.Parameters.AddWithValue("@project_id", project.Id);
-                cmd.Parameters.AddWithValue("@projectcode", project.Code);
-                cmd.Parameters.AddWithValue("@projectname", project.Name);
-                cmd.Parameters.AddWithValue("@startdate", project.StartDate ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@enddate", project.EndDate ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@Contact", project.Contact);
-                cmd.Parameters.AddWithValue("@address", project.Address);
-                cmd.Parameters.AddWithValue("@city", project.City);
-                cmd.Parameters.AddWithValue("@description", project.Description);
-                cmd.Parameters.AddWithValue("@detailed", project.Detailed);
-                cmd.Parameters.AddWithValue("@StatusID", project.Status);
-                cmd.Parameters.AddWithValue("@ProjectManager", project.ProjectManager);
-                cmd.Parameters.AddWithValue("@DepartmentID", project.Department);
-                cmd.Parameters.AddWithValue("@CountyId", project.CountyId);
-                cmd.Parameters.AddWithValue("@PlanningAuthorityId", project.PlanningAuthorityId);
-                                
-                cmd.ExecuteNonQuery();
                 
                 // Delete current sectors associated with the project
                 cmd.CommandText = "DELETE FROM ProjectSector WHERE Project_ID = @project_id";
-
-                cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@project_id", project.Id);
-
                 cmd.ExecuteNonQuery();
 
                 // Add new sectors
@@ -222,9 +196,96 @@ public class ProjectBLL
 
                     cmd.ExecuteNonQuery();
                 }
+
+                // Addresses
+                var updateQuery = "UPDATE Address " +
+                        "SET AddressLine1 = @AddressLine1, AddressLine2 = @AddressLine2, CompanyName = @CompanyName, " +
+                        "County = @County, Postcode = @Postcode, TownOrCity = @TownOrCity " +
+                        "WHERE Id = @AddressId";
+
+                var insertQuery = "INSERT INTO Address (AddressLine1, AddressLine2, CompanyName, County, Postcode, TownOrCity) " +
+                        "VALUES (@AddressLine1, @AddressLine2, @CompanyName, @County, @Postcode, @TownOrCity);" +
+                        "SELECT SCOPE_IDENTITY();";
+
+                // Add/update client address
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@AddressLine1", project.ClientAddress.AddressLine1);
+                cmd.Parameters.AddWithValue("@AddressLine2", project.ClientAddress.AddressLine2);
+                cmd.Parameters.AddWithValue("@CompanyName", project.ClientAddress.CompanyName);
+                cmd.Parameters.AddWithValue("@County", project.ClientAddress.County);
+                cmd.Parameters.AddWithValue("@Postcode", project.ClientAddress.Postcode);
+                cmd.Parameters.AddWithValue("@TownOrCity", project.ClientAddress.TownOrCity);
+
+                var clientAddressId = project.ClientAddress.Id;
+
+                if (project.ClientAddress.Id != null)
+                {
+                    cmd.Parameters.AddWithValue("@AddressId", project.ClientAddress.Id);
+                    cmd.CommandText = updateQuery;
+                    cmd.ExecuteNonQuery();
+                } else
+                {
+                    cmd.CommandText = insertQuery;
+                    var response = cmd.ExecuteScalar();
+                    clientAddressId = Convert.ToInt32(response);
+                }
+
+                // Add/update invoice address
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@AddressLine1", project.InvoiceAddress.AddressLine1);
+                cmd.Parameters.AddWithValue("@AddressLine2", project.InvoiceAddress.AddressLine2);
+                cmd.Parameters.AddWithValue("@CompanyName", project.InvoiceAddress.CompanyName);
+                cmd.Parameters.AddWithValue("@County", project.InvoiceAddress.County);
+                cmd.Parameters.AddWithValue("@Postcode", project.InvoiceAddress.Postcode);
+                cmd.Parameters.AddWithValue("@TownOrCity", project.InvoiceAddress.TownOrCity);
+
+                var invoiceAddressId = project.InvoiceAddress.Id;
+
+                if (project.InvoiceAddress.Id != null)
+                {
+                    cmd.Parameters.AddWithValue("@AddressId", project.InvoiceAddress.Id);
+                    cmd.CommandText = updateQuery;
+                    cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    cmd.CommandText = insertQuery;
+                    var response = cmd.ExecuteScalar();
+                    invoiceAddressId = Convert.ToInt32(response);
+                }
+
+                // Update project
+                cmd.CommandText = "UPDATE Project " +
+                    "SET [Project Code] = @projectcode, [Project Name] = @projectname, StartDate = @startdate, EndDate = @enddate, Contact = @Contact, Address = @address, City = @city, Description = @description, Detailed = @detailed, " +
+                    "StatusID = @StatusID, ProjectManager = @ProjectManager, DepartmentID = @DepartmentID, CountyId = @CountyId, PlanningAuthorityId = @PlanningAuthorityId, " +
+                    "ClientAddressId = @ClientAddressId, InvoiceAddressId = @InvoiceAddressId, Introducer = @Introducer " +
+                    "WHERE(Project_ID = @project_id)";
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@project_id", project.Id);
+                cmd.Parameters.AddWithValue("@projectcode", project.Code);
+                cmd.Parameters.AddWithValue("@projectname", project.Name);
+                cmd.Parameters.AddWithValue("@startdate", project.StartDate ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@enddate", project.EndDate ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@Contact", project.Contact);
+                cmd.Parameters.AddWithValue("@address", project.Address);
+                cmd.Parameters.AddWithValue("@city", project.City);
+                cmd.Parameters.AddWithValue("@description", project.Description);
+                cmd.Parameters.AddWithValue("@detailed", project.Detailed);
+                cmd.Parameters.AddWithValue("@StatusID", project.Status);
+                cmd.Parameters.AddWithValue("@ProjectManager", project.ProjectManager);
+                cmd.Parameters.AddWithValue("@DepartmentID", project.Department);
+                cmd.Parameters.AddWithValue("@CountyId", project.CountyId);
+                cmd.Parameters.AddWithValue("@PlanningAuthorityId", project.PlanningAuthorityId);
+                cmd.Parameters.AddWithValue("@ClientAddressId", clientAddressId);
+                cmd.Parameters.AddWithValue("@InvoiceAddressId", invoiceAddressId);
+                cmd.Parameters.AddWithValue("@Introducer", project.Introducer);
+
+                cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
+                message = ex.Message;
                 Console.WriteLine(ex.Message);
             }
             finally {
@@ -235,7 +296,7 @@ public class ProjectBLL
             }
         }
 
-        return 1;
+        return message;
     }
 
     public void updateProjectStatus(int _projectID, int _status)
