@@ -29,16 +29,14 @@
 
                                 <asp:ValidationSummary ID="DetailsValidationSummary" runat="server" DisplayMode ="List" CssClass="details-validation-summary" />
 
-                                <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False" CellPadding="4"
-                                    DataKeyNames="Project_ID" ForeColor="#333333" GridLines="None" Height="50px"
-                                    Width="510px" AutoGenerateEditButton="False" BackImageUrl="niceforms/images/button.gif"
+                                <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False"
+                                    DataKeyNames="Project_ID"
+                                    AutoGenerateEditButton="False"
                                     OnModeChanging="DetailsView2_ModeChanging" OnItemCommand="DetailsView2_ItemCommand"
                                     OnItemUpdated="DetailsView2_ItemUpdated" OnItemUpdating="DetailsView2_ItemUpdating"
-                                    OnItemInserting="DetailsView2_ItemInserting" OnDataBound="DetailsView2_DataBound">
+                                    OnItemInserting="DetailsView2_ItemInserting" OnDataBound="DetailsView2_DataBound" ClientIDMode="Static">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                    <RowStyle BackColor="#EFF3FB" />
-                                    <FieldHeaderStyle BackColor="#DEE8F5" Font-Bold="True" />
-                                    <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                    <FieldHeaderStyle Font-Bold="True" Width="300px" />
                                     <Fields>
                                         <asp:TemplateField Visible="False">
                                             <ItemTemplate>
@@ -50,8 +48,7 @@
                                                 <asp:Label runat="server" Text='<%# Eval("Project Code") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="TxtProjectCode" runat="server" Text='<%# Eval("Project Code") %>'
-                                                    Width="200"></asp:TextBox>
+                                                <asp:TextBox ID="TxtProjectCode" runat="server" Text='<%# Eval("Project Code") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:BoundField DataField="Project_ID" HeaderText="Project_ID" InsertVisible="False"
@@ -61,7 +58,7 @@
                                                 <asp:Label runat="server" Text='<%# Eval("Project Name") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" Width="200" ID="TxtPorjectname" Text='<%# Eval("Project Name") %>'>
+                                                <asp:TextBox runat="server" ID="TxtPorjectname" Text='<%# Eval("Project Name") %>'>
                                                 </asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
@@ -70,7 +67,7 @@
                                                 <asp:Label ID="LBLStartDate" runat="server" Text='<%# Eval("StartDate","{0:d}")  %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox Width="200" ID="TxtStartdate" runat="server" Text='<%# Eval("StartDate","{0:d}")  %>'></asp:TextBox>
+                                                <asp:TextBox ID="TxtStartdate" runat="server" Text='<%# Eval("StartDate","{0:d}")  %>'></asp:TextBox>
                                                 <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" TargetControlID="TxtStartdate"
                                                     Format="dd/MM/yyyy">
                                                 </cc1:CalendarExtender>
@@ -81,7 +78,7 @@
                                                 <asp:Label ID="LBLEndDate" runat="server" Text='<%# Eval("EndDate","{0:d}")%>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox Width="200" ID="TxtEndDate" runat="server" Text='<%# Eval("EndDate","{0:d}")%>'></asp:TextBox>
+                                                <asp:TextBox ID="TxtEndDate" runat="server" Text='<%# Eval("EndDate","{0:d}")%>'></asp:TextBox>
                                                 <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Enabled="true" TargetControlID="TxtEndDate"
                                                     Format="dd/MM/yyyy">
                                                 </cc1:CalendarExtender>
@@ -92,14 +89,14 @@
                                                 <asp:Label ID="LBLStatus" runat="server" Text='<%# Eval("Status") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:DropDownList Width="200px" ID="DDLStatus" runat="server" DataSourceID="StatusDataSource"
+                                                <asp:DropDownList ID="DDLStatus" runat="server" DataSourceID="StatusDataSource"
                                                     SelectedValue='<%# Eval("StatusID") %>' DataTextField="Status" DataValueField="Status_ID">
                                                 </asp:DropDownList>
                                                 <asp:ObjectDataSource ID="StatusDataSource" runat="server" SelectMethod="GetData"
                                                     TypeName="StatusBLL" OldValuesParameterFormatString="original_{0}"></asp:ObjectDataSource>
                                             </EditItemTemplate>
                                             <InsertItemTemplate>
-                                                <asp:DropDownList Width="200px" ID="DDLStatus" runat="server" DataSourceID="StatusDataSource"
+                                                <asp:DropDownList ID="DDLStatus" runat="server" DataSourceID="StatusDataSource"
                                                     DataTextField="Status" DataValueField="Status_ID">
                                                 </asp:DropDownList>
                                                 <asp:ObjectDataSource ID="StatusDataSource" runat="server" SelectMethod="GetData"
@@ -111,14 +108,14 @@
                                                 <asp:Label ID="LBLDepartment" runat="server" Text='<%# Eval("Name") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:DropDownList Width="200" ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSource"
+                                                <asp:DropDownList ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSource"
                                                     DataTextField="Name" DataValueField="Dep_ID" SelectedValue='<%# Eval("DepartmentID") %>'>
                                                 </asp:DropDownList>
                                                 <asp:ObjectDataSource ID="DepartmentDataSource" runat="server" SelectMethod="GetData"
                                                     TypeName="DepartmentBLL"></asp:ObjectDataSource>
                                             </EditItemTemplate>
                                             <InsertItemTemplate>
-                                                <asp:DropDownList Width="200" ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSource"
+                                                <asp:DropDownList ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSource"
                                                     DataTextField="Name" DataValueField="Dep_ID">
                                                 </asp:DropDownList>
                                                 <asp:ObjectDataSource ID="DepartmentDataSource" runat="server" SelectMethod="GetData"
@@ -143,7 +140,15 @@
                                                 <asp:Label ID="Label1" runat="server" Text='<%# Eval("ProjectManager") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtManager" Width="200" Text='<%#  Eval("ProjectManager")%>'></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtManager" Text='<%#  Eval("ProjectManager")%>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Introducer">
+                                            <ItemTemplate>
+                                                <asp:Label ID="LblIntroducer" runat="server" Text='<%# Eval("Introducer") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtIntroducer" Text='<%#  Eval("Introducer")%>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Client Contact">
@@ -151,7 +156,103 @@
                                                 <asp:Label runat="server" Text='<%# Eval("Contact") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtContact" Width="200" Text='<%# Eval("Contact") %>'></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtContact" Text='<%# Eval("Contact") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client company">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientCompanyName") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtClientCompanyName" Text='<%# Eval("ClientCompanyName") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client address line 1">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientAddressLine1") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtClientAddressLine1" Text='<%# Eval("ClientAddressLine1") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client address line 2">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientAddressLine2") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtClientAddressLine2" Text='<%# Eval("ClientAddressLine2") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client town/city">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientTownOrCity") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtClientTownOrCity" Text='<%# Eval("ClientTownOrCity") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client county">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientCounty") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtClientCounty" Text='<%# Eval("ClientCounty") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client postcode">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientPostcode") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtClientPostcode" Text='<%# Eval("ClientPostcode") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice company">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceCompanyName") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceCompanyName" Text='<%# Eval("InvoiceCompanyName") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice address line 1">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceAddressLine1") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceAddressLine1" Text='<%# Eval("InvoiceAddressLine1") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice address line 2">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceAddressLine2") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceAddressLine2" Text='<%# Eval("InvoiceAddressLine2") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice town/city">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceTownOrCity") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceTownOrCity" Text='<%# Eval("InvoiceTownOrCity") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice county">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceCounty") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceCounty" Text='<%# Eval("InvoiceCounty") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice postcode">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoicePostcode") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoicePostcode" Text='<%# Eval("InvoicePostcode") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText=" Address">
@@ -159,7 +260,7 @@
                                                 <asp:Label runat="server" Text='<%# Eval("Address") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtAddress" Width="200" Text='<%# Eval("Address") %>'></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtAddress" Text='<%# Eval("Address") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="City">
@@ -167,7 +268,7 @@
                                                 <asp:Label runat="server" Text='<%# Eval("City") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtCity" Text='<%# Eval("City") %>' Width="200"></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtCity" Text='<%# Eval("City") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project County">
@@ -175,7 +276,7 @@
                                                 <asp:Label runat="server" Text='<%# Eval("County")%>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:DropDownList Width="200px" ID="DDLCounty" runat="server" DataSourceID="CountyDataSource" SelectedValue='<%# Eval("CountyId") %>'
+                                                <asp:DropDownList ID="DDLCounty" runat="server" DataSourceID="CountyDataSource" SelectedValue='<%# Eval("CountyId") %>'
                                                     DataTextField="Name" DataValueField="Id" ClientIDMode="Static" AppendDataBoundItems="true">
                                                     <Items>
                                                        <asp:ListItem Text="-- Select project county --" Value="" />
@@ -191,18 +292,10 @@
                                                 <asp:Label runat="server" Text='<%# Eval("PlanningAuthority")%>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:DropDownList Width="200px" ID="DDLPlanningAuthority" runat="server" ClientIDMode="Static">
+                                                <asp:DropDownList ID="DDLPlanningAuthority" runat="server" ClientIDMode="Static">
                                                 </asp:DropDownList>
                                                 <asp:TextBox runat="server" ID="txtPlanningAuthority" Value='<%# Eval("PlanningAuthorityId") %>' ClientIDMode="Static" CssClass="hidden"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ControlToValidate="txtPlanningAuthority" ID="PlanningAuthorityValidator" runat="server" ErrorMessage="* Please choose a planning authority" Display="None"></asp:RequiredFieldValidator>
-                                            </EditItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Authority">
-                                            <ItemTemplate>
-                                                <asp:Label runat="server" Text='<%# Eval("Authority")%>'></asp:Label>
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtAuthority" Text='<%# Eval("Authority")%>' Width="200"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Detailed">
@@ -228,7 +321,7 @@
                                                 <asp:Label runat="server" Text='<%# Eval("Description") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" TextMode="MultiLine" Width="200" Rows="10" Text='<%# Eval("Description") %>'
+                                                <asp:TextBox runat="server" TextMode="MultiLine" Rows="10" Text='<%# Eval("Description") %>'
                                                     ID="TxtDescription"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
@@ -237,9 +330,6 @@
                                         <asp:BoundField HeaderText="Original Fee Proposal" DataField="FeeProposalSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
                                         <asp:BoundField HeaderText="Acceptance of Service" DataField="AcceptanceOfServiceSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
                                     </Fields>
-                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                    <EditRowStyle BackColor="#2461BF" />
-                                    <AlternatingRowStyle BackColor="White" />
                                     <Fields>                                        
                                         <asp:TemplateField ShowHeader="false" ItemStyle-BackColor="#D1DDF1">
                                             <ItemTemplate>

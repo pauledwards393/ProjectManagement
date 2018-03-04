@@ -79,10 +79,10 @@ public partial class Detail : System.Web.UI.Page
             GenerateJobSheet(p);
 
             Dictionary<String, Int16> FieldColumns = new Dictionary<String, Int16>();
-            FieldColumns.Add( "AddedAt", 19 );
-            FieldColumns.Add( "JobSheetSubmitted", 20 );
-            FieldColumns.Add( "FeeProposalSubmitted", 21 );
-            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 22 );
+            FieldColumns.Add( "AddedAt", 31 );
+            FieldColumns.Add( "JobSheetSubmitted", 32 );
+            FieldColumns.Add( "FeeProposalSubmitted", 33 );
+            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 34 );
 
             foreach (KeyValuePair<String, Int16> item in FieldColumns)
                 DetailsView2.Fields[item.Value].Visible = p.Rows[0][item.Key] != DBNull.Value;
