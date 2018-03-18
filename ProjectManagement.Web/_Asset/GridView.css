@@ -99,10 +99,6 @@
 
 /* Details view */
 
-table.edit .readonly {
-    color: #fff;
-}
-
 table.edit td.mandatory::after,
 table.insert td.mandatory::after {
     content: '*';

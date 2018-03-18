@@ -220,6 +220,15 @@
                                                 <asp:RequiredFieldValidator ControlToValidate="TxtClientPostcode" ID="ValClientPostcode" runat="server" ErrorMessage="* Please add a client postcode" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice contact" HeaderStyle-CssClass="mandatory">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceContact") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceContact" Text='<%# Eval("InvoiceContact") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtInvoiceContact" ID="ValInvoiceContact" runat="server" ErrorMessage="* Please add an invoice contact" Display="None"></asp:RequiredFieldValidator>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" ID="LblInvoiceAddressId" Text='<%# Eval("InvoiceAddressId") %>'></asp:Label>
@@ -338,13 +347,14 @@
                                                 <asp:Label ID="LblLng" runat="server" Text='<%# Bind("lon") %>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Description">
+                                        <asp:TemplateField HeaderText="Description" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Description") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" TextMode="MultiLine" Rows="10" Text='<%# Eval("Description") %>'
                                                     ID="TxtDescription"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtDescription" ID="ValDescription" runat="server" ErrorMessage="* Please add a description" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:BoundField HeaderText="Created on" DataField="AddedAt" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />

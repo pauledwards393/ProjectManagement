@@ -2416,12 +2416,13 @@ WHERE     (status.Status_ID = @Param1) AND Project.IsDeleted = 0";
                 "th(\'\')), 3, 1000),\r\n\tProject.AddedAt,\r\n\tJobSheetSubmitted,\r\n\tFeeProposalSubmitte" +
                 "d,\r\n\tAcceptanceOfServiceSubmitted,\r\n\tProject.CountyId,\r\n\tISNULL(County.Name, \'\')" +
                 " AS County,\r\n\tProject.PlanningAuthorityId,\r\n\tISNULL(PlanningAuthority.Name, \'\') " +
-                "AS PlanningAuthority,\r\n\tIntroducer,\r\n                   ISNULL(clientAddress.Id," +
-                " \'\') As ClientAddressId,\r\n\tclientAddress.CompanyName AS ClientCompanyName,\r\n\tcli" +
-                "entAddress.AddressLine1 AS ClientAddressLine1,\r\n\tclientAddress.AddressLine2 AS C" +
-                "lientAddressLine2,\r\n\tclientAddress.TownOrCity AS ClientTownOrCity,\r\n\tclientAddre" +
-                "ss.County As ClientCounty,\r\n\tclientAddress.Postcode As ClientPostcode,\r\n        " +
-                "           ISNULL(invoiceAddress.Id,\'\') As InvoiceAddressId,\r\n\tinvoiceAddress.Co" +
+                "AS PlanningAuthority,\r\n\tIntroducer,\r\n                   InvoiceContact,\r\n       " +
+                "            ISNULL(CONVERT(VARCHAR(20), clientAddress.Id), \'\') As ClientAddressI" +
+                "d,\r\n\tclientAddress.CompanyName AS ClientCompanyName,\r\n\tclientAddress.AddressLine" +
+                "1 AS ClientAddressLine1,\r\n\tclientAddress.AddressLine2 AS ClientAddressLine2,\r\n\tc" +
+                "lientAddress.TownOrCity AS ClientTownOrCity,\r\n\tclientAddress.County As ClientCou" +
+                "nty,\r\n\tclientAddress.Postcode As ClientPostcode,\r\n                   ISNULL(CONV" +
+                "ERT(VARCHAR(20), invoiceAddress.Id),\'\') As InvoiceAddressId,\r\n\tinvoiceAddress.Co" +
                 "mpanyName AS InvoiceCompanyName,\r\n\tinvoiceAddress.AddressLine1 AS InvoiceAddress" +
                 "Line1,\r\n\tinvoiceAddress.AddressLine2 AS InvoiceAddressLine2,\r\n\tinvoiceAddress.To" +
                 "wnOrCity AS InvoiceTownOrCity,\r\n\tinvoiceAddress.County As InvoiceCounty,\r\n\tinvoi" +

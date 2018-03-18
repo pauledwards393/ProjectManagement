@@ -258,7 +258,7 @@ public class ProjectBLL
                 cmd.CommandText = "UPDATE Project " +
                     "SET [Project Code] = @projectcode, [Project Name] = @projectname, StartDate = @startdate, EndDate = @enddate, Contact = @Contact, Address = @address, City = @city, Description = @description, Detailed = @detailed, " +
                     "StatusID = @StatusID, ProjectManager = @ProjectManager, DepartmentID = @DepartmentID, CountyId = @CountyId, PlanningAuthorityId = @PlanningAuthorityId, " +
-                    "ClientAddressId = @ClientAddressId, InvoiceAddressId = @InvoiceAddressId, Introducer = @Introducer " +
+                    "ClientAddressId = @ClientAddressId, InvoiceAddressId = @InvoiceAddressId, Introducer = @Introducer, InvoiceContact = @InvoiceContact " +
                     "WHERE(Project_ID = @project_id)";
 
                 cmd.Parameters.Clear();
@@ -280,6 +280,7 @@ public class ProjectBLL
                 cmd.Parameters.AddWithValue("@ClientAddressId", clientAddressId);
                 cmd.Parameters.AddWithValue("@InvoiceAddressId", invoiceAddressId);
                 cmd.Parameters.AddWithValue("@Introducer", project.Introducer);
+                cmd.Parameters.AddWithValue("@InvoiceContact", project.InvoiceContact);
 
                 cmd.ExecuteNonQuery();
             }

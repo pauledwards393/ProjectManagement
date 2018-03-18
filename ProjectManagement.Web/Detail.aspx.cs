@@ -79,10 +79,10 @@ public partial class Detail : System.Web.UI.Page
             GenerateJobSheet(p);
 
             Dictionary<String, Int16> FieldColumns = new Dictionary<String, Int16>();
-            FieldColumns.Add( "AddedAt", 33 );
-            FieldColumns.Add( "JobSheetSubmitted", 34 );
-            FieldColumns.Add( "FeeProposalSubmitted", 35 );
-            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 36 );
+            FieldColumns.Add( "AddedAt", 34 );
+            FieldColumns.Add( "JobSheetSubmitted", 35 );
+            FieldColumns.Add( "FeeProposalSubmitted", 36 );
+            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 37 );
 
             foreach (KeyValuePair<String, Int16> item in FieldColumns)
                 DetailsView2.Fields[item.Value].Visible = p.Rows[0][item.Key] != DBNull.Value;
@@ -235,6 +235,7 @@ public partial class Detail : System.Web.UI.Page
             Id = !string.IsNullOrWhiteSpace(LblId.Text) ? int.Parse(LblId.Text) : (int?)null,
             Introducer = GetTextFieldValue("TxtIntroducer"), // New
             InvoiceAddress = invoiceAddress, // New
+            InvoiceContact = GetTextFieldValue("TxtInvoiceContact"), // New
             Latitude = !string.IsNullOrWhiteSpace(LblLat.Text) ? double.Parse(LblLat.Text) : (double?)null,
             Longitude = !string.IsNullOrWhiteSpace(LblLng.Text) ? double.Parse(LblLng.Text) : (double?)null,
             Name = TxtProjectname.Text,
