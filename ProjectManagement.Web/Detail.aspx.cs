@@ -279,9 +279,24 @@ public partial class Detail : System.Web.UI.Page
 
         if (project.Latitude == null || project.Longitude == null) return;
 
-        projectBLL.InsertBasics(project.Code, project.Status, project.Department, project.Latitude.Value, project.Longitude.Value, project.Name);
+        if (!projectBLL.ValidateProjectCode(project.Id, project.Code))
+        {
+            lblSaveError.Text = "* Your chosen project code already exists, please choose another.";
+            lblSaveError.Visible = true;
+            return;
+        }
 
-        RedirectToMap();
+        var message = projectBLL.AddOrUpdateProject(project);
+
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            RedirectToMap();
+        }
+        else
+        {
+            lblSaveError.Text = "* " + message;
+            lblSaveError.Visible = true;
+        }
     }
     
     protected void DetailsView2_ItemUpdating(object sender, DetailsViewUpdateEventArgs e)
@@ -295,7 +310,7 @@ public partial class Detail : System.Web.UI.Page
             return;
         }
 
-        var message = projectBLL.UpdateProject(project);
+        var message = projectBLL.AddOrUpdateProject(project);
 
         if (string.IsNullOrWhiteSpace(message))
         {
