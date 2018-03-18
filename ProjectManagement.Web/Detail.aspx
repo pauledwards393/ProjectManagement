@@ -43,23 +43,25 @@
                                                 <asp:Label runat="server" Text='<%# Eval("Project_ID") %>' ID="LBLProjectID"></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Project Code">
+                                        <asp:TemplateField HeaderText="Project Code" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Project Code") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="TxtProjectCode" runat="server" Text='<%# Eval("Project Code") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtProjectCode" ID="ProjectCodeValidator" runat="server" ErrorMessage="* Please add a project code" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:BoundField DataField="Project_ID" HeaderText="Project_ID" InsertVisible="False"
                                             Visible="False" ReadOnly="True" SortExpression="Project_ID" />
-                                        <asp:TemplateField HeaderText="Project Name">
+                                        <asp:TemplateField HeaderText="Project Name" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Project Name") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtPorjectname" Text='<%# Eval("Project Name") %>'>
                                                 </asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtPorjectname" ID="ProjectNameValidator" runat="server" ErrorMessage="* Please add a project name" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Start Date">
@@ -84,7 +86,7 @@
                                                 </cc1:CalendarExtender>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Status">
+                                        <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label ID="LBLStatus" runat="server" Text='<%# Eval("Status") %>'></asp:Label>
                                             </ItemTemplate>
@@ -103,7 +105,7 @@
                                                     TypeName="StatusBLL" OldValuesParameterFormatString="original_{0}"></asp:ObjectDataSource>
                                             </InsertItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Department">
+                                        <asp:TemplateField HeaderText="Department" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label ID="LBLDepartment" runat="server" Text='<%# Eval("Name") %>'></asp:Label>
                                             </ItemTemplate>
@@ -122,7 +124,7 @@
                                                     TypeName="DepartmentBLL"></asp:ObjectDataSource>
                                             </InsertItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Sector">
+                                        <asp:TemplateField HeaderText="Sector" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label ID="LBLSector" runat="server" Text='<%# Eval("SectorList") %>'></asp:Label>
                                             </ItemTemplate>
@@ -132,7 +134,7 @@
                                                     CssClass="MySelect" DataTextField="Name" OnDataBound="DDLSector_DataBound" DataValueField="Sector_ID"></asp:ListBox>
                                                 <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                                                     SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector]"></asp:SqlDataSource>
-                                                <asp:RequiredFieldValidator ControlToValidate="DDLSector" ID="SectorValidator" runat="server" ErrorMessage="* Please choose at least one sector" Display="None"></asp:RequiredFieldValidator>
+                                                <asp:RequiredFieldValidator ControlToValidate="DDLSector" ID="ValSector" runat="server" ErrorMessage="* Please choose at least one sector" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Manager[MBL]">
@@ -143,20 +145,22 @@
                                                 <asp:TextBox runat="server" ID="TxtManager" Text='<%#  Eval("ProjectManager")%>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Introducer">
+                                        <asp:TemplateField HeaderText="Introducer" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label ID="LblIntroducer" runat="server" Text='<%# Eval("Introducer") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtIntroducer" Text='<%#  Eval("Introducer")%>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtIntroducer" ID="ValIntroducer" runat="server" ErrorMessage="* Please add an introducer" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Client Contact">
+                                        <asp:TemplateField HeaderText="Client Contact" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Contact") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtContact" Text='<%# Eval("Contact") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtContact" ID="ValClientContact" runat="server" ErrorMessage="* Please add a client contact" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="false">
@@ -164,20 +168,22 @@
                                                 <asp:Label runat="server" ID="LblClientAddressId" Text='<%# Eval("ClientAddressId") %>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Client company">
+                                        <asp:TemplateField HeaderText="Client company" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("ClientCompanyName") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtClientCompanyName" Text='<%# Eval("ClientCompanyName") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtClientCompanyName" ID="ValClientCompany" runat="server" ErrorMessage="* Please add a client company name" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Client address line 1">
+                                        <asp:TemplateField HeaderText="Client address line 1" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("ClientAddressLine1") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtClientAddressLine1" Text='<%# Eval("ClientAddressLine1") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtClientAddressLine1" ID="ValClientAddressLine1" runat="server" ErrorMessage="* Please add a client address line 1" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Client address line 2">
@@ -188,12 +194,13 @@
                                                 <asp:TextBox runat="server" ID="TxtClientAddressLine2" Text='<%# Eval("ClientAddressLine2") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Client town/city">
+                                        <asp:TemplateField HeaderText="Client town/city" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("ClientTownOrCity") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtClientTownOrCity" Text='<%# Eval("ClientTownOrCity") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtClientTownOrCity" ID="ValClientTownOrCity" runat="server" ErrorMessage="* Please add a client town or city" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Client county">
@@ -204,12 +211,13 @@
                                                 <asp:TextBox runat="server" ID="TxtClientCounty" Text='<%# Eval("ClientCounty") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Client postcode">
+                                        <asp:TemplateField HeaderText="Client postcode" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("ClientPostcode") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtClientPostcode" Text='<%# Eval("ClientPostcode") %>' MaxLength="10"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtClientPostcode" ID="ValClientPostcode" runat="server" ErrorMessage="* Please add a client postcode" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="false">
@@ -217,20 +225,22 @@
                                                 <asp:Label runat="server" ID="LblInvoiceAddressId" Text='<%# Eval("InvoiceAddressId") %>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Invoice company">
+                                        <asp:TemplateField HeaderText="Invoice company" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("InvoiceCompanyName") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtInvoiceCompanyName" Text='<%# Eval("InvoiceCompanyName") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtInvoiceCompanyName" ID="ValCompanyName" runat="server" ErrorMessage="* Please add an invoice company name" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Invoice address line 1">
+                                        <asp:TemplateField HeaderText="Invoice address line 1" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("InvoiceAddressLine1") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtInvoiceAddressLine1" Text='<%# Eval("InvoiceAddressLine1") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtInvoiceAddressLine1" ID="ValInvoiceAddressLine1" runat="server" ErrorMessage="* Please add an invoice address line 1" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Invoice address line 2">
@@ -241,12 +251,13 @@
                                                 <asp:TextBox runat="server" ID="TxtInvoiceAddressLine2" Text='<%# Eval("InvoiceAddressLine2") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Invoice town/city">
+                                        <asp:TemplateField HeaderText="Invoice town/city" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("InvoiceTownOrCity") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtInvoiceTownOrCity" Text='<%# Eval("InvoiceTownOrCity") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtInvoiceTownOrCity" ID="ValInvoiceTownOrCity" runat="server" ErrorMessage="* Please add an invoice town or city" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Invoice county">
@@ -257,12 +268,13 @@
                                                 <asp:TextBox runat="server" ID="TxtInvoiceCounty" Text='<%# Eval("InvoiceCounty") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Invoice postcode">
+                                        <asp:TemplateField HeaderText="Invoice postcode" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("InvoicePostcode") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox runat="server" ID="TxtInvoicePostcode" Text='<%# Eval("InvoicePostcode") %>' MaxLength="10"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtInvoicePostcode" ID="ValInvoicePostcode" runat="server" ErrorMessage="* Please add an invoice postcode" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText=" Address">

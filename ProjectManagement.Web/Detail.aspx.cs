@@ -88,11 +88,12 @@ public partial class Detail : System.Web.UI.Page
                 DetailsView2.Fields[item.Value].Visible = p.Rows[0][item.Key] != DBNull.Value;
 
             DetailsView2.DataBind();
-            DetailsView2.CssClass = DetailsView2.CurrentMode.ToString().ToLower();
 
             HasJobSheet = p.Rows[0]["JobSheetSubmitted"] != DBNull.Value;
             JobSheetMandatoryMarker.Visible = !HasJobSheet;
         }
+
+        DetailsView2.CssClass = DetailsView2.CurrentMode.ToString().ToLower();
     }
 
     protected void DetailsView2_DataBound(object sender, EventArgs e)

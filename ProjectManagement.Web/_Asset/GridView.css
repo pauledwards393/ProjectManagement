@@ -103,6 +103,12 @@ table.edit .readonly {
     color: #fff;
 }
 
+table.edit td.mandatory::after,
+table.insert td.mandatory::after {
+    content: '*';
+    margin-left: 0.25em;
+}
+
 /* Modal */
 
 .modal-dialog {
@@ -200,6 +206,7 @@ input[type=file] {
 
 .details-validation-summary {
     padding: 8px 5px 18px 5px;
+    font-style: italic;
 }
 
 #DetailsView2 {
