@@ -272,9 +272,7 @@ public class ProjectBLL
                 cmd.ExecuteNonQuery();
 
                 // Add new sectors
-                var sectors = project.Sectors.Split(',');
-
-                foreach (var sectorId in sectors)
+                foreach (var sectorId in project.Sectors)
                 {
                     cmd.CommandText = "INSERT INTO ProjectSector (Project_ID, Sector_ID) VALUES (@project_id, @sector_id)";
 

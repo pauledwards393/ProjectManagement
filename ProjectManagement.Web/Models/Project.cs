@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ProjectManagement.Web.Models
 {
@@ -23,7 +24,7 @@ namespace ProjectManagement.Web.Models
         public string Name { get; set; }
         public int PlanningAuthorityId { get; set; }
         public string ProjectManager { get; set; }
-        public string Sectors { get; set; }
+        public List<int> Sectors { get; set; }
         public DateTime? StartDate { get; set; }
         public int Status { get; set; }
     }

@@ -124,7 +124,7 @@
                                                     TypeName="DepartmentBLL"></asp:ObjectDataSource>
                                             </InsertItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Sector" HeaderStyle-CssClass="mandatory">
+                                        <asp:TemplateField HeaderText="Sector">
                                             <ItemTemplate>
                                                 <asp:Label ID="LBLSector" runat="server" Text='<%# Eval("SectorList") %>'></asp:Label>
                                             </ItemTemplate>
@@ -134,7 +134,6 @@
                                                     CssClass="MySelect" DataTextField="Name" OnDataBound="DDLSector_DataBound" DataValueField="Sector_ID"></asp:ListBox>
                                                 <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                                                     SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector]"></asp:SqlDataSource>
-                                                <asp:RequiredFieldValidator ControlToValidate="DDLSector" ID="ValSector" runat="server" ErrorMessage="* Please choose at least one sector" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Manager[MBL]">

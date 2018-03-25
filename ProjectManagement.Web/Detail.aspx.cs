@@ -19,6 +19,7 @@ using Table = iTextSharp.text.Table;
 using ProjectManagement.Web;
 using ProjectManagement.Web.Providers;
 using Newtonsoft.Json;
+using System.Linq;
 
 public partial class Detail : System.Web.UI.Page
 {
@@ -261,14 +262,10 @@ public partial class Detail : System.Web.UI.Page
 
         ListBox DDLSector = (ListBox)DetailsView2.FindControl("DDLSector");
 
-        string selectedSectors = "";
-        int[] selectedIndices = DDLSector.GetSelectedIndices();
-        foreach (int selectedIndex in selectedIndices)
-        {
-            selectedSectors = selectedSectors + "," + DDLSector.Items[selectedIndex].Value;
-        }
-
-        project.Sectors = selectedSectors.Trim(',');
+        project.Sectors = DDLSector
+            .GetSelectedIndices()
+            .Select(index => Convert.ToInt32(DDLSector.Items[index].Value))
+            .ToList();
 
         return project;
     }
