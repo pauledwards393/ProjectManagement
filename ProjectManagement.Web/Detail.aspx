@@ -380,7 +380,6 @@
                                     <FooterTemplate>
                                         <asp:Button CommandName="GoBack" Text="Go Back" runat="server" ID="BtnBack" CausesValidation="false" />
                                         <asp:Button CommandName="JobSheet" Text="Job Sheet" runat="server" ID="BtnSheet" OnClick="BtnSheet_Click" />
-                                        <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Design Job Sheet" />
                                         <button type="button" data-toggle="modal" data-target="#upload-job-sheet">Submit Job Sheet/Fee/Acceptance</button>
                                     </FooterTemplate>
                                 </asp:DetailsView>

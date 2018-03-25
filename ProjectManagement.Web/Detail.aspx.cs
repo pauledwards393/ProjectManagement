@@ -666,119 +666,61 @@ public partial class Detail : System.Web.UI.Page
         return;
     }
 
+    private List<string> GetAddressFieldNames(string prefix, Project.ProjectRow row)
+    {
+        return new string[] {
+            prefix + "CompanyName",
+            prefix + "AddressLine1",
+            prefix + "AddressLine2",
+            prefix + "TownOrCity",
+            prefix +  "County",
+            prefix + "Postcode"
+        }
+        .Select(field => row[field].ToString())
+        .Where(field => !string.IsNullOrWhiteSpace(field))
+        .ToList();
+    }
+
     protected void BtnSheet_Click(object sender, EventArgs e)
     {
         string ProjectID = Request.QueryString["projectID"];
         Project.ProjectDataTable p = projectBLL.GetDataByID(ProjectID);
         Project.ProjectRow row = p.Rows[0] as Project.ProjectRow;
 
-        String originalJobSheetPath = Server.MapPath("JobSheet.xls");
+        String originalJobSheetPath = Server.MapPath("JobSheet_2017-08-08.xls");
         String modifiedJobSheetPath = Server.MapPath("newJobsheet1.xls");
 
         File.Copy(originalJobSheetPath, modifiedJobSheetPath, true);
 
         String conn = String.Format(ExcelConnectionString, modifiedJobSheetPath);
-        String updateQuery = "update [Jobsheet${0}:{0}] set F1 = \"{1}\"";
-
-        using (OleDbConnection connection = new OleDbConnection(conn))
-        {
-            connection.Open();
-
-            OleDbCommand cmd = new OleDbCommand();
-            cmd.Connection = connection;
-
-            if (!row.IsStatusNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "E3", row.Status);
-                cmd.ExecuteNonQuery();
-            }
-
-            if (!row.IsProject_CodeNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "B4", row.Project_Code);
-                cmd.ExecuteNonQuery();
-            }
-
-            if (!row.IsDescriptionNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "A7", row.Description);
-                cmd.ExecuteNonQuery();
-            }
-
-            if (!row.IsContactNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "B12", row.Contact);
-                cmd.ExecuteNonQuery();
-            }
-
-            String address = String.Empty;
-
-            if (!row.IsAddressNull())
-                address = row.Address;
-
-            if (!row.IsAddressNull() && !row.IsCityNull() && !String.IsNullOrEmpty(address))
-                address += "\n";
-
-            if (!row.IsCityNull())
-                address += row.City;
-
-            if (!String.IsNullOrEmpty(address))
-            {
-                cmd.CommandText = String.Format(updateQuery, "A14", address);
-                cmd.ExecuteNonQuery();
-            }
-
-            if (!row.IsProjectManagerNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "C31", row.ProjectManager);
-                cmd.ExecuteNonQuery();
-            }
-
-            cmd.CommandText = String.Format(updateQuery, "F32", DateTime.Today.ToShortDateString());
-            cmd.ExecuteNonQuery();
-
-            connection.Close();
-        }
-
-        Response.Redirect("newJobsheet1.xls");
-    }
-
-    protected void Button2_Click(object sender, EventArgs e)
-    {
-        string ProjectID = Request.QueryString["projectID"];
-        Project.ProjectDataTable p = projectBLL.GetDataByID(ProjectID);
-        Project.ProjectRow row = p.Rows[0] as Project.ProjectRow;
-
-        String originalJobSheetDesignPath = Server.MapPath("JobSheetDesign.xls");
-        String modifiedJobSheetDesignPath = Server.MapPath("newJobsheet_design.xls");
-
-        File.Copy(originalJobSheetDesignPath, modifiedJobSheetDesignPath, true);
-
-        String conn = String.Format(ExcelConnectionString, modifiedJobSheetDesignPath);
         String updateQuery = "update [Project Sheet${0}:{0}] set F1 = \"{1}\"";
 
         using (OleDbConnection connection = new OleDbConnection(conn))
         {
             connection.Open();
 
-            OleDbCommand cmd = new OleDbCommand();
-            cmd.Connection = connection;
-
+            OleDbCommand cmd = new OleDbCommand
+            {
+                Connection = connection
+            };
+            
             if (!row.IsProject_CodeNull())
             {
                 cmd.CommandText = String.Format(updateQuery, "G5", row.Project_Code);
                 cmd.ExecuteNonQuery();
             }
 
-            if (!row.IsStartDateNull())
+            var introducer = row["Introducer"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(introducer))
             {
-                cmd.CommandText = String.Format(updateQuery, "G10", row.StartDate);
+                cmd.CommandText = String.Format(updateQuery, "G7", introducer);
                 cmd.ExecuteNonQuery();
             }
 
-            if (!row.IsEndDateNull())
+            if (!row.IsStatusNull())
             {
-                cmd.CommandText = String.Format(updateQuery, "G11", row.EndDate);
+                cmd.CommandText = String.Format(updateQuery, "G11", row.Status.Trim());
                 cmd.ExecuteNonQuery();
             }
 
@@ -788,46 +730,54 @@ public partial class Detail : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
             }
 
+            var clientCompanyName = row["ClientCompanyName"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(clientCompanyName))
+            {
+                cmd.CommandText = String.Format(updateQuery, "G18", clientCompanyName);
+                cmd.ExecuteNonQuery();
+            }
+
             if (!row.IsContactNull())
             {
                 cmd.CommandText = String.Format(updateQuery, "A21", row.Contact);
                 cmd.ExecuteNonQuery();
             }
+                   
+            var clientAddressFields = GetAddressFieldNames("Client", row);
+            var rowIndex = 24;
 
-            // Clear cells A24 to A29
-            cmd.CommandText = "update [Project Sheet$A24:A29] set F1 = ''";
-            cmd.ExecuteNonQuery();
-
-            Int16 rowToUpdate = 24;
-
-            if (!row.IsAddressNull() && !String.IsNullOrEmpty(row.Address))
+            foreach (var field in clientAddressFields)
             {
-                String[] addressParts = row.Address.Split(',');
+                cmd.CommandText = String.Format(updateQuery, "A" + rowIndex.ToString(), field);
+                cmd.ExecuteNonQuery();
 
-                foreach (String part in addressParts)
-                {
-                    cmd.CommandText = String.Format(updateQuery, "A" + rowToUpdate, part.Trim());
-                    cmd.ExecuteNonQuery();
-                    rowToUpdate++;
-                }
+                rowIndex++;
             }
 
-            if (!row.IsCityNull() && !String.IsNullOrEmpty(row.City))
-            {
-                String[] cityParts = row.City.Split(',');
+            var invoiceContact = row["InvoiceContact"].ToString();
 
-                foreach (String part in cityParts)
-                {
-                    cmd.CommandText = String.Format(updateQuery, "A" + rowToUpdate, part.Trim());
-                    cmd.ExecuteNonQuery();
-                    rowToUpdate++;
-                }
+            if (!string.IsNullOrWhiteSpace(invoiceContact))
+            {
+                cmd.CommandText = String.Format(updateQuery, "G21", invoiceContact);
+                cmd.ExecuteNonQuery();
             }
 
+            var invoiceAddressFields = GetAddressFieldNames("Invoice", row);
+            rowIndex = 24;
+
+            foreach (var field in invoiceAddressFields)
+            {
+                cmd.CommandText = String.Format(updateQuery, "G" + rowIndex.ToString(), field);
+                cmd.ExecuteNonQuery();
+
+                rowIndex++;
+            }
+            
             connection.Close();
         }
-        
-        Response.Redirect("newJobsheet_design.xls");
+
+        Response.Redirect("newJobsheet1.xls");
     }
 
     [System.Web.Services.WebMethod]
