@@ -241,8 +241,8 @@ public class ProjectBLL
                 cmd.Parameters.AddWithValue("@StatusID", project.Status);
                 cmd.Parameters.AddWithValue("@ProjectManager", project.ProjectManager);
                 cmd.Parameters.AddWithValue("@DepartmentID", project.Department);
-                cmd.Parameters.AddWithValue("@CountyId", project.CountyId);
-                cmd.Parameters.AddWithValue("@PlanningAuthorityId", project.PlanningAuthorityId);
+                cmd.Parameters.AddWithValue("@CountyId", project.CountyId ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@PlanningAuthorityId", project.PlanningAuthorityId ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@ClientAddressId", clientAddressId);
                 cmd.Parameters.AddWithValue("@InvoiceAddressId", invoiceAddressId);
                 cmd.Parameters.AddWithValue("@Introducer", project.Introducer);

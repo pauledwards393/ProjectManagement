@@ -10,7 +10,7 @@ namespace ProjectManagement.Web.Models
         public string Code { get; set; }
         public string Contact { get; set; }
         public Address ClientAddress { get; set; }
-        public int CountyId { get; set; }
+        public int? CountyId { get; set; }
         public int Department { get; set; }
         public string Description { get; set; }
         public bool Detailed { get; set; }
@@ -22,7 +22,7 @@ namespace ProjectManagement.Web.Models
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
         public string Name { get; set; }
-        public int PlanningAuthorityId { get; set; }
+        public int? PlanningAuthorityId { get; set; }
         public string ProjectManager { get; set; }
         public List<int> Sectors { get; set; }
         public DateTime? StartDate { get; set; }

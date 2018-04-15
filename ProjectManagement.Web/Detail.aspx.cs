@@ -229,7 +229,7 @@ public partial class Detail : System.Web.UI.Page
             ClientAddress = clientAddress, // New
             Code = GetTextFieldValue("TxtProjectCode"),
             Contact = TxtContact.Text,
-            CountyId = int.Parse(DDLCounty.SelectedValue),
+            CountyId = !string.IsNullOrWhiteSpace(DDLCounty.SelectedValue) ? int.Parse(DDLCounty.SelectedValue) : (int?)null,
             Department = int.Parse(DDLDepartment.SelectedValue),
             Description = TxtDescription.Text,
             Detailed = ChkDetailed.Checked,
@@ -240,7 +240,7 @@ public partial class Detail : System.Web.UI.Page
             Latitude = !string.IsNullOrWhiteSpace(LblLat.Text) ? double.Parse(LblLat.Text) : (double?)null,
             Longitude = !string.IsNullOrWhiteSpace(LblLng.Text) ? double.Parse(LblLng.Text) : (double?)null,
             Name = TxtProjectname.Text,
-            PlanningAuthorityId = int.Parse(TxtPlanningAuthority.Text),
+            PlanningAuthorityId = !string.IsNullOrWhiteSpace(TxtPlanningAuthority.Text) ? int.Parse(TxtPlanningAuthority.Text) : (int?)null,
             ProjectManager = TxtProjectManager.Text,
             Status = int.Parse(DDLstatus.SelectedValue),
         };

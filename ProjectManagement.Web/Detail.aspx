@@ -285,7 +285,7 @@
                                                 <asp:RequiredFieldValidator ControlToValidate="TxtInvoicePostcode" ID="ValInvoicePostcode" runat="server" ErrorMessage="* Please add an invoice postcode" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText=" Address">
+                                        <asp:TemplateField HeaderText=" Address" Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Address") %>'></asp:Label>
                                             </ItemTemplate>
@@ -293,7 +293,7 @@
                                                 <asp:TextBox runat="server" ID="TxtAddress" Text='<%# Eval("Address") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="City">
+                                        <asp:TemplateField HeaderText="City" Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("City") %>'></asp:Label>
                                             </ItemTemplate>
@@ -314,7 +314,6 @@
                                                 </asp:DropDownList>
                                                 <asp:ObjectDataSource ID="CountyDataSource" runat="server" SelectMethod="GetCounties"
                                                     TypeName="ProjectManagement.Web.Providers.CountyProvider" />
-                                                <asp:RequiredFieldValidator ControlToValidate="DDLCounty" ID="CountyValidator" runat="server" ErrorMessage="* Please choose a county" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Local Planning Authority">
@@ -325,7 +324,6 @@
                                                 <asp:DropDownList ID="DDLPlanningAuthority" runat="server" ClientIDMode="Static">
                                                 </asp:DropDownList>
                                                 <asp:TextBox runat="server" ID="txtPlanningAuthority" Value='<%# Eval("PlanningAuthorityId") %>' ClientIDMode="Static" CssClass="hidden"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ControlToValidate="txtPlanningAuthority" ID="PlanningAuthorityValidator" runat="server" ErrorMessage="* Please choose a planning authority" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Detailed">
