@@ -169,6 +169,14 @@ public partial class Detail : System.Web.UI.Page
         }
     }
 
+    protected void DepartmentDataSourceEdit_Selecting(object sender, ObjectDataSourceSelectingEventArgs e)
+    {
+        var projectId = Request.Params["ProjectID"];
+        var param = !string.IsNullOrEmpty(projectId) ? Convert.ToInt32(projectId) : 0;
+
+        e.InputParameters.Add("projectId", param);
+    }
+
     private string GetLabelFieldValue(string name)
     {
         return ((Label)DetailsView2.FindControl(name)).Text.Trim();

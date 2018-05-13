@@ -110,18 +110,18 @@
                                                 <asp:Label ID="LBLDepartment" runat="server" Text='<%# Eval("Name") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:DropDownList ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSource"
-                                                    DataTextField="Name" DataValueField="Dep_ID" SelectedValue='<%# Eval("DepartmentID") %>'>
+                                                <asp:DropDownList ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSourceEdit"
+                                                    DataTextField="Name" DataValueField="Id" SelectedValue='<%# Eval("DepartmentID") %>'>
                                                 </asp:DropDownList>
-                                                <asp:ObjectDataSource ID="DepartmentDataSource" runat="server" SelectMethod="GetData"
-                                                    TypeName="DepartmentBLL"></asp:ObjectDataSource>
+                                                <asp:ObjectDataSource ID="DepartmentDataSourceEdit" runat="server" SelectMethod="GetDepartmentsForEdit"
+                                                        TypeName="ProjectManagement.Web.Providers.DepartmentProvider" OnSelecting="DepartmentDataSourceEdit_Selecting" />
                                             </EditItemTemplate>
                                             <InsertItemTemplate>
-                                                <asp:DropDownList ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSource"
-                                                    DataTextField="Name" DataValueField="Dep_ID">
+                                                <asp:DropDownList ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSourceInsert"
+                                                    DataTextField="Name" DataValueField="Id">
                                                 </asp:DropDownList>
-                                                <asp:ObjectDataSource ID="DepartmentDataSource" runat="server" SelectMethod="GetData"
-                                                    TypeName="DepartmentBLL"></asp:ObjectDataSource>
+                                                <asp:ObjectDataSource ID="DepartmentDataSourceInsert" runat="server" SelectMethod="GetDepartmentsForInsert"
+                                                        TypeName="ProjectManagement.Web.Providers.DepartmentProvider" />
                                             </InsertItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Sector">

@@ -374,6 +374,7 @@
     </Compile>
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\County.cs" />
+    <Compile Include="Models\Department.cs" />
     <Compile Include="Models\PlanningAuthority.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Old_App_Code\DepartmentBLL.cs" />
@@ -394,6 +395,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\CountyProvider.cs" />
+    <Compile Include="Providers\DepartmentProvider.cs" />
     <Compile Include="Providers\PlanningAuthorityProvider.cs" />
   </ItemGroup>
   <ItemGroup>
