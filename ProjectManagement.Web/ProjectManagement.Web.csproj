@@ -161,6 +161,7 @@
     <Content Include="count.aspx" />
     <Content Include="Detail.aspx" />
     <Content Include="GGIcon\Constructed%28FC%29\air-noise.png" />
+    <Content Include="GGIcon\Constructed%28FC%29\air.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Birmingham.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Blank.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Bristol.png" />
@@ -179,6 +180,7 @@
     <Content Include="GGIcon\Constructed%28FC%29\London PZ.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Modelling.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Newcastle.png" />
+    <Content Include="GGIcon\Constructed%28FC%29\noise.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Planning 1.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Planning 2.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Planning 3.png" />
@@ -189,6 +191,7 @@
     <Content Include="GGIcon\Constructed%28FC%29\Road Safety.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Topographical.png" />
     <Content Include="GGIcon\Constructed%28PC%29\air-noise.png" />
+    <Content Include="GGIcon\Constructed%28PC%29\air.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Birmingham.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Bristol.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Cardiff.png" />
@@ -206,6 +209,7 @@
     <Content Include="GGIcon\Constructed%28PC%29\London PZ.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Modelling.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Newcastle.png" />
+    <Content Include="GGIcon\Constructed%28PC%29\noise.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Planning 1.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Planning 2.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Planning 3.png" />
@@ -216,7 +220,9 @@
     <Content Include="GGIcon\Constructed%28PC%29\Road Safety.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Topographical.png" />
     <Content Include="GGIcon\dead\air-noise.png" />
+    <Content Include="GGIcon\dead\air.png" />
     <Content Include="GGIcon\dead\Birmingham.png" />
+    <Content Include="GGIcon\dead\Blank.png" />
     <Content Include="GGIcon\dead\Bristol.png" />
     <Content Include="GGIcon\dead\Cardiff.png" />
     <Content Include="GGIcon\dead\Design 3.png" />
@@ -235,6 +241,7 @@
     <Content Include="GGIcon\dead\London PZ.png" />
     <Content Include="GGIcon\dead\Modelling.png" />
     <Content Include="GGIcon\dead\Newcastle.png" />
+    <Content Include="GGIcon\dead\noise.png" />
     <Content Include="GGIcon\dead\Planning 1.png" />
     <Content Include="GGIcon\dead\Planning 2.png" />
     <Content Include="GGIcon\dead\Planning 3.png" />
@@ -245,6 +252,7 @@
     <Content Include="GGIcon\dead\Road Safety.png" />
     <Content Include="GGIcon\dead\Topographical.png" />
     <Content Include="GGIcon\live\air-noise.png" />
+    <Content Include="GGIcon\live\air.png" />
     <Content Include="GGIcon\live\Birmingham.png" />
     <Content Include="GGIcon\live\Bristol.png" />
     <Content Include="GGIcon\live\Cardiff.png" />
@@ -264,6 +272,7 @@
     <Content Include="GGIcon\live\London PZ.png" />
     <Content Include="GGIcon\live\Modelling.png" />
     <Content Include="GGIcon\live\Newcastle.png" />
+    <Content Include="GGIcon\live\noise.png" />
     <Content Include="GGIcon\live\Planning 1.png" />
     <Content Include="GGIcon\live\Planning 2.png" />
     <Content Include="GGIcon\live\Planning 3.png" />
@@ -274,7 +283,9 @@
     <Content Include="GGIcon\live\Road Safety.png" />
     <Content Include="GGIcon\live\Topographical.png" />
     <Content Include="GGIcon\SPEC\air-noise.png" />
+    <Content Include="GGIcon\SPEC\air.png" />
     <Content Include="GGIcon\SPEC\Birmingham.png" />
+    <Content Include="GGIcon\SPEC\Blank.png" />
     <Content Include="GGIcon\SPEC\Bristol.png" />
     <Content Include="GGIcon\SPEC\Cardiff.png" />
     <Content Include="GGIcon\SPEC\design 3.png" />
@@ -293,6 +304,7 @@
     <Content Include="GGIcon\SPEC\London PZ.PNG" />
     <Content Include="GGIcon\SPEC\Modelling.png" />
     <Content Include="GGIcon\SPEC\Newcastle.png" />
+    <Content Include="GGIcon\SPEC\noise.png" />
     <Content Include="GGIcon\SPEC\planning 1.png" />
     <Content Include="GGIcon\SPEC\planning 2.png" />
     <Content Include="GGIcon\SPEC\planning 3.png" />
