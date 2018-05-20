@@ -80,10 +80,10 @@ public partial class Detail : System.Web.UI.Page
             GenerateJobSheet(p);
 
             Dictionary<String, Int16> FieldColumns = new Dictionary<String, Int16>();
-            FieldColumns.Add( "AddedAt", 34 );
-            FieldColumns.Add( "JobSheetSubmitted", 35 );
-            FieldColumns.Add( "FeeProposalSubmitted", 36 );
-            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 37 );
+            FieldColumns.Add( "AddedAt", 33 );
+            FieldColumns.Add( "JobSheetSubmitted", 34 );
+            FieldColumns.Add( "FeeProposalSubmitted", 35 );
+            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 36 );
 
             foreach (KeyValuePair<String, Int16> item in FieldColumns)
                 DetailsView2.Fields[item.Value].Visible = p.Rows[0][item.Key] != DBNull.Value;
@@ -194,7 +194,6 @@ public partial class Detail : System.Web.UI.Page
         DropDownList DDLstatus = (DropDownList)DetailsView2.FindControl("DDlstatus");
         DropDownList DDLDepartment = (DropDownList)DetailsView2.FindControl("DDLDepartment");
         TextBox TxtContact = (TextBox)DetailsView2.FindControl("TxtContact");
-        TextBox TxtCity = (TextBox)DetailsView2.FindControl("TxtCity");
         CheckBox ChkDetailed = (CheckBox)DetailsView2.FindControl("ChkDetailed");
         TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");
         TextBox TxtProjectManager = (TextBox)DetailsView2.FindControl("TxtManager");
@@ -232,8 +231,6 @@ public partial class Detail : System.Web.UI.Page
         // Project
         var project = new ProjectManagement.Web.Models.Project
         {
-            Address = GetTextFieldValue("TxtAddress"),
-            City = TxtCity.Text,
             ClientAddress = clientAddress, // New
             Code = GetTextFieldValue("TxtProjectCode"),
             Contact = TxtContact.Text,
@@ -249,6 +246,7 @@ public partial class Detail : System.Web.UI.Page
             Longitude = !string.IsNullOrWhiteSpace(LblLng.Text) ? double.Parse(LblLng.Text) : (double?)null,
             Name = TxtProjectname.Text,
             PlanningAuthorityId = !string.IsNullOrWhiteSpace(TxtPlanningAuthority.Text) ? int.Parse(TxtPlanningAuthority.Text) : (int?)null,
+            ProjectCity = GetTextFieldValue("TxtProjectCity"),
             ProjectManager = TxtProjectManager.Text,
             Status = int.Parse(DDLstatus.SelectedValue),
         };

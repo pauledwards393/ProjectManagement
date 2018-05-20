@@ -285,22 +285,6 @@
                                                 <asp:RequiredFieldValidator ControlToValidate="TxtInvoicePostcode" ID="ValInvoicePostcode" runat="server" ErrorMessage="* Please add an invoice postcode" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText=" Address" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label runat="server" Text='<%# Eval("Address") %>'></asp:Label>
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtAddress" Text='<%# Eval("Address") %>'></asp:TextBox>
-                                            </EditItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="City" Visible="false">
-                                            <ItemTemplate>
-                                                <asp:Label runat="server" Text='<%# Eval("City") %>'></asp:Label>
-                                            </ItemTemplate>
-                                            <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtCity" Text='<%# Eval("City") %>'></asp:TextBox>
-                                            </EditItemTemplate>
-                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project County">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("County")%>'></asp:Label>
@@ -324,6 +308,14 @@
                                                 <asp:DropDownList ID="DDLPlanningAuthority" runat="server" ClientIDMode="Static">
                                                 </asp:DropDownList>
                                                 <asp:TextBox runat="server" ID="txtPlanningAuthority" Value='<%# Eval("PlanningAuthorityId") %>' ClientIDMode="Static" CssClass="hidden"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project City">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ProjectCity") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtProjectCity" Text='<%# Eval("ProjectCity") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Detailed">

@@ -2339,24 +2339,24 @@ WHERE  IsDeleted = 0";
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SectorID", global::System.Data.SqlDbType.Int, 2, global::System.Data.ParameterDirection.Input, 0, 0, "SectorID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[2].Connection = this.Connection;
-            this._commandCollection[2].CommandText = "DELETE FROM ProjectSector\r\nWHERE     (Project_ID = @projectID)";
+            this._commandCollection[2].CommandText = "DELETE FROM ProjectSector\nWHERE     (Project_ID = @projectID)";
             this._commandCollection[2].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[2].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@projectID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Project_ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._commandCollection[3] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[3].Connection = this.Connection;
-            this._commandCollection[3].CommandText = "Update Project\r\nSet IsDeleted = 1\r\nWhere Project_ID = @projectID;";
+            this._commandCollection[3].CommandText = "Update Project\nSet IsDeleted = 1\nWhere Project_ID = @projectID;";
             this._commandCollection[3].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[3].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@projectID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Project_ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._commandCollection[4] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[4].Connection = this.Connection;
-            this._commandCollection[4].CommandText = "SELECT     COUNT(Project_ID) AS DCount\r\nFROM         Project\r\nWHERE     (Departme" +
-                "ntID = @departmentID) AND IsDeleted = 0";
+            this._commandCollection[4].CommandText = "SELECT     COUNT(Project_ID) AS DCount\nFROM         Project\nWHERE     (Department" +
+                "ID = @departmentID) AND IsDeleted = 0";
             this._commandCollection[4].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[4].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@departmentID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "DepartmentID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[5].Connection = this.Connection;
-            this._commandCollection[5].CommandText = "SELECT     COUNT(Project_ID) AS projectcount\r\nFROM         Project\r\nWHERE     (St" +
-                "atusID = @StatusID) AND (DepartmentID = @DepartmentID) AND IsDeleted = 0";
+            this._commandCollection[5].CommandText = "SELECT     COUNT(Project_ID) AS projectcount\nFROM         Project\nWHERE     (Stat" +
+                "usID = @StatusID) AND (DepartmentID = @DepartmentID) AND IsDeleted = 0";
             this._commandCollection[5].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StatusID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "StatusID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[5].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@DepartmentID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "DepartmentID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -2406,33 +2406,33 @@ WHERE     (status.Status_ID = @Param1) AND Project.IsDeleted = 0";
             this._commandCollection[9].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Param1", global::System.Data.SqlDbType.Int, 2, global::System.Data.ParameterDirection.Input, 0, 0, "Status_ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[10] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[10].Connection = this.Connection;
-            this._commandCollection[10].CommandText = "SELECT\r\n\tProject.[Project Code],\r\n\tProject.Project_ID,\r\n\tProject.StartDate,\r\n\tPro" +
-                "ject.EndDate,\r\n\tProject.lat,\r\n\tProject.lon,\r\n\tProject.Address,\r\n\tProject.City,\r\n" +
-                "\tProject.Detailed, \r\n    Project.[Project Name],\r\n\tProject.Authority,\r\n\tDepartme" +
-                "nt.Name,\r\n\tProject.Description,\r\n\tstatus.Status,\r\n\tProject.Contact,\r\n\tProject.St" +
-                "atusID,\r\n\tProject.DepartmentID, \r\n    Project.ProjectManager,\r\n\tSectorList = sub" +
-                "string((select (\', \' + Name) from projectsector ps left join sector on ps.sector" +
-                "_id = sector.sector_id where ps.project_id = @ProjectID order by Name for XML pa" +
-                "th(\'\')), 3, 1000),\r\n\tProject.AddedAt,\r\n\tJobSheetSubmitted,\r\n\tFeeProposalSubmitte" +
-                "d,\r\n\tAcceptanceOfServiceSubmitted,\r\n\tProject.CountyId,\r\n\tISNULL(County.Name, \'\')" +
-                " AS County,\r\n\tProject.PlanningAuthorityId,\r\n\tISNULL(PlanningAuthority.Name, \'\') " +
-                "AS PlanningAuthority,\r\n\tIntroducer,\r\n                   InvoiceContact,\r\n       " +
-                "            ISNULL(CONVERT(VARCHAR(20), clientAddress.Id), \'\') As ClientAddressI" +
-                "d,\r\n\tclientAddress.CompanyName AS ClientCompanyName,\r\n\tclientAddress.AddressLine" +
-                "1 AS ClientAddressLine1,\r\n\tclientAddress.AddressLine2 AS ClientAddressLine2,\r\n\tc" +
-                "lientAddress.TownOrCity AS ClientTownOrCity,\r\n\tclientAddress.County As ClientCou" +
-                "nty,\r\n\tclientAddress.Postcode As ClientPostcode,\r\n                   ISNULL(CONV" +
-                "ERT(VARCHAR(20), invoiceAddress.Id),\'\') As InvoiceAddressId,\r\n\tinvoiceAddress.Co" +
-                "mpanyName AS InvoiceCompanyName,\r\n\tinvoiceAddress.AddressLine1 AS InvoiceAddress" +
-                "Line1,\r\n\tinvoiceAddress.AddressLine2 AS InvoiceAddressLine2,\r\n\tinvoiceAddress.To" +
-                "wnOrCity AS InvoiceTownOrCity,\r\n\tinvoiceAddress.County As InvoiceCounty,\r\n\tinvoi" +
-                "ceAddress.Postcode As InvoicePostcode\r\nFROM Project\r\nLEFT OUTER JOIN status ON P" +
-                "roject.StatusID = status.Status_ID\r\nLEFT OUTER JOIN Department ON Project.Depart" +
-                "mentID = Department.Dep_ID\r\nLEFT OUTER JOIN County ON Project.CountyId = County." +
-                "Id\r\nLEFT OUTER JOIN PlanningAuthority ON Project.PlanningAuthorityId = PlanningA" +
-                "uthority.Id\r\nLEFT OUTER JOIN Address clientAddress ON Project.ClientAddressId = " +
-                "clientAddress.Id\r\nLEFT OUTER JOIN Address invoiceAddress ON Project.InvoiceAddre" +
-                "ssId = invoiceAddress.Id\r\nWHERE Project.Project_ID = @ProjectID";
+            this._commandCollection[10].CommandText = "SELECT\n\tProject.[Project Code],\n\tProject.Project_ID,\n\tProject.StartDate,\n\tProject" +
+                ".EndDate,\n\tProject.lat,\n\tProject.lon,\n\tProject.Address,\n\tProject.City,\n\tProject." +
+                "Detailed, \n    Project.[Project Name],\n\tProject.Authority,\n\tDepartment.Name,\n\tPr" +
+                "oject.Description,\n\tstatus.Status,\n\tProject.Contact,\n\tProject.StatusID,\n\tProject" +
+                ".DepartmentID, \n    Project.ProjectManager,\n\tSectorList = substring((select (\', " +
+                "\' + Name) from projectsector ps left join sector on ps.sector_id = sector.sector" +
+                "_id where ps.project_id = @ProjectID order by Name for XML path(\'\')), 3, 1000),\n" +
+                "\tProject.AddedAt,\n\tJobSheetSubmitted,\n\tFeeProposalSubmitted,\n\tAcceptanceOfServic" +
+                "eSubmitted,\n\tProject.CountyId,\n\tISNULL(County.Name, \'\') AS County,\n\tProject.Plan" +
+                "ningAuthorityId,\n\tISNULL(PlanningAuthority.Name, \'\') AS PlanningAuthority, ISNUL" +
+                "L(Project.ProjectCity, \'\') AS ProjectCity,\n\tIntroducer,\n                   Invoi" +
+                "ceContact,\n                   ISNULL(CONVERT(VARCHAR(20), clientAddress.Id), \'\')" +
+                " As ClientAddressId,\n\tclientAddress.CompanyName AS ClientCompanyName,\n\tclientAdd" +
+                "ress.AddressLine1 AS ClientAddressLine1,\n\tclientAddress.AddressLine2 AS ClientAd" +
+                "dressLine2,\n\tclientAddress.TownOrCity AS ClientTownOrCity,\n\tclientAddress.County" +
+                " As ClientCounty,\n\tclientAddress.Postcode As ClientPostcode,\n                   " +
+                "ISNULL(CONVERT(VARCHAR(20), invoiceAddress.Id),\'\') As InvoiceAddressId,\n\tinvoice" +
+                "Address.CompanyName AS InvoiceCompanyName,\n\tinvoiceAddress.AddressLine1 AS Invoi" +
+                "ceAddressLine1,\n\tinvoiceAddress.AddressLine2 AS InvoiceAddressLine2,\n\tinvoiceAdd" +
+                "ress.TownOrCity AS InvoiceTownOrCity,\n\tinvoiceAddress.County As InvoiceCounty,\n\t" +
+                "invoiceAddress.Postcode As InvoicePostcode\nFROM Project\nLEFT OUTER JOIN status O" +
+                "N Project.StatusID = status.Status_ID\nLEFT OUTER JOIN Department ON Project.Depa" +
+                "rtmentID = Department.Dep_ID\nLEFT OUTER JOIN County ON Project.CountyId = County" +
+                ".Id\nLEFT OUTER JOIN PlanningAuthority ON Project.PlanningAuthorityId = PlanningA" +
+                "uthority.Id\nLEFT OUTER JOIN Address clientAddress ON Project.ClientAddressId = c" +
+                "lientAddress.Id\nLEFT OUTER JOIN Address invoiceAddress ON Project.InvoiceAddress" +
+                "Id = invoiceAddress.Id\nWHERE Project.Project_ID = @ProjectID";
             this._commandCollection[10].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[10].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@ProjectID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Project_ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11] = new global::System.Data.SqlClient.SqlCommand();
@@ -2465,10 +2465,10 @@ WHERE     (status.Status_ID = @Param1) AND Project.IsDeleted = 0";
             this._commandCollection[13].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@addedat", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 0, 0, "AddedAt", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[14] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[14].Connection = this.Connection;
-            this._commandCollection[14].CommandText = "INSERT INTO Project\r\n                      ([Project Code], StartDate, EndDate, S" +
-                "tatus, Contact, Address, City, Department, Description, lat, lon)\r\nVALUES     (@" +
-                "Param1,@startdate,@endDate,@satus,@contact,@address,@city,@department,@descripti" +
-                "on,@lat,@lon)";
+            this._commandCollection[14].CommandText = "INSERT INTO Project\n                      ([Project Code], StartDate, EndDate, St" +
+                "atus, Contact, Address, City, Department, Description, lat, lon)\nVALUES     (@Pa" +
+                "ram1,@startdate,@endDate,@satus,@contact,@address,@city,@department,@description" +
+                ",@lat,@lon)";
             this._commandCollection[14].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Param1", global::System.Data.SqlDbType.VarChar, 100, global::System.Data.ParameterDirection.Input, 0, 0, "Project Code", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@startdate", global::System.Data.SqlDbType.DateTime, 8, global::System.Data.ParameterDirection.Input, 0, 0, "StartDate", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -2483,13 +2483,13 @@ WHERE     (status.Status_ID = @Param1) AND Project.IsDeleted = 0";
             this._commandCollection[14].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@lon", global::System.Data.SqlDbType.Float, 8, global::System.Data.ParameterDirection.Input, 0, 0, "lon", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[15] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[15].Connection = this.Connection;
-            this._commandCollection[15].CommandText = "SELECT     COUNT(Project_ID) AS [project count]\r\nFROM         Project\r\nWHERE IsDe" +
-                "leted = 0";
+            this._commandCollection[15].CommandText = "SELECT     COUNT(Project_ID) AS [project count]\nFROM         Project\nWHERE IsDele" +
+                "ted = 0";
             this._commandCollection[15].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[16] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[16].Connection = this.Connection;
-            this._commandCollection[16].CommandText = "SELECT     COUNT(Project_ID) AS statusCount\r\nFROM         Project\r\nWHERE     (Sta" +
-                "tusID = @Status_ID) AND IsDeleted = 0";
+            this._commandCollection[16].CommandText = "SELECT     COUNT(Project_ID) AS statusCount\nFROM         Project\nWHERE     (Statu" +
+                "sID = @Status_ID) AND IsDeleted = 0";
             this._commandCollection[16].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[16].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Status_ID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "StatusID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[17] = new global::System.Data.SqlClient.SqlCommand();
@@ -2536,8 +2536,8 @@ WHERE     (Project_ID = @project_id)";
             this._commandCollection[19].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@project_id", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Project_ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._commandCollection[20] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[20].Connection = this.Connection;
-            this._commandCollection[20].CommandText = "UPDATE    Project\r\nSET              StatusID = @StatusID\r\nWHERE     (Project_ID =" +
-                " @project_id)";
+            this._commandCollection[20].CommandText = "UPDATE    Project\nSET              StatusID = @StatusID\nWHERE     (Project_ID = @" +
+                "project_id)";
             this._commandCollection[20].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[20].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@project_id", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "Project_ID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._commandCollection[20].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@StatusID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "StatusID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -3291,7 +3291,7 @@ WHERE     (Project_ID = @project_id)";
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT     Status_ID, Status\r\nFROM         status";
+            this._commandCollection[0].CommandText = "SELECT     Status_ID, Status\nFROM         status";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
@@ -3509,11 +3509,11 @@ WHERE     (Project_ID = @project_id)";
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT     Dep_ID, Name\r\nFROM         Department\r\nORDER BY Name";
+            this._commandCollection[0].CommandText = "SELECT     Dep_ID, Name\nFROM         Department\nORDER BY Name";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "SELECT      Name\r\nFROM         Department\r\nwhere Dep_ID=@Dep_ID";
+            this._commandCollection[1].CommandText = "SELECT      Name\nFROM         Department\nwhere Dep_ID=@Dep_ID";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Dep_ID", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 0, 0, "Dep_ID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }

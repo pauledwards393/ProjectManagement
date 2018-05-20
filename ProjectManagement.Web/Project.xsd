@@ -198,7 +198,7 @@ WHERE     (status.Status_ID = @Param1) AND Project.IsDeleted = 0</CommandText>
 	Project.CountyId,
 	ISNULL(County.Name, '') AS County,
 	Project.PlanningAuthorityId,
-	ISNULL(PlanningAuthority.Name, '') AS PlanningAuthority,
+	ISNULL(PlanningAuthority.Name, '') AS PlanningAuthority, ISNULL(Project.ProjectCity, '') AS ProjectCity,
 	Introducer,
                    InvoiceContact,
                    ISNULL(CONVERT(VARCHAR(20), clientAddress.Id), '') As ClientAddressId,

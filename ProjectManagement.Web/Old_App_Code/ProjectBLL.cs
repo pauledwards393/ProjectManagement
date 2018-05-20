@@ -218,14 +218,14 @@ public class ProjectBLL
 
                 // Project
                 updateQuery = "UPDATE Project " +
-                    "SET [Project Code] = @projectcode, [Project Name] = @projectname, StartDate = @startdate, EndDate = @enddate, Contact = @Contact, Address = @address, City = @city, Description = @description, Detailed = @detailed, " +
+                    "SET [Project Code] = @projectcode, [Project Name] = @projectname, StartDate = @startdate, EndDate = @enddate, Contact = @Contact, Description = @description, Detailed = @detailed, " +
                     "StatusID = @StatusID, ProjectManager = @ProjectManager, DepartmentID = @DepartmentID, CountyId = @CountyId, PlanningAuthorityId = @PlanningAuthorityId, " +
-                    "ClientAddressId = @ClientAddressId, InvoiceAddressId = @InvoiceAddressId, Introducer = @Introducer, InvoiceContact = @InvoiceContact " +
+                    "ClientAddressId = @ClientAddressId, InvoiceAddressId = @InvoiceAddressId, Introducer = @Introducer, InvoiceContact = @InvoiceContact, ProjectCity = @ProjectCity " +
                     "WHERE(Project_ID = @project_id)";
 
                 insertQuery = "INSERT INTO Project " +
-                    "([Project Code], [Project Name], StartDate, EndDate, Lat, Lon, Contact, Address, City, Description, Detailed, StatusID, ProjectManager, DepartmentID, CountyId, PlanningAuthorityId, ClientAddressId, InvoiceAddressId, Introducer, InvoiceContact) " +
-                    "VALUES (@projectcode, @projectname, @startdate, @enddate, @Latitude, @Longitude, @Contact, @address, @city, @description, @detailed, @StatusID, @ProjectManager, @DepartmentID, @CountyId, @PlanningAuthorityId, @ClientAddressId, @InvoiceAddressId, @Introducer, @InvoiceContact);" +
+                    "([Project Code], [Project Name], StartDate, EndDate, Lat, Lon, Contact, Description, Detailed, StatusID, ProjectManager, DepartmentID, CountyId, PlanningAuthorityId, ClientAddressId, InvoiceAddressId, Introducer, InvoiceContact, ProjectCity) " +
+                    "VALUES (@projectcode, @projectname, @startdate, @enddate, @Latitude, @Longitude, @Contact, @description, @detailed, @StatusID, @ProjectManager, @DepartmentID, @CountyId, @PlanningAuthorityId, @ClientAddressId, @InvoiceAddressId, @Introducer, @InvoiceContact, @ProjectCity);" +
                     "SELECT SCOPE_IDENTITY();";
 
                 cmd.Parameters.Clear();
@@ -234,8 +234,6 @@ public class ProjectBLL
                 cmd.Parameters.AddWithValue("@startdate", project.StartDate ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@enddate", project.EndDate ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@Contact", project.Contact);
-                cmd.Parameters.AddWithValue("@address", project.Address);
-                cmd.Parameters.AddWithValue("@city", project.City);
                 cmd.Parameters.AddWithValue("@description", project.Description);
                 cmd.Parameters.AddWithValue("@detailed", project.Detailed);
                 cmd.Parameters.AddWithValue("@StatusID", project.Status);
@@ -247,6 +245,7 @@ public class ProjectBLL
                 cmd.Parameters.AddWithValue("@InvoiceAddressId", invoiceAddressId);
                 cmd.Parameters.AddWithValue("@Introducer", project.Introducer);
                 cmd.Parameters.AddWithValue("@InvoiceContact", project.InvoiceContact);
+                cmd.Parameters.AddWithValue("@ProjectCity", string.IsNullOrEmpty(project.ProjectCity) ? (object)DBNull.Value : project.ProjectCity);
 
                 var projectId = project.Id;
 

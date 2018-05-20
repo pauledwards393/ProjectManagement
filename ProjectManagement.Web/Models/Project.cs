@@ -5,8 +5,6 @@ namespace ProjectManagement.Web.Models
 {
     public class Project
     {
-        public string Address { get; set; }
-        public string City { get; set; }
         public string Code { get; set; }
         public string Contact { get; set; }
         public Address ClientAddress { get; set; }
@@ -27,5 +25,6 @@ namespace ProjectManagement.Web.Models
         public List<int> Sectors { get; set; }
         public DateTime? StartDate { get; set; }
         public int Status { get; set; }
+        public string ProjectCity { get; set; }
     }
 }
