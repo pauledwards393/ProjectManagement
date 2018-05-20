@@ -724,6 +724,13 @@ public partial class Detail : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
             }
 
+            if (!row.IsStartDateNull())
+            {
+                var startDate = Convert.ToDateTime(row.StartDate).ToString("dd/MM/yyyy");
+                cmd.CommandText = String.Format(updateQuery, "G10", startDate);
+                cmd.ExecuteNonQuery();
+            }
+
             if (!row.IsStatusNull())
             {
                 cmd.CommandText = String.Format(updateQuery, "G11", row.Status.Trim());
