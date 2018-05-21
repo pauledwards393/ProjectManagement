@@ -170,52 +170,59 @@ public class ProjectBLL
                         "SELECT SCOPE_IDENTITY();";
 
                 // Add/update client address
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@AddressLine1", project.ClientAddress.AddressLine1);
-                cmd.Parameters.AddWithValue("@AddressLine2", project.ClientAddress.AddressLine2);
-                cmd.Parameters.AddWithValue("@CompanyName", project.ClientAddress.CompanyName);
-                cmd.Parameters.AddWithValue("@County", project.ClientAddress.County);
-                cmd.Parameters.AddWithValue("@Postcode", project.ClientAddress.Postcode);
-                cmd.Parameters.AddWithValue("@TownOrCity", project.ClientAddress.TownOrCity);
-
                 var clientAddressId = project.ClientAddress.Id;
 
-                if (project.ClientAddress.Id != null)
+                if (project.ClientAddress.IsValid)
                 {
-                    cmd.Parameters.AddWithValue("@AddressId", project.ClientAddress.Id);
-                    cmd.CommandText = updateQuery;
-                    cmd.ExecuteNonQuery();
-                } else
-                {
-                    cmd.CommandText = insertQuery;
-                    var response = cmd.ExecuteScalar();
-                    clientAddressId = Convert.ToInt32(response);
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@AddressLine1", project.ClientAddress.AddressLine1 ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@AddressLine2", project.ClientAddress.AddressLine2 ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CompanyName", project.ClientAddress.CompanyName ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@County", project.ClientAddress.County ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Postcode", project.ClientAddress.Postcode ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@TownOrCity", project.ClientAddress.TownOrCity ?? (object)DBNull.Value);
+
+                    if (project.ClientAddress.Id != null)
+                    {
+                        cmd.Parameters.AddWithValue("@AddressId", project.ClientAddress.Id);
+                        cmd.CommandText = updateQuery;
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        cmd.CommandText = insertQuery;
+                        var response = cmd.ExecuteScalar();
+                        clientAddressId = Convert.ToInt32(response);
+                    }
                 }
-
+ 
                 // Add/update invoice address
-                cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@AddressLine1", project.InvoiceAddress.AddressLine1);
-                cmd.Parameters.AddWithValue("@AddressLine2", project.InvoiceAddress.AddressLine2);
-                cmd.Parameters.AddWithValue("@CompanyName", project.InvoiceAddress.CompanyName);
-                cmd.Parameters.AddWithValue("@County", project.InvoiceAddress.County);
-                cmd.Parameters.AddWithValue("@Postcode", project.InvoiceAddress.Postcode);
-                cmd.Parameters.AddWithValue("@TownOrCity", project.InvoiceAddress.TownOrCity);
-
                 var invoiceAddressId = project.InvoiceAddress.Id;
 
-                if (project.InvoiceAddress.Id != null)
+                if (project.InvoiceAddress.IsValid)
                 {
-                    cmd.Parameters.AddWithValue("@AddressId", project.InvoiceAddress.Id);
-                    cmd.CommandText = updateQuery;
-                    cmd.ExecuteNonQuery();
-                }
-                else
-                {
-                    cmd.CommandText = insertQuery;
-                    var response = cmd.ExecuteScalar();
-                    invoiceAddressId = Convert.ToInt32(response);
-                }
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@AddressLine1", project.InvoiceAddress.AddressLine1 ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@AddressLine2", project.InvoiceAddress.AddressLine2 ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@CompanyName", project.InvoiceAddress.CompanyName ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@County", project.InvoiceAddress.County ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Postcode", project.InvoiceAddress.Postcode ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@TownOrCity", project.InvoiceAddress.TownOrCity ?? (object)DBNull.Value);
 
+                    if (project.InvoiceAddress.Id != null)
+                    {
+                        cmd.Parameters.AddWithValue("@AddressId", project.InvoiceAddress.Id);
+                        cmd.CommandText = updateQuery;
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        cmd.CommandText = insertQuery;
+                        var response = cmd.ExecuteScalar();
+                        invoiceAddressId = Convert.ToInt32(response);
+                    }
+                }
+         
                 // Project
                 updateQuery = "UPDATE Project " +
                     "SET [Project Code] = @projectcode, [Project Name] = @projectname, StartDate = @startdate, EndDate = @enddate, Contact = @Contact, Description = @description, Detailed = @detailed, " +
@@ -241,8 +248,8 @@ public class ProjectBLL
                 cmd.Parameters.AddWithValue("@DepartmentID", project.Department);
                 cmd.Parameters.AddWithValue("@CountyId", project.CountyId ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@PlanningAuthorityId", project.PlanningAuthorityId ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@ClientAddressId", clientAddressId);
-                cmd.Parameters.AddWithValue("@InvoiceAddressId", invoiceAddressId);
+                cmd.Parameters.AddWithValue("@ClientAddressId", clientAddressId ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@InvoiceAddressId", invoiceAddressId ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@Introducer", project.Introducer);
                 cmd.Parameters.AddWithValue("@InvoiceContact", project.InvoiceContact);
                 cmd.Parameters.AddWithValue("@ProjectCity", string.IsNullOrEmpty(project.ProjectCity) ? (object)DBNull.Value : project.ProjectCity);

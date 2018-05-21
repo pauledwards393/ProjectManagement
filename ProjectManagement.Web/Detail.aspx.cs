@@ -187,6 +187,12 @@ public partial class Detail : System.Web.UI.Page
         return ((TextBox)DetailsView2.FindControl(name)).Text.Trim();
     }
 
+    private string GetAddressField(string name)
+    {
+        var value = ((TextBox)DetailsView2.FindControl(name)).Text.Trim();
+        return string.IsNullOrWhiteSpace(value) ? null : value;
+    }
+
     private ProjectManagement.Web.Models.Project PopulateProject()
     {
         Label LblId = (Label)DetailsView2.FindControl("LBLProjectID");
@@ -206,26 +212,26 @@ public partial class Detail : System.Web.UI.Page
         var clientAddressId = GetLabelFieldValue("LblClientAddressId");
         var clientAddress = new ProjectManagement.Web.Models.Address
         {
-            AddressLine1 = GetTextFieldValue("TxtClientAddressLine1"),
-            AddressLine2 = GetTextFieldValue("TxtClientAddressLine2"),
-            CompanyName = GetTextFieldValue("TxtClientCompanyName"),
-            County = GetTextFieldValue("TxtClientCounty"),
+            AddressLine1 = GetAddressField("TxtClientAddressLine1"),
+            AddressLine2 = GetAddressField("TxtClientAddressLine2"),
+            CompanyName = GetAddressField("TxtClientCompanyName"),
+            County = GetAddressField("TxtClientCounty"),
             Id = !string.IsNullOrWhiteSpace(clientAddressId) ? int.Parse(clientAddressId) : (int?)null,
-            Postcode = GetTextFieldValue("TxtClientPostcode"),
-            TownOrCity = GetTextFieldValue("TxtClientTownOrCity")
+            Postcode = GetAddressField("TxtClientPostcode"),
+            TownOrCity = GetAddressField("TxtClientTownOrCity")
         };
 
         // Invoice address
         var invoiceAddressId = GetLabelFieldValue("LblInvoiceAddressId");
         var invoiceAddress = new ProjectManagement.Web.Models.Address
         {
-            AddressLine1 = GetTextFieldValue("TxtInvoiceAddressLine1"),
-            AddressLine2 = GetTextFieldValue("TxtInvoiceAddressLine2"),
-            CompanyName = GetTextFieldValue("TxtInvoiceCompanyName"),
-            County = GetTextFieldValue("TxtInvoiceCounty"),
+            AddressLine1 = GetAddressField("TxtInvoiceAddressLine1"),
+            AddressLine2 = GetAddressField("TxtInvoiceAddressLine2"),
+            CompanyName = GetAddressField("TxtInvoiceCompanyName"),
+            County = GetAddressField("TxtInvoiceCounty"),
             Id = !string.IsNullOrWhiteSpace(invoiceAddressId) ? int.Parse(invoiceAddressId) : (int?)null,
-            Postcode = GetTextFieldValue("TxtInvoicePostcode"),
-            TownOrCity = GetTextFieldValue("TxtInvoiceTownOrCity")
+            Postcode = GetAddressField("TxtInvoicePostcode"),
+            TownOrCity = GetAddressField("TxtInvoiceTownOrCity")
         };
 
         // Project

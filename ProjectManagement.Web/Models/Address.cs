@@ -11,5 +11,19 @@ namespace ProjectManagement.Web.Models
         public int? Id { get; set; }
         public string Postcode { get; set; }
         public string TownOrCity { get; set; }
+
+        public bool IsValid
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(AddressLine1) ||
+                    !string.IsNullOrWhiteSpace(AddressLine2) ||
+                    !string.IsNullOrWhiteSpace(CompanyName) ||
+                    !string.IsNullOrWhiteSpace(County) ||
+                    !string.IsNullOrWhiteSpace(Postcode) ||
+                    !string.IsNullOrWhiteSpace(TownOrCity) ||
+                    Id != null;
+            }
+        }
     }
 }
