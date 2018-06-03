@@ -114,12 +114,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Emails.xml" />
     <Content Include="bin\AjaxControlToolkit.dll" />
     <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
     <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
     <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
     <Content Include="bin\ProjectManagement.Web.dll" />
     <Content Include="bin\ProjectManagement.Web.pdb" />
     <Content Include="bin\roslyn\csc.exe" />
@@ -141,23 +140,14 @@
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
     <Content Include="bin\System.Net.Http.Formatting.dll" />
-    <Content Include="bin\System.Net.Http.Formatting.xml" />
     <Content Include="bin\System.Web.Helpers.dll" />
-    <Content Include="bin\System.Web.Helpers.xml" />
     <Content Include="bin\System.Web.Http.dll" />
     <Content Include="bin\System.Web.Http.WebHost.dll" />
-    <Content Include="bin\System.Web.Http.WebHost.xml" />
-    <Content Include="bin\System.Web.Http.xml" />
     <Content Include="bin\System.Web.Mvc.dll" />
-    <Content Include="bin\System.Web.Mvc.xml" />
     <Content Include="bin\System.Web.Razor.dll" />
-    <Content Include="bin\System.Web.Razor.xml" />
     <Content Include="bin\System.Web.Webpages.Deployment.dll" />
-    <Content Include="bin\System.Web.Webpages.Deployment.xml" />
     <Content Include="bin\System.Web.Webpages.dll" />
     <Content Include="bin\System.Web.Webpages.Razor.dll" />
-    <Content Include="bin\System.Web.Webpages.Razor.xml" />
-    <Content Include="bin\System.Web.Webpages.xml" />
     <Content Include="count.aspx" />
     <Content Include="Detail.aspx" />
     <Content Include="GGIcon\Constructed%28FC%29\air-noise.png" />
@@ -415,7 +405,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="obj\" />
   </ItemGroup>
@@ -445,7 +434,10 @@
     <Content Include="Project.xss">
       <DependentUpon>Project.xsd</DependentUpon>
     </Content>
-    <Content Include="Web.Config" />
+    <Content Include="Web.Config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.Config">
       <DependentUpon>Web.Config</DependentUpon>
     </None>
