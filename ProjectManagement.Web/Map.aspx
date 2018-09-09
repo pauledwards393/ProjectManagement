@@ -135,11 +135,20 @@
                             var searchBox = new google.maps.places.SearchBox(input, {
                                 bounds: defaultBounds
                             });
- 
+                            console.log(window.location.pathname);
                             var rightclicklistener = google.maps.event.addListener(map, "rightclick", function (event) {
                                 //google.maps.event.removeListener(rightclicklistener);
                                 if (confirm("Would you like to create a project here?")) {
-                                    var url = window.location.pathname.replace(/map/i, 'detail');
+                                    var parts = window.location.pathname.split('/');
+
+                                    var url = '';
+
+                                    for (var i = 0; i < parts.length; i++) {
+                                        if (!parts[i] || parts[i].toLowerCase() === 'map.aspx') continue;
+                                        url += '/' + parts[i];
+                                    }
+                               
+                                    url += '/detail.aspx'; // pathname.indexOf('pathname.replace(/map/i, 'detail');
                                     var querystring = '?lat=' + event.latLng.lat() + '&lng=' + event.latLng.lng();
                                     window.location.href = url + querystring;
                                 }
