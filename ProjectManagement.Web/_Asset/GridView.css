@@ -99,8 +99,10 @@
 
 /* Details view */
 
-table.edit .readonly {
-    color: #fff;
+table.edit td.mandatory::after,
+table.insert td.mandatory::after {
+    content: '*';
+    margin-left: 0.25em;
 }
 
 /* Modal */
@@ -200,5 +202,32 @@ input[type=file] {
 
 .details-validation-summary {
     padding: 8px 5px 18px 5px;
+    font-style: italic;
+}
+
+#DetailsView2 {
+    border: solid 1px #ddd;
+    color: #333;
+}
+
+    #DetailsView2 tr:nth-child(odd) {
+        background-color: #f6f9fc;
+    }
+
+#DetailsView2 > tbody > tr > td {
+    padding: 0.5em;
+}
+
+#DetailsView2 input[type=text],
+#DetailsView2 select,
+#DetailsView2 textarea,
+#DetailsView2 span {
+    display: inline-block;
+    width: 300px;
+    padding: 0.25em;
+}
+
+#DetailsView2 span:empty {
+    height: 1em;
 }
 

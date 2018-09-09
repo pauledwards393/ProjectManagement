@@ -18,7 +18,7 @@ public partial class Map : System.Web.UI.Page
     private Int32 total = 0;
     protected void Page_Load(object sender, EventArgs e)
     {
-        ScriptManager1.RegisterAsyncPostBackControl(BTNaddnew);
+        // ScriptManager1.RegisterAsyncPostBackControl(BTNaddnew);
 
         if (!IsPostBack)
             BindingData();
@@ -42,10 +42,10 @@ public partial class Map : System.Web.UI.Page
         }
     }
 
-    public string GetIconPath()
-    {
-        return "GGIcon" + "/" + Dropdown_Status.SelectedItem.Text.Trim() + "/" + DropDownList_department.SelectedItem.Text.Trim() + ".png";
-    }
+    //public string GetIconPath()
+    //{
+    //    return "GGIcon" + "/" + Dropdown_Status.SelectedItem.Text.Trim() + "/" + DropDownList_department.SelectedItem.Text.Trim() + ".png";
+    //}
 
     public void BindingData()
     {
@@ -154,21 +154,21 @@ public partial class Map : System.Web.UI.Page
         }
     }
 
-    protected void BTNaddnew_Click(object sender, EventArgs e)
-    {
+    //protected void BTNaddnew_Click(object sender, EventArgs e)
+    //{
 
-        double lat = double.Parse(this._TxtLat.Value.ToString());
-        double lng = double.Parse(this._TxtLng.Value.ToString());
-        string project_code = this.TxtProjectCode.Text;
-        string project_name = this.TextProjectName.Text;
+    //    double lat = double.Parse(this._TxtLat.Value.ToString());
+    //    double lng = double.Parse(this._TxtLng.Value.ToString());
+    //    string project_code = this.TxtProjectCode.Text;
+    //    string project_name = this.TextProjectName.Text;
 
-        int row = _projectbll.InsertBasics(project_code, int.Parse(Dropdown_Status.SelectedValue),
-                                 int.Parse(DropDownList_department.SelectedValue),
-                                 lat, lng,
-                                 project_name);
-        UpdatePanel1.Update();
-        BindingData();
-    }
+    //    int row = _projectbll.InsertBasics(project_code, int.Parse(Dropdown_Status.SelectedValue),
+    //                             int.Parse(DropDownList_department.SelectedValue),
+    //                             lat, lng,
+    //                             project_name);
+    //    UpdatePanel1.Update();
+    //    BindingData();
+    //}
 
     protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
     {

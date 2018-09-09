@@ -39,51 +39,6 @@ public partial class Map {
     protected global::System.Web.UI.WebControls.Label DeleteConfirmation;
     
     /// <summary>
-    /// _TxtLat control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.HiddenField _TxtLat;
-    
-    /// <summary>
-    /// _TxtLng control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.HiddenField _TxtLng;
-    
-    /// <summary>
-    /// TextProjectName control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox TextProjectName;
-    
-    /// <summary>
-    /// TxtProjectCode control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.TextBox TxtProjectCode;
-    
-    /// <summary>
-    /// Dropdown_Status control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.DropDownList Dropdown_Status;
-    
-    /// <summary>
     /// SqlDataSource3 control.
     /// </summary>
     /// <remarks>
@@ -91,15 +46,6 @@ public partial class Map {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource3;
-    
-    /// <summary>
-    /// DropDownList_department control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.DropDownList DropDownList_department;
     
     /// <summary>
     /// SqlDataSource4 control.
@@ -181,15 +127,6 @@ public partial class Map {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.GridView GridView1;
-    
-    /// <summary>
-    /// BTNaddnew control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Button BTNaddnew;
     
     /// <summary>
     /// GridViewControlExtender1 control.

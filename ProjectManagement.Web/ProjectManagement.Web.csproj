@@ -23,6 +23,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -113,12 +114,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Emails.xml" />
     <Content Include="bin\AjaxControlToolkit.dll" />
     <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
     <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
     <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
     <Content Include="bin\ProjectManagement.Web.dll" />
     <Content Include="bin\ProjectManagement.Web.pdb" />
     <Content Include="bin\roslyn\csc.exe" />
@@ -140,32 +140,25 @@
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
     <Content Include="bin\System.Net.Http.Formatting.dll" />
-    <Content Include="bin\System.Net.Http.Formatting.xml" />
     <Content Include="bin\System.Web.Helpers.dll" />
-    <Content Include="bin\System.Web.Helpers.xml" />
     <Content Include="bin\System.Web.Http.dll" />
     <Content Include="bin\System.Web.Http.WebHost.dll" />
-    <Content Include="bin\System.Web.Http.WebHost.xml" />
-    <Content Include="bin\System.Web.Http.xml" />
     <Content Include="bin\System.Web.Mvc.dll" />
-    <Content Include="bin\System.Web.Mvc.xml" />
     <Content Include="bin\System.Web.Razor.dll" />
-    <Content Include="bin\System.Web.Razor.xml" />
     <Content Include="bin\System.Web.Webpages.Deployment.dll" />
-    <Content Include="bin\System.Web.Webpages.Deployment.xml" />
     <Content Include="bin\System.Web.Webpages.dll" />
     <Content Include="bin\System.Web.Webpages.Razor.dll" />
-    <Content Include="bin\System.Web.Webpages.Razor.xml" />
-    <Content Include="bin\System.Web.Webpages.xml" />
     <Content Include="count.aspx" />
     <Content Include="Detail.aspx" />
     <Content Include="GGIcon\Constructed%28FC%29\air-noise.png" />
+    <Content Include="GGIcon\Constructed%28FC%29\air.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Birmingham.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Blank.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Bristol.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Cardiff.png" />
     <Content Include="GGIcon\Constructed%28FC%29\design 3.png" />
     <Content Include="GGIcon\Constructed%28FC%29\design AB.png" />
+    <Content Include="GGIcon\Constructed%28FC%29\design SW.png" />
     <Content Include="GGIcon\Constructed%28FC%29\design TPM.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Edinburgh.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Environmental.png" />
@@ -178,6 +171,7 @@
     <Content Include="GGIcon\Constructed%28FC%29\London PZ.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Modelling.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Newcastle.png" />
+    <Content Include="GGIcon\Constructed%28FC%29\noise.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Planning 1.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Planning 2.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Planning 3.png" />
@@ -188,11 +182,13 @@
     <Content Include="GGIcon\Constructed%28FC%29\Road Safety.png" />
     <Content Include="GGIcon\Constructed%28FC%29\Topographical.png" />
     <Content Include="GGIcon\Constructed%28PC%29\air-noise.png" />
+    <Content Include="GGIcon\Constructed%28PC%29\air.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Birmingham.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Bristol.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Cardiff.png" />
     <Content Include="GGIcon\Constructed%28PC%29\design 3.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Design AB.png" />
+    <Content Include="GGIcon\Constructed%28PC%29\design SW.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Design TPM.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Edinburgh.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Environmental.png" />
@@ -205,6 +201,7 @@
     <Content Include="GGIcon\Constructed%28PC%29\London PZ.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Modelling.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Newcastle.png" />
+    <Content Include="GGIcon\Constructed%28PC%29\noise.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Planning 1.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Planning 2.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Planning 3.png" />
@@ -215,11 +212,14 @@
     <Content Include="GGIcon\Constructed%28PC%29\Road Safety.png" />
     <Content Include="GGIcon\Constructed%28PC%29\Topographical.png" />
     <Content Include="GGIcon\dead\air-noise.png" />
+    <Content Include="GGIcon\dead\air.png" />
     <Content Include="GGIcon\dead\Birmingham.png" />
+    <Content Include="GGIcon\dead\Blank.png" />
     <Content Include="GGIcon\dead\Bristol.png" />
     <Content Include="GGIcon\dead\Cardiff.png" />
     <Content Include="GGIcon\dead\Design 3.png" />
     <Content Include="GGIcon\dead\Design AB.png" />
+    <Content Include="GGIcon\dead\Design SW.png" />
     <Content Include="GGIcon\dead\Design TPM.png" />
     <Content Include="GGIcon\dead\Edinburgh.png" />
     <Content Include="GGIcon\dead\Environmental.png" />
@@ -234,6 +234,7 @@
     <Content Include="GGIcon\dead\London PZ.png" />
     <Content Include="GGIcon\dead\Modelling.png" />
     <Content Include="GGIcon\dead\Newcastle.png" />
+    <Content Include="GGIcon\dead\noise.png" />
     <Content Include="GGIcon\dead\Planning 1.png" />
     <Content Include="GGIcon\dead\Planning 2.png" />
     <Content Include="GGIcon\dead\Planning 3.png" />
@@ -244,11 +245,13 @@
     <Content Include="GGIcon\dead\Road Safety.png" />
     <Content Include="GGIcon\dead\Topographical.png" />
     <Content Include="GGIcon\live\air-noise.png" />
+    <Content Include="GGIcon\live\air.png" />
     <Content Include="GGIcon\live\Birmingham.png" />
     <Content Include="GGIcon\live\Bristol.png" />
     <Content Include="GGIcon\live\Cardiff.png" />
     <Content Include="GGIcon\live\design 3.png" />
     <Content Include="GGIcon\live\Design AB.png" />
+    <Content Include="GGIcon\live\Design SW.png" />
     <Content Include="GGIcon\live\Design TPM.png" />
     <Content Include="GGIcon\live\Edinburgh.png" />
     <Content Include="GGIcon\live\Environmental.png" />
@@ -263,6 +266,7 @@
     <Content Include="GGIcon\live\London PZ.png" />
     <Content Include="GGIcon\live\Modelling.png" />
     <Content Include="GGIcon\live\Newcastle.png" />
+    <Content Include="GGIcon\live\noise.png" />
     <Content Include="GGIcon\live\Planning 1.png" />
     <Content Include="GGIcon\live\Planning 2.png" />
     <Content Include="GGIcon\live\Planning 3.png" />
@@ -273,11 +277,14 @@
     <Content Include="GGIcon\live\Road Safety.png" />
     <Content Include="GGIcon\live\Topographical.png" />
     <Content Include="GGIcon\SPEC\air-noise.png" />
+    <Content Include="GGIcon\SPEC\air.png" />
     <Content Include="GGIcon\SPEC\Birmingham.png" />
+    <Content Include="GGIcon\SPEC\Blank.png" />
     <Content Include="GGIcon\SPEC\Bristol.png" />
     <Content Include="GGIcon\SPEC\Cardiff.png" />
     <Content Include="GGIcon\SPEC\design 3.png" />
     <Content Include="GGIcon\SPEC\design AB.png" />
+    <Content Include="GGIcon\SPEC\Design SW.png" />
     <Content Include="GGIcon\SPEC\design TPM.png" />
     <Content Include="GGIcon\SPEC\Edinburgh.png" />
     <Content Include="GGIcon\SPEC\Environmental.png" />
@@ -292,6 +299,7 @@
     <Content Include="GGIcon\SPEC\London PZ.PNG" />
     <Content Include="GGIcon\SPEC\Modelling.png" />
     <Content Include="GGIcon\SPEC\Newcastle.png" />
+    <Content Include="GGIcon\SPEC\noise.png" />
     <Content Include="GGIcon\SPEC\planning 1.png" />
     <Content Include="GGIcon\SPEC\planning 2.png" />
     <Content Include="GGIcon\SPEC\planning 3.png" />
@@ -371,6 +379,11 @@
     <Compile Include="MasterPage2.master.designer.cs">
       <DependentUpon>MasterPage2.master</DependentUpon>
     </Compile>
+    <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\County.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\PlanningAuthority.cs" />
+    <Compile Include="Models\Project.cs" />
     <Compile Include="Old_App_Code\DepartmentBLL.cs" />
     <Compile Include="Old_App_Code\EmailService.cs" />
     <Compile Include="Old_App_Code\Postcode.cs" />
@@ -388,15 +401,16 @@
       <DependentUpon>Project.xsd</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\CountyProvider.cs" />
+    <Compile Include="Providers\DepartmentProvider.cs" />
+    <Compile Include="Providers\PlanningAuthorityProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
     <Folder Include="obj\" />
   </ItemGroup>
   <ItemGroup>
@@ -411,12 +425,12 @@
     <Content Include="bin\roslyn\vbc.exe.config" />
     <Content Include="bin\roslyn\vbc.rsp" />
     <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
-    <Content Include=".gitignore" />
     <Content Include="JobSheet.xls" />
     <Content Include="JobSheetDesign.xls" />
     <Content Include="MasterPage2.master" />
     <Content Include="newJobsheet1.xls" />
     <Content Include="newJobsheet_design.xls" />
+    <Content Include="JobSheet_2017-08-08.xls" />
     <None Include="Project.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>Project.Designer.cs</LastGenOutput>
@@ -425,7 +439,10 @@
     <Content Include="Project.xss">
       <DependentUpon>Project.xsd</DependentUpon>
     </Content>
-    <Content Include="Web.Config" />
+    <Content Include="Web.Config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.Config">
       <DependentUpon>Web.Config</DependentUpon>
     </None>

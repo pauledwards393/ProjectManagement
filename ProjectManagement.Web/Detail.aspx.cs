@@ -17,6 +17,9 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Table = iTextSharp.text.Table;
 using ProjectManagement.Web;
+using ProjectManagement.Web.Providers;
+using Newtonsoft.Json;
+using System.Linq;
 
 public partial class Detail : System.Web.UI.Page
 {
@@ -35,28 +38,32 @@ public partial class Detail : System.Web.UI.Page
             ViewState["HasJobSheet"] = value;
         }
     }
-
+    
     protected void Page_Load(object sender, EventArgs e)
     {
         ScriptManager1.RegisterPostBackControl(Button1);
 
         if (!IsPostBack)
         {
-            if (!string.IsNullOrEmpty(Request.Params["Mode"]))
+            var mode = Request.Params["Mode"];
+            
+            switch (mode)
             {
-                if (Request.Params["Mode"] == "View")
-                {
+                case "View":
                     DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
-                }
-                else if (Request.Params["Mode"] == "Entry")
-                {
+                    break;
+                case "Entry":
                     DetailsView2.ChangeMode(DetailsViewMode.Edit);
-                }
+                    break;
+                default:
+                    DetailsView2.ChangeMode(DetailsViewMode.Insert);
+                    DetailsView2.FooterRow.Visible = false;
+                    break;
             }
 
             DetailsView2Databinding();
         }
-
+        
         lblEmailSuccess.Visible = lblSaveError.Visible = false;        
     }
 
@@ -73,19 +80,32 @@ public partial class Detail : System.Web.UI.Page
             GenerateJobSheet(p);
 
             Dictionary<String, Int16> FieldColumns = new Dictionary<String, Int16>();
-            FieldColumns.Add( "AddedAt", 17 );
-            FieldColumns.Add( "JobSheetSubmitted", 18 );
-            FieldColumns.Add( "FeeProposalSubmitted", 19 );
-            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 20 );
+            FieldColumns.Add( "AddedAt", 33 );
+            FieldColumns.Add( "JobSheetSubmitted", 34 );
+            FieldColumns.Add( "FeeProposalSubmitted", 35 );
+            FieldColumns.Add( "AcceptanceOfServiceSubmitted", 36 );
 
             foreach (KeyValuePair<String, Int16> item in FieldColumns)
                 DetailsView2.Fields[item.Value].Visible = p.Rows[0][item.Key] != DBNull.Value;
 
             DetailsView2.DataBind();
-            DetailsView2.CssClass = DetailsView2.CurrentMode.ToString().ToLower();
 
             HasJobSheet = p.Rows[0]["JobSheetSubmitted"] != DBNull.Value;
             JobSheetMandatoryMarker.Visible = !HasJobSheet;
+        }
+
+        DetailsView2.CssClass = DetailsView2.CurrentMode.ToString().ToLower();
+    }
+
+    protected void DetailsView2_DataBound(object sender, EventArgs e)
+    {
+        if (DetailsView2.CurrentMode == DetailsViewMode.Insert)
+        {
+            var lblLat = (Label)DetailsView2.FindControl("LblLat");
+            var lblLng = (Label)DetailsView2.FindControl("LblLng");
+
+            lblLat.Text = Request.Params["lat"];
+            lblLng.Text = Request.Params["lng"];
         }
     }
 
@@ -149,72 +169,177 @@ public partial class Detail : System.Web.UI.Page
         }
     }
 
-    protected void DetailsView2_ItemUpdating(object sender, DetailsViewUpdateEventArgs e)
+    protected void DepartmentDataSourceEdit_Selecting(object sender, ObjectDataSourceSelectingEventArgs e)
     {
-        string project_id = ((Label)DetailsView2.FindControl("LBLProjectID")).Text;
-        string projectCode = ((TextBox)DetailsView2.FindControl("TxtProjectCode")).Text.Trim();
+        var projectId = Request.Params["ProjectID"];
+        var param = !string.IsNullOrEmpty(projectId) ? Convert.ToInt32(projectId) : 0;
 
-        if (!projectBLL.ValidateProjectCode(int.Parse(project_id), projectCode))
-        {
-            lblSaveError.Visible = true;
-            return;
-        }
+        e.InputParameters.Add("projectId", param);
+    }
 
+    private string GetLabelFieldValue(string name)
+    {
+        return ((Label)DetailsView2.FindControl(name)).Text.Trim();
+    }
+
+    private string GetTextFieldValue(string name)
+    {
+        return ((TextBox)DetailsView2.FindControl(name)).Text.Trim();
+    }
+
+    private string GetAddressField(string name)
+    {
+        var value = ((TextBox)DetailsView2.FindControl(name)).Text.Trim();
+        return string.IsNullOrWhiteSpace(value) ? null : value;
+    }
+
+    private ProjectManagement.Web.Models.Project PopulateProject()
+    {
+        Label LblId = (Label)DetailsView2.FindControl("LBLProjectID");
         TextBox TxtProjectname = (TextBox)DetailsView2.FindControl("TxtPorjectname");
-        TextBox TxtStartDate = (TextBox)DetailsView2.FindControl("TxtStartdate");
-        TextBox TxtEndDate = (TextBox)DetailsView2.FindControl("TxtEndDate");
         DropDownList DDLstatus = (DropDownList)DetailsView2.FindControl("DDlstatus");
         DropDownList DDLDepartment = (DropDownList)DetailsView2.FindControl("DDLDepartment");
-        System.Web.UI.WebControls.ListBox DDLSector = (System.Web.UI.WebControls.ListBox)DetailsView2.FindControl("DDLSector");
         TextBox TxtContact = (TextBox)DetailsView2.FindControl("TxtContact");
-        TextBox TxtAddress = (TextBox)DetailsView2.FindControl("TxtAddress");
-        TextBox TxtCity = (TextBox)DetailsView2.FindControl("TxtCity");
-        TextBox TxtAuthority = (TextBox)DetailsView2.FindControl("TxtAuthority");
         CheckBox ChkDetailed = (CheckBox)DetailsView2.FindControl("ChkDetailed");
-        TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");        
-        string ProjectManager = ((TextBox)DetailsView2.FindControl("TxtManager")).Text;
+        TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");
+        TextBox TxtProjectManager = (TextBox)DetailsView2.FindControl("TxtManager");
+        DropDownList DDLCounty = (DropDownList)DetailsView2.FindControl("DDLCounty");
+        TextBox TxtPlanningAuthority = (TextBox)DetailsView2.FindControl("txtPlanningAuthority");
+        Label LblLat = (Label)DetailsView2.FindControl("LblLat");
+        Label LblLng = (Label)DetailsView2.FindControl("LblLng");
 
-        Nullable<DateTime> startDate = null;
-        Nullable<DateTime> endDate = null;
+        // Client address
+        var clientAddressId = GetLabelFieldValue("LblClientAddressId");
+        var clientAddress = new ProjectManagement.Web.Models.Address
+        {
+            AddressLine1 = GetAddressField("TxtClientAddressLine1"),
+            AddressLine2 = GetAddressField("TxtClientAddressLine2"),
+            CompanyName = GetAddressField("TxtClientCompanyName"),
+            County = GetAddressField("TxtClientCounty"),
+            Id = !string.IsNullOrWhiteSpace(clientAddressId) ? int.Parse(clientAddressId) : (int?)null,
+            Postcode = GetAddressField("TxtClientPostcode"),
+            TownOrCity = GetAddressField("TxtClientTownOrCity")
+        };
+
+        // Invoice address
+        var invoiceAddressId = GetLabelFieldValue("LblInvoiceAddressId");
+        var invoiceAddress = new ProjectManagement.Web.Models.Address
+        {
+            AddressLine1 = GetAddressField("TxtInvoiceAddressLine1"),
+            AddressLine2 = GetAddressField("TxtInvoiceAddressLine2"),
+            CompanyName = GetAddressField("TxtInvoiceCompanyName"),
+            County = GetAddressField("TxtInvoiceCounty"),
+            Id = !string.IsNullOrWhiteSpace(invoiceAddressId) ? int.Parse(invoiceAddressId) : (int?)null,
+            Postcode = GetAddressField("TxtInvoicePostcode"),
+            TownOrCity = GetAddressField("TxtInvoiceTownOrCity")
+        };
+
+        // Project
+        var project = new ProjectManagement.Web.Models.Project
+        {
+            ClientAddress = clientAddress, // New
+            Code = GetTextFieldValue("TxtProjectCode"),
+            Contact = TxtContact.Text,
+            CountyId = !string.IsNullOrWhiteSpace(DDLCounty.SelectedValue) ? int.Parse(DDLCounty.SelectedValue) : (int?)null,
+            Department = int.Parse(DDLDepartment.SelectedValue),
+            Description = TxtDescription.Text,
+            Detailed = ChkDetailed.Checked,
+            Id = !string.IsNullOrWhiteSpace(LblId.Text) ? int.Parse(LblId.Text) : (int?)null,
+            Introducer = GetTextFieldValue("TxtIntroducer"), // New
+            InvoiceAddress = invoiceAddress, // New
+            InvoiceContact = GetTextFieldValue("TxtInvoiceContact"), // New
+            Latitude = !string.IsNullOrWhiteSpace(LblLat.Text) ? double.Parse(LblLat.Text) : (double?)null,
+            Longitude = !string.IsNullOrWhiteSpace(LblLng.Text) ? double.Parse(LblLng.Text) : (double?)null,
+            Name = TxtProjectname.Text,
+            PlanningAuthorityId = !string.IsNullOrWhiteSpace(TxtPlanningAuthority.Text) ? int.Parse(TxtPlanningAuthority.Text) : (int?)null,
+            ProjectCity = GetTextFieldValue("TxtProjectCity"),
+            ProjectManager = TxtProjectManager.Text,
+            Status = int.Parse(DDLstatus.SelectedValue),
+        };
+
+        TextBox TxtStartDate = (TextBox)DetailsView2.FindControl("TxtStartdate");
+        TextBox TxtEndDate = (TextBox)DetailsView2.FindControl("TxtEndDate");
+
         if (!string.IsNullOrEmpty(TxtStartDate.Text))
         {
             string[] date = TxtStartDate.Text.Split('/');
-            startDate = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]));
+            project.StartDate = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]));
 
         }
         if (!string.IsNullOrEmpty(TxtEndDate.Text))
         {
             string[] date = TxtEndDate.Text.Split('/');
-            endDate = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]));
+            project.EndDate = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]));
         }
 
-        string selectedSectors = "";
-        int[] selectedIndices = DDLSector.GetSelectedIndices();
-        foreach (int selectedIndex in selectedIndices)
+        ListBox DDLSector = (ListBox)DetailsView2.FindControl("DDLSector");
+
+        project.Sectors = DDLSector
+            .GetSelectedIndices()
+            .Select(index => Convert.ToInt32(DDLSector.Items[index].Value))
+            .ToList();
+
+        return project;
+    }
+
+    protected void DetailsView2_ItemInserting(object sender, DetailsViewInsertEventArgs e)
+    {
+        var project = PopulateProject();
+
+        if (project.Latitude == null || project.Longitude == null) return;
+
+        if (!projectBLL.ValidateProjectCode(project.Id, project.Code))
         {
-            selectedSectors = selectedSectors + "," + DDLSector.Items[selectedIndex].Value;
+            lblSaveError.Text = "* Your chosen project code already exists, please choose another.";
+            lblSaveError.Visible = true;
+            return;
         }
-        selectedSectors = selectedSectors.Trim(',');
 
-        projectBLL.updateProject(projectCode, int.Parse(DDLstatus.SelectedValue), TxtAddress.Text, TxtCity.Text,
-                                int.Parse(DDLDepartment.SelectedValue), selectedSectors, TxtDescription.Text, int.Parse(project_id), TxtProjectname.Text,
-                                 startDate, endDate, TxtContact.Text, TxtAuthority.Text, ProjectManager);
-        DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
-        DetailsView2Databinding();
+        var message = projectBLL.AddOrUpdateProject(project);
 
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            RedirectToMap();
+        }
+        else
+        {
+            lblSaveError.Text = "* " + message;
+            lblSaveError.Visible = true;
+        }
+    }
+    
+    protected void DetailsView2_ItemUpdating(object sender, DetailsViewUpdateEventArgs e)
+    {
+        var project = PopulateProject();
+
+        if (!projectBLL.ValidateProjectCode(project.Id, project.Code))
+        {
+            lblSaveError.Text = "* Your chosen project code already exists, please choose another.";
+            lblSaveError.Visible = true;
+            return;
+        }
+
+        var message = projectBLL.AddOrUpdateProject(project);
+
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            DetailsView2.ChangeMode(DetailsViewMode.ReadOnly);
+            DetailsView2Databinding();
+        } else
+        {
+            lblSaveError.Text = "* " + message;
+            lblSaveError.Visible = true;
+        }
     }
 
     protected void DetailsView2_ItemCommand(object sender, DetailsViewCommandEventArgs e)
     {
         if (e.CommandName == "GoBack")
         {
-            string lat = ((Label)DetailsView2.FindControl("LblLat")).Text;
-            string lng = ((Label)DetailsView2.FindControl("LblLng")).Text;
-            string projectcode = ((Label)DetailsView2.FindControl("LblCode")).Text;
-            Response.Redirect(string.Format("map.aspx?lat={0}&lng={1}&code={2}", lat, lng, projectcode), false);
+            RedirectToMap();
         }
     }
-
+    
     protected void DeleteProject_Click(object sender, EventArgs e)
     {
         String projectId = ((Label)DetailsView2.FindControl("LBLProjectID")).Text;
@@ -553,119 +678,61 @@ public partial class Detail : System.Web.UI.Page
         return;
     }
 
+    private List<string> GetAddressFieldNames(string prefix, Project.ProjectRow row)
+    {
+        return new string[] {
+            prefix + "CompanyName",
+            prefix + "AddressLine1",
+            prefix + "AddressLine2",
+            prefix + "TownOrCity",
+            prefix +  "County",
+            prefix + "Postcode"
+        }
+        .Select(field => row[field].ToString())
+        .Where(field => !string.IsNullOrWhiteSpace(field))
+        .ToList();
+    }
+
     protected void BtnSheet_Click(object sender, EventArgs e)
     {
         string ProjectID = Request.QueryString["projectID"];
         Project.ProjectDataTable p = projectBLL.GetDataByID(ProjectID);
         Project.ProjectRow row = p.Rows[0] as Project.ProjectRow;
 
-        String originalJobSheetPath = Server.MapPath("JobSheet.xls");
+        String originalJobSheetPath = Server.MapPath("JobSheet_2017-08-08.xls");
         String modifiedJobSheetPath = Server.MapPath("newJobsheet1.xls");
 
         File.Copy(originalJobSheetPath, modifiedJobSheetPath, true);
 
         String conn = String.Format(ExcelConnectionString, modifiedJobSheetPath);
-        String updateQuery = "update [Jobsheet${0}:{0}] set F1 = \"{1}\"";
-
-        using (OleDbConnection connection = new OleDbConnection(conn))
-        {
-            connection.Open();
-
-            OleDbCommand cmd = new OleDbCommand();
-            cmd.Connection = connection;
-
-            if (!row.IsStatusNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "E3", row.Status);
-                cmd.ExecuteNonQuery();
-            }
-
-            if (!row.IsProject_CodeNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "B4", row.Project_Code);
-                cmd.ExecuteNonQuery();
-            }
-
-            if (!row.IsDescriptionNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "A7", row.Description);
-                cmd.ExecuteNonQuery();
-            }
-
-            if (!row.IsContactNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "B12", row.Contact);
-                cmd.ExecuteNonQuery();
-            }
-
-            String address = String.Empty;
-
-            if (!row.IsAddressNull())
-                address = row.Address;
-
-            if (!row.IsAddressNull() && !row.IsCityNull() && !String.IsNullOrEmpty(address))
-                address += "\n";
-
-            if (!row.IsCityNull())
-                address += row.City;
-
-            if (!String.IsNullOrEmpty(address))
-            {
-                cmd.CommandText = String.Format(updateQuery, "A14", address);
-                cmd.ExecuteNonQuery();
-            }
-
-            if (!row.IsProjectManagerNull())
-            {
-                cmd.CommandText = String.Format(updateQuery, "C31", row.ProjectManager);
-                cmd.ExecuteNonQuery();
-            }
-
-            cmd.CommandText = String.Format(updateQuery, "F32", DateTime.Today.ToShortDateString());
-            cmd.ExecuteNonQuery();
-
-            connection.Close();
-        }
-
-        Response.Redirect("newJobsheet1.xls");
-    }
-
-    protected void Button2_Click(object sender, EventArgs e)
-    {
-        string ProjectID = Request.QueryString["projectID"];
-        Project.ProjectDataTable p = projectBLL.GetDataByID(ProjectID);
-        Project.ProjectRow row = p.Rows[0] as Project.ProjectRow;
-
-        String originalJobSheetDesignPath = Server.MapPath("JobSheetDesign.xls");
-        String modifiedJobSheetDesignPath = Server.MapPath("newJobsheet_design.xls");
-
-        File.Copy(originalJobSheetDesignPath, modifiedJobSheetDesignPath, true);
-
-        String conn = String.Format(ExcelConnectionString, modifiedJobSheetDesignPath);
         String updateQuery = "update [Project Sheet${0}:{0}] set F1 = \"{1}\"";
 
         using (OleDbConnection connection = new OleDbConnection(conn))
         {
             connection.Open();
 
-            OleDbCommand cmd = new OleDbCommand();
-            cmd.Connection = connection;
-
+            OleDbCommand cmd = new OleDbCommand
+            {
+                Connection = connection
+            };
+            
             if (!row.IsProject_CodeNull())
             {
                 cmd.CommandText = String.Format(updateQuery, "G5", row.Project_Code);
                 cmd.ExecuteNonQuery();
             }
 
-            if (!row.IsStartDateNull())
+            var introducer = row["Introducer"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(introducer))
             {
-                cmd.CommandText = String.Format(updateQuery, "G10", row.StartDate);
+                cmd.CommandText = String.Format(updateQuery, "G7", introducer);
                 cmd.ExecuteNonQuery();
             }
 
-            if (!row.IsEndDateNull())
+            if (!row.IsStatusNull())
             {
-                cmd.CommandText = String.Format(updateQuery, "G11", row.EndDate);
+                cmd.CommandText = String.Format(updateQuery, "G11", row.Status.Trim());
                 cmd.ExecuteNonQuery();
             }
 
@@ -675,51 +742,74 @@ public partial class Detail : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
             }
 
+            var clientCompanyName = row["ClientCompanyName"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(clientCompanyName))
+            {
+                cmd.CommandText = String.Format(updateQuery, "G18", clientCompanyName);
+                cmd.ExecuteNonQuery();
+            }
+
             if (!row.IsContactNull())
             {
                 cmd.CommandText = String.Format(updateQuery, "A21", row.Contact);
                 cmd.ExecuteNonQuery();
             }
+                   
+            var clientAddressFields = GetAddressFieldNames("Client", row);
+            var rowIndex = 24;
 
-            // Clear cells A24 to A29
-            cmd.CommandText = "update [Project Sheet$A24:A29] set F1 = ''";
-            cmd.ExecuteNonQuery();
-
-            Int16 rowToUpdate = 24;
-
-            if (!row.IsAddressNull() && !String.IsNullOrEmpty(row.Address))
+            foreach (var field in clientAddressFields)
             {
-                String[] addressParts = row.Address.Split(',');
+                cmd.CommandText = String.Format(updateQuery, "A" + rowIndex.ToString(), field);
+                cmd.ExecuteNonQuery();
 
-                foreach (String part in addressParts)
-                {
-                    cmd.CommandText = String.Format(updateQuery, "A" + rowToUpdate, part.Trim());
-                    cmd.ExecuteNonQuery();
-                    rowToUpdate++;
-                }
+                rowIndex++;
             }
 
-            if (!row.IsCityNull() && !String.IsNullOrEmpty(row.City))
-            {
-                String[] cityParts = row.City.Split(',');
+            var invoiceContact = row["InvoiceContact"].ToString();
 
-                foreach (String part in cityParts)
-                {
-                    cmd.CommandText = String.Format(updateQuery, "A" + rowToUpdate, part.Trim());
-                    cmd.ExecuteNonQuery();
-                    rowToUpdate++;
-                }
+            if (!string.IsNullOrWhiteSpace(invoiceContact))
+            {
+                cmd.CommandText = String.Format(updateQuery, "G21", invoiceContact);
+                cmd.ExecuteNonQuery();
             }
 
+            var invoiceAddressFields = GetAddressFieldNames("Invoice", row);
+            rowIndex = 24;
+
+            foreach (var field in invoiceAddressFields)
+            {
+                cmd.CommandText = String.Format(updateQuery, "G" + rowIndex.ToString(), field);
+                cmd.ExecuteNonQuery();
+
+                rowIndex++;
+            }
+            
             connection.Close();
         }
-        
-        Response.Redirect("newJobsheet_design.xls");
+
+        Response.Redirect("newJobsheet1.xls");
     }
 
     [System.Web.Services.WebMethod]
     public static bool ValidateDeletePassword(string password)
     {
         return password == ConfigurationManager.AppSettings["DeletePassword"];
+    }
+
+    [System.Web.Services.WebMethod]
+    public static string FetchPlanningAuthoritiesForCounty(int countyId)
+    {
+        var planningAuthorities = PlanningAuthorityProvider.GetPlanningAuthoritiesByCounty(countyId);
+        return JsonConvert.SerializeObject(planningAuthorities);
+    }
+
+    private void RedirectToMap()
+    {
+        string lat = ((Label)DetailsView2.FindControl("LblLat")).Text;
+        string lng = ((Label)DetailsView2.FindControl("LblLng")).Text;
+        string projectcode = ((Label)DetailsView2.FindControl("LblCode")).Text;
+        Response.Redirect(string.Format("map.aspx?lat={0}&lng={1}&code={2}", lat, lng, projectcode), false);
     }
 }

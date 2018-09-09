@@ -55,7 +55,7 @@
         <div id="content">
             <div id="conndiv" style="width: 1000px; position: relative;">
 
-                <div id="newProject">
+                <%--<div id="newProject">
 
                     <asp:HiddenField ID="_TxtLat" runat="server" />
                     <asp:HiddenField ID="_TxtLng" runat="server" />
@@ -89,8 +89,11 @@
                         <input type="button" id="Cancel" value="Cancel" onclick="cancelSaving()" class="buttonSubmit" />
                     </div>
 
-                </div>
+                </div>--%>
 
+                <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>" SelectCommand="SELECT [Status_ID], [Status] FROM [status] ORDER By [Status_ID]"> </asp:SqlDataSource>
+                <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>" SelectCommand="SELECT [Dep_ID], [Name] FROM [Department] order by [Name]"></asp:SqlDataSource>
+                
                 <div style="width: 1000px; background: white; margin-left: 0px; margin-top: 0px;
                     border: solid 1px black">
                     <input type="text" value="" id="_Txt_address" style="width: 800px; height: 30px;
@@ -132,11 +135,22 @@
                             var searchBox = new google.maps.places.SearchBox(input, {
                                 bounds: defaultBounds
                             });
-
+                            console.log(window.location.pathname);
                             var rightclicklistener = google.maps.event.addListener(map, "rightclick", function (event) {
                                 //google.maps.event.removeListener(rightclicklistener);
                                 if (confirm("Would you like to create a project here?")) {
-                                    CreateMarker(event.latLng);
+                                    var parts = window.location.pathname.split('/');
+
+                                    var url = '';
+
+                                    for (var i = 0; i < parts.length; i++) {
+                                        if (!parts[i] || parts[i].toLowerCase() === 'map.aspx') continue;
+                                        url += '/' + parts[i];
+                                    }
+                               
+                                    url += '/detail.aspx';
+                                    var querystring = '?lat=' + event.latLng.lat() + '&lng=' + event.latLng.lng();
+                                    window.location.href = url + querystring;
                                 }
                             });
 
@@ -211,7 +225,7 @@
                             return datamarker;
                         }
 
-                        var newProjectModal = $('#newProject');
+                        <%--var newProjectModal = $('#newProject');
                         var projectCode = document.getElementById("<%=this.TxtProjectCode.ClientID %>");
                         var projectName = document.getElementById('<%= TextProjectName.ClientID %>');
                         var validationSummary = $('#new-project-validation');
@@ -288,7 +302,7 @@
                             txt_lat.value = lat;
                             txt_lng = document.getElementById("<%= this._TxtLng.ClientID %>");
                             txt_lng.value = lng;
-                        }
+                        }--%>
 
                         function getView(lat, lng, projectId) {
                             var point = new google.maps.LatLng(lat, lng);
@@ -471,9 +485,9 @@
                                             Text="" Width="23px" CommandName="Page" CssClass="next" /></div>
                                 </PagerTemplate>
                             </asp:GridView>
-                            <div style="display: none">
+<%--                            <div style="display: none">
                                 <asp:Button ID="BTNaddnew" runat="server" Text="Button" OnClick="BTNaddnew_Click"
-                                    UseSubmitBehavior="False" Visible="true"></asp:Button></div>
+                                    UseSubmitBehavior="False" Visible="true"></asp:Button></div>--%>
                             <mb:GridViewControlExtender ID="GridViewControlExtender1" runat="server" TargetControlID="GridView1"
                                 RowHoverCssClass="row-over" RowSelectCssClass="row-select" />
                         </ContentTemplate>

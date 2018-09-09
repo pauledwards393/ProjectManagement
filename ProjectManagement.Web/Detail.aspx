@@ -25,43 +25,43 @@
                             </HeaderTemplate>
                             <ContentTemplate>
                                 <asp:Label ID="lblEmailSuccess" runat="server" CssClass="success" Text="* Email sent successfully" Visible="false"></asp:Label>
-                                <asp:Label ID="lblSaveError" runat="server" CssClass="error" Text="* Your chosen project code already exists, please choose another." Visible="false"></asp:Label>
+                                <asp:Label ID="lblSaveError" runat="server" CssClass="error" Visible="false"></asp:Label>
 
                                 <asp:ValidationSummary ID="DetailsValidationSummary" runat="server" DisplayMode ="List" CssClass="details-validation-summary" />
 
-                                <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False" CellPadding="4"
-                                    DataKeyNames="Project_ID" ForeColor="#333333" GridLines="None" Height="50px"
-                                    Width="510px" AutoGenerateEditButton="False" BackImageUrl="niceforms/images/button.gif"
-                                    OnModeChanging="DetailsView2_ModeChanging" OnItemUpdated="DetailsView2_ItemUpdated"
-                                    OnItemUpdating="DetailsView2_ItemUpdating" OnItemCommand="DetailsView2_ItemCommand">
+                                <asp:DetailsView ID="DetailsView2" runat="server" AutoGenerateRows="False"
+                                    DataKeyNames="Project_ID"
+                                    AutoGenerateEditButton="False"
+                                    OnModeChanging="DetailsView2_ModeChanging" OnItemCommand="DetailsView2_ItemCommand"
+                                    OnItemUpdated="DetailsView2_ItemUpdated" OnItemUpdating="DetailsView2_ItemUpdating"
+                                    OnItemInserting="DetailsView2_ItemInserting" OnDataBound="DetailsView2_DataBound" ClientIDMode="Static">
                                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                    <RowStyle BackColor="#EFF3FB" />
-                                    <FieldHeaderStyle BackColor="#DEE8F5" Font-Bold="True" />
-                                    <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                    <FieldHeaderStyle Font-Bold="True" Width="300px" />
                                     <Fields>
                                         <asp:TemplateField Visible="False">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Project_ID") %>' ID="LBLProjectID"></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Project Code">
+                                        <asp:TemplateField HeaderText="Project Code" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Project Code") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="TxtProjectCode" runat="server" Text='<%# Eval("Project Code") %>'
-                                                    Width="200"></asp:TextBox>
+                                                <asp:TextBox ID="TxtProjectCode" runat="server" Text='<%# Eval("Project Code") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtProjectCode" ID="ProjectCodeValidator" runat="server" ErrorMessage="* Please add a project code" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:BoundField DataField="Project_ID" HeaderText="Project_ID" InsertVisible="False"
                                             Visible="False" ReadOnly="True" SortExpression="Project_ID" />
-                                        <asp:TemplateField HeaderText="Project Name">
+                                        <asp:TemplateField HeaderText="Project Name" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Project Name") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" Width="200" ID="TxtPorjectname" Text='<%# Eval("Project Name") %>'>
+                                                <asp:TextBox runat="server" ID="TxtPorjectname" Text='<%# Eval("Project Name") %>'>
                                                 </asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtPorjectname" ID="ProjectNameValidator" runat="server" ErrorMessage="* Please add a project name" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Start Date">
@@ -69,7 +69,7 @@
                                                 <asp:Label ID="LBLStartDate" runat="server" Text='<%# Eval("StartDate","{0:d}")  %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox Width="200" ID="TxtStartdate" runat="server" Text='<%# Eval("StartDate","{0:d}")  %>'></asp:TextBox>
+                                                <asp:TextBox ID="TxtStartdate" runat="server" Text='<%# Eval("StartDate","{0:d}")  %>'></asp:TextBox>
                                                 <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" TargetControlID="TxtStartdate"
                                                     Format="dd/MM/yyyy">
                                                 </cc1:CalendarExtender>
@@ -80,35 +80,49 @@
                                                 <asp:Label ID="LBLEndDate" runat="server" Text='<%# Eval("EndDate","{0:d}")%>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox Width="200" ID="TxtEndDate" runat="server" Text='<%# Eval("EndDate","{0:d}")%>'></asp:TextBox>
+                                                <asp:TextBox ID="TxtEndDate" runat="server" Text='<%# Eval("EndDate","{0:d}")%>'></asp:TextBox>
                                                 <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Enabled="true" TargetControlID="TxtEndDate"
                                                     Format="dd/MM/yyyy">
                                                 </cc1:CalendarExtender>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Status">
+                                        <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label ID="LBLStatus" runat="server" Text='<%# Eval("Status") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:DropDownList Width="200px" ID="DDLStatus" runat="server" DataSourceID="StatusDataSource"
+                                                <asp:DropDownList ID="DDLStatus" runat="server" DataSourceID="StatusDataSource"
                                                     SelectedValue='<%# Eval("StatusID") %>' DataTextField="Status" DataValueField="Status_ID">
                                                 </asp:DropDownList>
                                                 <asp:ObjectDataSource ID="StatusDataSource" runat="server" SelectMethod="GetData"
                                                     TypeName="StatusBLL" OldValuesParameterFormatString="original_{0}"></asp:ObjectDataSource>
                                             </EditItemTemplate>
+                                            <InsertItemTemplate>
+                                                <asp:DropDownList ID="DDLStatus" runat="server" DataSourceID="StatusDataSource"
+                                                    DataTextField="Status" DataValueField="Status_ID">
+                                                </asp:DropDownList>
+                                                <asp:ObjectDataSource ID="StatusDataSource" runat="server" SelectMethod="GetData"
+                                                    TypeName="StatusBLL" OldValuesParameterFormatString="original_{0}"></asp:ObjectDataSource>
+                                            </InsertItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Department">
+                                        <asp:TemplateField HeaderText="Department" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label ID="LBLDepartment" runat="server" Text='<%# Eval("Name") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:DropDownList Width="200" ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSource"
-                                                    DataTextField="Name" DataValueField="Dep_ID" SelectedValue='<%# Eval("DepartmentID") %>'>
+                                                <asp:DropDownList ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSourceEdit"
+                                                    DataTextField="Name" DataValueField="Id" SelectedValue='<%# Eval("DepartmentID") %>'>
                                                 </asp:DropDownList>
-                                                <asp:ObjectDataSource ID="DepartmentDataSource" runat="server" SelectMethod="GetData"
-                                                    TypeName="DepartmentBLL"></asp:ObjectDataSource>
+                                                <asp:ObjectDataSource ID="DepartmentDataSourceEdit" runat="server" SelectMethod="GetDepartmentsForEdit"
+                                                        TypeName="ProjectManagement.Web.Providers.DepartmentProvider" OnSelecting="DepartmentDataSourceEdit_Selecting" />
                                             </EditItemTemplate>
+                                            <InsertItemTemplate>
+                                                <asp:DropDownList ID="DDLDepartment" runat="server" DataSourceID="DepartmentDataSourceInsert"
+                                                    DataTextField="Name" DataValueField="Id">
+                                                </asp:DropDownList>
+                                                <asp:ObjectDataSource ID="DepartmentDataSourceInsert" runat="server" SelectMethod="GetDepartmentsForInsert"
+                                                        TypeName="ProjectManagement.Web.Providers.DepartmentProvider" />
+                                            </InsertItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Sector">
                                             <ItemTemplate>
@@ -120,7 +134,6 @@
                                                     CssClass="MySelect" DataTextField="Name" OnDataBound="DDLSector_DataBound" DataValueField="Sector_ID"></asp:ListBox>
                                                 <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                                                     SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector]"></asp:SqlDataSource>
-                                                <asp:RequiredFieldValidator ControlToValidate="DDLSector" ID="SectorValidator" runat="server" ErrorMessage="* Please choose at least one sector before saving" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Manager[MBL]">
@@ -128,39 +141,176 @@
                                                 <asp:Label ID="Label1" runat="server" Text='<%# Eval("ProjectManager") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtManager" Width="200" Text='<%#  Eval("ProjectManager")%>'></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtManager" Text='<%#  Eval("ProjectManager")%>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Client Contact">
+                                        <asp:TemplateField HeaderText="Introducer" HeaderStyle-CssClass="mandatory">
+                                            <ItemTemplate>
+                                                <asp:Label ID="LblIntroducer" runat="server" Text='<%# Eval("Introducer") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtIntroducer" Text='<%#  Eval("Introducer")%>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtIntroducer" ID="ValIntroducer" runat="server" ErrorMessage="* Please add an introducer" Display="None"></asp:RequiredFieldValidator>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client Contact" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Contact") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtContact" Width="200" Text='<%# Eval("Contact") %>'></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtContact" Text='<%# Eval("Contact") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtContact" ID="ValClientContact" runat="server" ErrorMessage="* Please add a client contact" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText=" Address">
+                                        <asp:TemplateField Visible="false">
                                             <ItemTemplate>
-                                                <asp:Label runat="server" Text='<%# Eval("Address") %>'></asp:Label>
+                                                <asp:Label runat="server" ID="LblClientAddressId" Text='<%# Eval("ClientAddressId") %>'></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client company" HeaderStyle-CssClass="mandatory">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientCompanyName") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtAddress" Width="200" Text='<%# Eval("Address") %>'></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtClientCompanyName" Text='<%# Eval("ClientCompanyName") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtClientCompanyName" ID="ValClientCompany" runat="server" ErrorMessage="* Please add a client company name" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="City">
+                                        <asp:TemplateField HeaderText="Client address line 1" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
-                                                <asp:Label runat="server" Text='<%# Eval("City") %>'></asp:Label>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientAddressLine1") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtCity" Text='<%# Eval("City") %>' Width="200"></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtClientAddressLine1" Text='<%# Eval("ClientAddressLine1") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtClientAddressLine1" ID="ValClientAddressLine1" runat="server" ErrorMessage="* Please add a client address line 1" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Authority">
+                                        <asp:TemplateField HeaderText="Client address line 2">
                                             <ItemTemplate>
-                                                <asp:Label runat="server" Text='<%# Eval("Authority")%>'></asp:Label>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientAddressLine2") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" ID="TxtAuthority" Text='<%# Eval("Authority")%>' Width="200"></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="TxtClientAddressLine2" Text='<%# Eval("ClientAddressLine2") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client town/city" HeaderStyle-CssClass="mandatory">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientTownOrCity") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtClientTownOrCity" Text='<%# Eval("ClientTownOrCity") %>'></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtClientTownOrCity" ID="ValClientTownOrCity" runat="server" ErrorMessage="* Please add a client town or city" Display="None"></asp:RequiredFieldValidator>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client county">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientCounty") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtClientCounty" Text='<%# Eval("ClientCounty") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Client postcode" HeaderStyle-CssClass="mandatory">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientPostcode") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtClientPostcode" Text='<%# Eval("ClientPostcode") %>' MaxLength="10"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtClientPostcode" ID="ValClientPostcode" runat="server" ErrorMessage="* Please add a client postcode" Display="None"></asp:RequiredFieldValidator>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice contact">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceContact") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceContact" Text='<%# Eval("InvoiceContact") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="LblInvoiceAddressId" Text='<%# Eval("InvoiceAddressId") %>'></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice company">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceCompanyName") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceCompanyName" Text='<%# Eval("InvoiceCompanyName") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice address line 1">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceAddressLine1") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceAddressLine1" Text='<%# Eval("InvoiceAddressLine1") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice address line 2">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceAddressLine2") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceAddressLine2" Text='<%# Eval("InvoiceAddressLine2") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice town/city">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceTownOrCity") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceTownOrCity" Text='<%# Eval("InvoiceTownOrCity") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice county">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoiceCounty") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoiceCounty" Text='<%# Eval("InvoiceCounty") %>'></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Invoice postcode">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("InvoicePostcode") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtInvoicePostcode" Text='<%# Eval("InvoicePostcode") %>' MaxLength="10"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project County">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("County")%>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="DDLCounty" runat="server" DataSourceID="CountyDataSource" SelectedValue='<%# Eval("CountyId") %>'
+                                                    DataTextField="Name" DataValueField="Id" ClientIDMode="Static" AppendDataBoundItems="true">
+                                                    <Items>
+                                                       <asp:ListItem Text="-- Select project county --" Value="" />
+                                                    </Items>
+                                                </asp:DropDownList>
+                                                <asp:ObjectDataSource ID="CountyDataSource" runat="server" SelectMethod="GetCounties"
+                                                    TypeName="ProjectManagement.Web.Providers.CountyProvider" />
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project Local Planning Authority">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("PlanningAuthority")%>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="DDLPlanningAuthority" runat="server" ClientIDMode="Static">
+                                                </asp:DropDownList>
+                                                <asp:TextBox runat="server" ID="txtPlanningAuthority" Value='<%# Eval("PlanningAuthorityId") %>' ClientIDMode="Static" CssClass="hidden"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Project City">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ProjectCity") %>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:TextBox runat="server" ID="TxtProjectCity" Text='<%# Eval("ProjectCity") %>'></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Detailed">
@@ -170,31 +320,32 @@
                                             <EditItemTemplate>
                                                 <asp:CheckBox runat="server" ID="ChkDetailed" Checked='<%# Eval("Detailed") %>' />
                                             </EditItemTemplate>
+                                            <InsertItemTemplate>
+                                                <asp:CheckBox runat="server" ID="ChkDetailed" />
+                                            </InsertItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField Visible="False">
+                                        <asp:TemplateField Visible="false">
                                             <ItemTemplate>
                                                 <asp:Label ID="LblCode" runat="server" Text='<%# Bind("Project_ID") %>'></asp:Label>
                                                 <asp:Label ID="LblLat" runat="server" Text='<%# Bind("lat") %>'> </asp:Label>
                                                 <asp:Label ID="LblLng" runat="server" Text='<%# Bind("lon") %>'></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Description">
+                                        <asp:TemplateField HeaderText="Description" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Description") %>'></asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox runat="server" TextMode="MultiLine" Width="200" Rows="10" Text='<%# Eval("Description") %>'
+                                                <asp:TextBox runat="server" TextMode="MultiLine" Rows="10" Text='<%# Eval("Description") %>'
                                                     ID="TxtDescription"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtDescription" ID="ValDescription" runat="server" ErrorMessage="* Please add a description" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:BoundField HeaderText="Created on" DataField="AddedAt" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
-                                        <asp:BoundField HeaderText="Job Sheet" DataField="JobSheetSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
-                                        <asp:BoundField HeaderText="Original Fee Proposal" DataField="FeeProposalSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
-                                        <asp:BoundField HeaderText="Acceptance of Service" DataField="AcceptanceOfServiceSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" />
+                                        <asp:BoundField HeaderText="Created on" DataField="AddedAt" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
+                                        <asp:BoundField HeaderText="Job Sheet" DataField="JobSheetSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
+                                        <asp:BoundField HeaderText="Original Fee Proposal" DataField="FeeProposalSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
+                                        <asp:BoundField HeaderText="Acceptance of Service" DataField="AcceptanceOfServiceSubmitted" ReadOnly="true" DataFormatString="{0:d}" ItemStyle-CssClass="readonly" Visible="false" />
                                     </Fields>
-                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                    <EditRowStyle BackColor="#2461BF" />
-                                    <AlternatingRowStyle BackColor="White" />
                                     <Fields>                                        
                                         <asp:TemplateField ShowHeader="false" ItemStyle-BackColor="#D1DDF1">
                                             <ItemTemplate>
@@ -203,14 +354,17 @@
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:Button ID="UpdateProject" runat="server" Text="Update" CommandName="Update"></asp:Button>
-                                                <asp:Button ID="CancelEditProject" runat="server" Text="Cancel" CommandName="Cancel"></asp:Button>
+                                                <asp:Button ID="CancelEditProject" runat="server" Text="Cancel" CommandName="Cancel" CausesValidation="false"></asp:Button>
                                             </EditItemTemplate>
+                                            <InsertItemTemplate>
+                                                <asp:Button ID="CreateProject" runat="server" Text="Save" CommandName="Insert"></asp:Button>
+                                                <asp:Button ID="CancelCreateProject" runat="server" Text="Cancel" CommandName="GoBack" CausesValidation="false"></asp:Button>
+                                            </InsertItemTemplate>
                                         </asp:TemplateField>
                                     </Fields>
                                     <FooterTemplate>
-                                        <asp:Button CommandName="GoBack" Text="Go Back" runat="server" ID="BtnBack" />
+                                        <asp:Button CommandName="GoBack" Text="Go Back" runat="server" ID="BtnBack" CausesValidation="false" />
                                         <asp:Button CommandName="JobSheet" Text="Job Sheet" runat="server" ID="BtnSheet" OnClick="BtnSheet_Click" />
-                                        <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Design Job Sheet" />
                                         <button type="button" data-toggle="modal" data-target="#upload-job-sheet">Submit Job Sheet/Fee/Acceptance</button>
                                     </FooterTemplate>
                                 </asp:DetailsView>
@@ -581,6 +735,63 @@
         $('#<%= DeletePassword.ClientID %>').on('keydown', handleDeleteEnter);
 
         //$('#upload-job-sheet').modal('show');
+
+        (function () {
+            var ddCounty = document.getElementById('DDLCounty');
+            var ddPlanningAuthority = document.getElementById('DDLPlanningAuthority');
+            var txtPlanningAuthority = document.getElementById('txtPlanningAuthority');
+      
+            if (!ddCounty || !ddPlanningAuthority || !txtPlanningAuthority) return;
+
+            var handleChangePlanningAuthority = function (e) {
+                txtPlanningAuthority.value = e.target.value;
+            };
+
+            var handleChangeCounty = function (e, isInitialLoad) {
+                ddPlanningAuthority.options.length = 0;
+                
+                var countyId = e.target.value;
+
+                if (countyId === '') {
+                    txtPlanningAuthority.value = '';
+                    return;
+                }
+
+                PageMethods.FetchPlanningAuthoritiesForCounty(parseInt(countyId, 10), function (response) {
+                    var planningAuthorities = JSON.parse(response);
+                    
+                    var appendOption = function (planningAuthority) {
+                        var option = document.createElement('option');
+                        var value = planningAuthority.id.toString();
+
+                        option.value = value;
+                        option.innerHTML = planningAuthority.name;
+
+                        ddPlanningAuthority.appendChild(option);
+                    };
+
+                    appendOption({ id: '', name: '-- Please select --' });
+
+                    planningAuthorities.forEach(appendOption);
+
+                    var planningAuthorityId = txtPlanningAuthority.value;
+
+                    if (isInitialLoad && planningAuthorityId) {
+                        console.log(planningAuthorityId);
+                        ddPlanningAuthority.value = planningAuthorityId;
+                    } else {
+                        txtPlanningAuthority.value = '';
+                    }
+                });
+            };
+                     
+            ddCounty.addEventListener('change', handleChangeCounty, false);
+            ddPlanningAuthority.addEventListener('change', handleChangePlanningAuthority, false);
+
+            if (ddCounty.value) {
+                handleChangeCounty({ target: ddCounty }, true);
+            }            
+        }());
 
     </script>
 </asp:Content>
