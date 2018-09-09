@@ -135,12 +135,13 @@
                             var searchBox = new google.maps.places.SearchBox(input, {
                                 bounds: defaultBounds
                             });
-
+ 
                             var rightclicklistener = google.maps.event.addListener(map, "rightclick", function (event) {
                                 //google.maps.event.removeListener(rightclicklistener);
                                 if (confirm("Would you like to create a project here?")) {
-                                    var url = '/Detail.aspx?lat=' + event.latLng.lat() + '&lng=' + event.latLng.lng();
-                                    window.location.href = url;
+                                    var url = window.location.pathname.replace(/map/i, 'detail');
+                                    var querystring = '?lat=' + event.latLng.lat() + '&lng=' + event.latLng.lng();
+                                    window.location.href = url + querystring;
                                 }
                             });
 
