@@ -148,7 +148,7 @@
                                         url += '/' + parts[i];
                                     }
                                
-                                    url += '/detail.aspx'; // pathname.indexOf('pathname.replace(/map/i, 'detail');
+                                    url += '/detail.aspx';
                                     var querystring = '?lat=' + event.latLng.lat() + '&lng=' + event.latLng.lng();
                                     window.location.href = url + querystring;
                                 }
