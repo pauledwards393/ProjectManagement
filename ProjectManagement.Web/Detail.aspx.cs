@@ -699,7 +699,7 @@ public partial class Detail : System.Web.UI.Page
         Project.ProjectDataTable p = projectBLL.GetDataByID(ProjectID);
         Project.ProjectRow row = p.Rows[0] as Project.ProjectRow;
 
-        String originalJobSheetPath = Server.MapPath("JobSheet_2017-08-08.xls");
+        String originalJobSheetPath = Server.MapPath("JobSheet_2018-12-09.xls");
         String modifiedJobSheetPath = Server.MapPath("newJobsheet1.xls");
 
         File.Copy(originalJobSheetPath, modifiedJobSheetPath, true);
@@ -727,6 +727,23 @@ public partial class Detail : System.Web.UI.Page
             if (!string.IsNullOrWhiteSpace(introducer))
             {
                 cmd.CommandText = String.Format(updateQuery, "G7", introducer);
+                cmd.ExecuteNonQuery();
+            }
+
+            var sectors = row["SectorList"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(sectors))
+            {
+                cmd.CommandText = String.Format(updateQuery, "G8", sectors);
+                cmd.ExecuteNonQuery();
+            }
+
+            var startDate = row["StartDate"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(startDate))
+            {
+                var formattedStartDate = Convert.ToDateTime(startDate).ToShortDateString();
+                cmd.CommandText = String.Format(updateQuery, "G10", formattedStartDate);
                 cmd.ExecuteNonQuery();
             }
 
