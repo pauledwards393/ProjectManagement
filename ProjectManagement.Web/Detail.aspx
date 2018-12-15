@@ -136,6 +136,22 @@
                                                     SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector]"></asp:SqlDataSource>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Client Type" HeaderStyle-CssClass="mandatory">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientType")%>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="DDLClientType" runat="server" DataSourceID="ClientTypeDataSource" SelectedValue='<%# Eval("ClientTypeId") %>'
+                                                    DataTextField="Name" DataValueField="Id" ClientIDMode="Static" AppendDataBoundItems="true">
+                                                    <Items>
+                                                       <asp:ListItem Text="-- Select client type --" Value="" />
+                                                    </Items>
+                                                </asp:DropDownList>
+                                                <asp:ObjectDataSource ID="ClientTypeDataSource" runat="server" SelectMethod="GetClientTypes"
+                                                    TypeName="ProjectManagement.Web.Providers.ClientTypeProvider" />
+                                                <asp:RequiredFieldValidator ControlToValidate="DDLClientType" ID="ValClientType" runat="server" ErrorMessage="* Please add a client type" Display="None"></asp:RequiredFieldValidator>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Manager[MBL]">
                                             <ItemTemplate>
                                                 <asp:Label ID="Label1" runat="server" Text='<%# Eval("ProjectManager") %>'></asp:Label>

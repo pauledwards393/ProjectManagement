@@ -204,6 +204,7 @@ public partial class Detail : System.Web.UI.Page
         TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");
         TextBox TxtProjectManager = (TextBox)DetailsView2.FindControl("TxtManager");
         DropDownList DDLCounty = (DropDownList)DetailsView2.FindControl("DDLCounty");
+        DropDownList DDLClientType = (DropDownList)DetailsView2.FindControl("DDLClientType");
         TextBox TxtPlanningAuthority = (TextBox)DetailsView2.FindControl("txtPlanningAuthority");
         Label LblLat = (Label)DetailsView2.FindControl("LblLat");
         Label LblLng = (Label)DetailsView2.FindControl("LblLng");
@@ -238,6 +239,7 @@ public partial class Detail : System.Web.UI.Page
         var project = new ProjectManagement.Web.Models.Project
         {
             ClientAddress = clientAddress, // New
+            ClientTypeId = int.Parse(DDLClientType.SelectedValue),
             Code = GetTextFieldValue("TxtProjectCode"),
             Contact = TxtContact.Text,
             CountyId = !string.IsNullOrWhiteSpace(DDLCounty.SelectedValue) ? int.Parse(DDLCounty.SelectedValue) : (int?)null,

@@ -191,6 +191,8 @@ WHERE     (status.Status_ID = @Param1) AND Project.IsDeleted = 0</CommandText>
 	Project.DepartmentID, 
     Project.ProjectManager,
 	SectorList = substring((select (', ' + Name) from projectsector ps left join sector on ps.sector_id = sector.sector_id where ps.project_id = @ProjectID order by Name for XML path('')), 3, 1000),
+	Project.ClientTypeId,
+	ISNULL(ClientType.[Name], '') AS ClientType,
 	Project.AddedAt,
 	JobSheetSubmitted,
 	FeeProposalSubmitted,
@@ -220,6 +222,7 @@ LEFT OUTER JOIN status ON Project.StatusID = status.Status_ID
 LEFT OUTER JOIN Department ON Project.DepartmentID = Department.Dep_ID
 LEFT OUTER JOIN County ON Project.CountyId = County.Id
 LEFT OUTER JOIN PlanningAuthority ON Project.PlanningAuthorityId = PlanningAuthority.Id
+LEFT OUTER JOIN ClientType ON Project.ClientTypeId = ClientType.Id
 LEFT OUTER JOIN Address clientAddress ON Project.ClientAddressId = clientAddress.Id
 LEFT OUTER JOIN Address invoiceAddress ON Project.InvoiceAddressId = invoiceAddress.Id
 WHERE Project.Project_ID = @ProjectID</CommandText>

@@ -8,6 +8,7 @@ namespace ProjectManagement.Web.Models
         public string Code { get; set; }
         public string Contact { get; set; }
         public Address ClientAddress { get; set; }
+        public int ClientTypeId { get; set; }
         public int? CountyId { get; set; }
         public int Department { get; set; }
         public string Description { get; set; }
