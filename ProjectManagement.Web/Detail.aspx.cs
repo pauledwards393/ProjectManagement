@@ -769,14 +769,22 @@ public partial class Detail : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
             }
 
+            var clientType = row["ClientType"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(clientType))
+            {
+                cmd.CommandText = String.Format(updateQuery, "G20", clientType);
+                cmd.ExecuteNonQuery();
+            }
+
             if (!row.IsContactNull())
             {
-                cmd.CommandText = String.Format(updateQuery, "A21", row.Contact);
+                cmd.CommandText = String.Format(updateQuery, "A23", row.Contact);
                 cmd.ExecuteNonQuery();
             }
                    
             var clientAddressFields = GetAddressFieldNames("Client", row);
-            var rowIndex = 24;
+            var rowIndex = 26;
 
             foreach (var field in clientAddressFields)
             {
@@ -790,12 +798,12 @@ public partial class Detail : System.Web.UI.Page
 
             if (!string.IsNullOrWhiteSpace(invoiceContact))
             {
-                cmd.CommandText = String.Format(updateQuery, "G21", invoiceContact);
+                cmd.CommandText = String.Format(updateQuery, "G23", invoiceContact);
                 cmd.ExecuteNonQuery();
             }
 
             var invoiceAddressFields = GetAddressFieldNames("Invoice", row);
-            rowIndex = 24;
+            rowIndex = 26;
 
             foreach (var field in invoiceAddressFields)
             {
