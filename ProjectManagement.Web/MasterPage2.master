@@ -6,7 +6,7 @@
 <head runat="server">
     <title>Untitled Page</title>
     <asp:ContentPlaceHolder ID="ContentPlaceHolderHeader" runat="server"></asp:ContentPlaceHolder>
-    <link href="_Asset/layout1.css?v=5" rel="stylesheet" type="text/css" />
+    <link href="_Asset/layout1.css?v=6" rel="stylesheet" type="text/css" />
     <link href="_Asset/igoogle-classic.css" rel="stylesheet" type="text/css" />
     <link href="_Asset/igoogle-common.css" rel="stylesheet" type="text/css" />
     <link href="_Asset/GridView.css?v=6" rel="stylesheet" type="text/css" />
@@ -32,10 +32,10 @@
                     <ul class="menu">
                         <li class="leaf"><a href="map.aspx" title=""><span>Home</span></a></li>
                         <li class="leaf"><a href="count.aspx" title=""><span>Project Count</span></a></li>
-                        <li class="leaf"><a href="#" title=""><span>Projects</span></a></li>
+<%--                        <li class="leaf"><a href="#" title=""><span>Projects</span></a></li>
                         <li class="leaf"><a href="#" title=""><span>Services</span></a></li>
                         <li class="leaf"><a href="#" title=""><span>Careers</span></a></li>
-                        <li class="leaf"><a href="#" title=""><span>Contact Us</span></a></li>
+                        <li class="leaf"><a href="#" title=""><span>Contact Us</span></a></li>--%>
                     </ul>
                 </div>
             </div>

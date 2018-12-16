@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>Mayer Brown Project Management System (Beta)</title>
-    <link type="text/css" rel="stylesheet" href="_Asset/layout1.css?v=1" />
+    <link type="text/css" rel="stylesheet" href="_Asset/layout1.css?v=6" />
     <link href="niceforms/niceforms-default.css" rel="stylesheet" type="text/css" />
     <link href="_Asset/GridView.css" rel="stylesheet" type="text/css" />
     <link href="_Asset/Progress.css" rel="stylesheet" type="text/css" />
@@ -42,10 +42,10 @@
                     <ul class="menu">
                         <li class="leaf"><a href="map.aspx" title=""><span>Home</span></a></li>
                         <li class="leaf"><a href="count.aspx" title=""><span>Project Counts</span></a></li>
-                        <li class="leaf"><a href="#" title=""><span>Projects</span></a></li>
+<%--                        <li class="leaf"><a href="#" title=""><span>Projects</span></a></li>
                         <li class="leaf"><a href="#" title=""><span>Services</span></a></li>
                         <li class="leaf"><a href="#" title=""><span>Careers</span></a></li>
-                        <li class="leaf"><a href="#" title=""><span>Contact Us</span></a></li>
+                        <li class="leaf"><a href="#" title=""><span>Contact Us</span></a></li>--%>
                     </ul>
                 </div>
             </div>
