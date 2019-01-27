@@ -53,13 +53,15 @@ public partial class Map : System.Web.UI.Page
         Int32? departmentId = Int32.Parse(DropDownList2.SelectedValue);
         Int32? sectorId = Int32.Parse(DropDownList3.SelectedValue);
         string projectSearchText = txtProjectSearch.Text.Trim();
+		int? authorityId = int.Parse(AuthorityDropDown.SelectedValue);
 
         statusId = statusId >= 0 ? statusId : null;
         departmentId = departmentId >= 0 ? departmentId : null;
         sectorId = sectorId >= 0 ? sectorId : null;
         projectSearchText = !string.IsNullOrEmpty(projectSearchText) ? projectSearchText : null;
+		authorityId = authorityId >= 0 ? authorityId : null;
 
-        projectTable = _projectbll.GetProjects(statusId, departmentId, sectorId, projectSearchText);
+		projectTable = _projectbll.GetProjects(statusId, departmentId, sectorId, authorityId, projectSearchText);
 
         total = projectTable.Count;
         GridView1.DataSource = projectTable;

@@ -9,36 +9,53 @@ namespace ProjectManagement.Web.Providers
 {
     public static class PlanningAuthorityProvider
     {
-        public static IEnumerable<Models.PlanningAuthority> GetPlanningAuthoritiesByCounty(int countyId)
-        {      
-            var PlanningAuthorities = new List<Models.PlanningAuthority>();
+        public static IEnumerable<Models.PlanningAuthority> GetPlanningAuthorities()
+        {
+			var sql = "SELECT CountyId, Id, Name FROM PlanningAuthority ORDER BY Name";
 
-            string sql = "SELECT CountyId, Id, Name FROM PlanningAuthority WHERE CountyId = @CountyId";
-            string connectionString = ConfigurationManager.ConnectionStrings["MBProjectConnectionString"].ConnectionString;
+			return GetPlanningAuthorities(sql);
+		}
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand(sql, conn);
+		public static IEnumerable<Models.PlanningAuthority> GetPlanningAuthoritiesByCounty(int countyId)
+		{
+			var sql = "SELECT CountyId, Id, Name FROM PlanningAuthority WHERE CountyId = @CountyId ORDER BY Name";
+			var param = new SqlParameter("@CountyId", countyId);
 
-                cmd.Parameters.AddWithValue("@CountyId", countyId);
+			return GetPlanningAuthorities(sql, param);
+		}
 
-                try
-                {
-                    conn.Open();
-                    var reader = cmd.ExecuteReader();
+		private static IEnumerable<Models.PlanningAuthority> GetPlanningAuthorities(string sql, SqlParameter param = null)
+		{
+			var PlanningAuthorities = new List<Models.PlanningAuthority>();
 
-                    while (reader.Read())
-                    {
-                        PlanningAuthorities.Add(Models.PlanningAuthority.Create(reader));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+			string connectionString = ConfigurationManager.ConnectionStrings["MBProjectConnectionString"].ConnectionString;
 
-            return PlanningAuthorities;
-        }
-    }
+			using (SqlConnection conn = new SqlConnection(connectionString))
+			{
+				SqlCommand cmd = new SqlCommand(sql, conn);
+
+				if (param != null)
+				{
+					cmd.Parameters.Add(param);
+				}
+				
+				try
+				{
+					conn.Open();
+					var reader = cmd.ExecuteReader();
+
+					while (reader.Read())
+					{
+						PlanningAuthorities.Add(Models.PlanningAuthority.Create(reader));
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+				}
+			}
+
+			return PlanningAuthorities;
+		}
+	}
 }

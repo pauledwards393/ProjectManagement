@@ -2445,6 +2445,7 @@ WHERE     (status.Status_ID = @Param1) AND Project.IsDeleted = 0";
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@statusId", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@departmentId", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@sectorId", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@authorityId", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[11].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@projectSearchText", global::System.Data.SqlDbType.VarChar, 255, global::System.Data.ParameterDirection.Input, 0, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[12] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[12].Connection = this.Connection;
@@ -2639,7 +2640,7 @@ WHERE     (Project_ID = @project_id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, false)]
-        public virtual Project.ProjectDataTable GetProjects(global::System.Nullable<int> statusId, global::System.Nullable<int> departmentId, global::System.Nullable<int> sectorId, string projectSearchText) {
+        public virtual Project.ProjectDataTable GetProjects(global::System.Nullable<int> statusId, global::System.Nullable<int> departmentId, global::System.Nullable<int> sectorId, global::System.Nullable<int> authorityId, string projectSearchText) {
             this.Adapter.SelectCommand = this.CommandCollection[11];
             if ((statusId.HasValue == true)) {
                 this.Adapter.SelectCommand.Parameters[1].Value = ((int)(statusId.Value));
@@ -2659,11 +2660,17 @@ WHERE     (Project_ID = @project_id)";
             else {
                 this.Adapter.SelectCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
-            if ((projectSearchText == null)) {
-                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            if ((authorityId.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[4].Value = ((int)(authorityId.Value));
             }
             else {
-                this.Adapter.SelectCommand.Parameters[4].Value = ((string)(projectSearchText));
+                this.Adapter.SelectCommand.Parameters[4].Value = global::System.DBNull.Value;
+            }
+            if ((projectSearchText == null)) {
+                this.Adapter.SelectCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[5].Value = ((string)(projectSearchText));
             }
             Project.ProjectDataTable dataTable = new Project.ProjectDataTable();
             this.Adapter.Fill(dataTable);

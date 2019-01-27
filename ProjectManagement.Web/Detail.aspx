@@ -323,7 +323,7 @@
                                                 <asp:TextBox runat="server" ID="txtPlanningAuthority" Value='<%# Eval("PlanningAuthorityId") %>' ClientIDMode="Static" CssClass="hidden"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Project City">
+                                        <asp:TemplateField HeaderText="Project Town/City">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("ProjectCity") %>'></asp:Label>
                                             </ItemTemplate>

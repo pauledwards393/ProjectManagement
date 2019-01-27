@@ -42,10 +42,6 @@
                     <ul class="menu">
                         <li class="leaf"><a href="map.aspx" title=""><span>Home</span></a></li>
                         <li class="leaf"><a href="count.aspx" title=""><span>Project Counts</span></a></li>
-<%--                        <li class="leaf"><a href="#" title=""><span>Projects</span></a></li>
-                        <li class="leaf"><a href="#" title=""><span>Services</span></a></li>
-                        <li class="leaf"><a href="#" title=""><span>Careers</span></a></li>
-                        <li class="leaf"><a href="#" title=""><span>Contact Us</span></a></li>--%>
                     </ul>
                 </div>
             </div>
@@ -54,42 +50,6 @@
         <asp:Label ID="DeleteConfirmation" runat="server" CssClass="success" Text="* Project successfully deleted" Visible="false"></asp:Label>
         <div id="content">
             <div id="conndiv" style="width: 1000px; position: relative;">
-
-                <%--<div id="newProject">
-
-                    <asp:HiddenField ID="_TxtLat" runat="server" />
-                    <asp:HiddenField ID="_TxtLng" runat="server" />
-
-                    <div id="new-project-validation" class="validation-summary"></div>
-
-                    <div class="form-row">
-                        <label for="TextProjectName">Project Name *</label>
-                        <asp:TextBox ID="TextProjectName" runat="server"></asp:TextBox>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="TxtProjectCode">Project Code *</label>
-                        <asp:TextBox ID="TxtProjectCode" runat="server"></asp:TextBox>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="Dropdown_Status">Project Status</label>
-                        <asp:DropDownList ID="Dropdown_Status" runat="server" DataSourceID="SqlDataSource3" DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect"> </asp:DropDownList>
-                        <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>" SelectCommand="SELECT [Status_ID], [Status] FROM [status] ORDER By [Status_ID]"> </asp:SqlDataSource>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="DropDownList_department">Department</label>
-                        <asp:DropDownList ID="DropDownList_department" runat="server" DataSourceID="SqlDataSource4" CssClass="MySelect" DataTextField="Name" DataValueField="Dep_ID"> </asp:DropDownList>
-                        <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>" SelectCommand="SELECT [Dep_ID], [Name] FROM [Department] order by [Name]"></asp:SqlDataSource>
-                    </div>
-
-                    <div class=" form-buttons">
-                        <input type="button" id="savePro" title="save" value="Save" onclick="saveProject()" class="buttonSubmit" />
-                        <input type="button" id="Cancel" value="Cancel" onclick="cancelSaving()" class="buttonSubmit" />
-                    </div>
-
-                </div>--%>
 
                 <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>" SelectCommand="SELECT [Status_ID], [Status] FROM [status] ORDER By [Status_ID]"> </asp:SqlDataSource>
                 <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>" SelectCommand="SELECT [Dep_ID], [Name] FROM [Department] order by [Name]"></asp:SqlDataSource>
@@ -225,85 +185,6 @@
                             return datamarker;
                         }
 
-                        <%--var newProjectModal = $('#newProject');
-                        var projectCode = document.getElementById("<%=this.TxtProjectCode.ClientID %>");
-                        var projectName = document.getElementById('<%= TextProjectName.ClientID %>');
-                        var validationSummary = $('#new-project-validation');
-
-                        function CreateMarker(point) {
-                            SaveLatLng(point.lat(), point.lng());
-                            resetForm();
-                            newProjectModal.fadeIn();
-                        }
-
-                        function resetForm() {
-                            projectCode.value = projectCode.className = '';
-                            projectName.value = projectName.className = '';
-                            validationSummary.hide();
-                        }
-
-                        function saveProject() {
-
-                            // Required validation
-                            var projectCodeValue = $.trim(projectCode.value);
-                            var projectNameValue = $.trim(projectName.value);
-
-                            projectCode.className = projectCodeValue ? '' : 'invalid';
-                            projectName.className = projectNameValue ? '' : 'invalid';                            
-
-                            if (!projectCodeValue || !projectNameValue) {
-                                validationSummary.html('Please check required (*) fields.');
-                                validationSummary.slideDown();
-                                return;
-                            }
-
-                            // Validate project code
-                            PageMethods.ValidateProjectCode(projectCodeValue, function (result) {
-
-                                projectCode.className = result ? '' : 'invalid';
-
-                                if (!result) {
-                                    validationSummary.html('Your chosen project code already exists, please choose another.');
-                                    validationSummary.slideDown();
-                                    return;
-                                }
-
-                                validationSummary.slideUp();
-
-                                var lat = parseFloat(document.getElementById("<%= this._TxtLat.ClientID %>").value);
-                                var lng = parseFloat(document.getElementById("<%= this._TxtLng.ClientID %>").value);                           
-
-                                var DDLstatus = document.getElementById("<%= this.Dropdown_Status.ClientID%>");
-                                var status = new String(DDLstatus.options[DDLstatus.selectedIndex].text);
-                                status = status.trim();
-
-                                var DDLDept = document.getElementById("<%= this.DropDownList_department.ClientID %>");
-                                var dep = new String(DDLDept.options[DDLDept.selectedIndex].text);
-                                dep = dep.trim().replace('/', '-');
-
-                                var myMarker = "GGIcon/" + status + "/" + dep + ".png";
-
-                                var markers = [];
-                                markers.push(addDatamarkers(lat, lng, projectCodeValue, myMarker, 'null', '', ''));
-                                var mc = new MarkerClusterer(map, markers);
-
-                                newProjectModal.fadeOut();
-                                __doPostBack('<%= this.BTNaddnew.UniqueID %>', '')
-                            });                            
-                        }
-
-                        function cancelSaving() {
-                            newProjectModal.fadeOut();
-                        }
-
-                        function SaveLatLng(lat, lng) {
-
-                            txt_lat = document.getElementById("<%=this._TxtLat.ClientID %>");
-                            txt_lat.value = lat;
-                            txt_lng = document.getElementById("<%= this._TxtLng.ClientID %>");
-                            txt_lng.value = lng;
-                        }--%>
-
                         function getView(lat, lng, projectId) {
                             var point = new google.maps.LatLng(lat, lng);
                             map.setCenter(point, 20);
@@ -356,25 +237,32 @@
                     <ajax:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="true">
                         <ContentTemplate>
                     <div class="project-search-panel">
-                        &nbsp;Project code or name:
+                        &nbsp;
                         <asp:TextBox AutoPostBack="true" ID="txtProjectSearch" OnTextChanged="Filter_SelectedIndexChanged" runat="server" placeholder="Enter project code or name..." />
-                        &nbsp;Status:
+                        
                         <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource3"
                             DataTextField="Status" DataValueField="Status_ID" CssClass="mySelect" OnSelectedIndexChanged="Filter_SelectedIndexChanged"
                             AutoPostBack="true" AppendDataBoundItems="True">
-                            <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
+                            <asp:ListItem Selected="True" Value="-1">All statuses</asp:ListItem>
                         </asp:DropDownList>
-                        Department:
+                        
                         <asp:DropDownList ID="DropDownList2" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource4"
                             DataTextField="Name" DataValueField="Dep_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
-                            <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
+                            <asp:ListItem Selected="True" Value="-1">All departments</asp:ListItem>
                         </asp:DropDownList>
-                        Sector:
+                   
                         <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                             SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector] order by [Name]"></asp:SqlDataSource>
                         <asp:DropDownList ID="DropDownList3" runat="server" AppendDataBoundItems="True" DataSourceID="SqlDataSource5"
                             DataTextField="Name" DataValueField="Sector_ID" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
-                            <asp:ListItem Selected="True" Value="-1">View All</asp:ListItem>
+                            <asp:ListItem Selected="True" Value="-1">All sectors</asp:ListItem>
+                        </asp:DropDownList>
+
+						<asp:ObjectDataSource ID="AuthorityDataSource" runat="server" SelectMethod="GetPlanningAuthorities"
+							TypeName="ProjectManagement.Web.Providers.PlanningAuthorityProvider" />
+                        <asp:DropDownList ID="AuthorityDropDown" runat="server" AppendDataBoundItems="True" DataSourceID="AuthorityDataSource"
+                            DataTextField="Name" DataValueField="Id" AutoPostBack="true" OnSelectedIndexChanged="Filter_SelectedIndexChanged">
+                            <asp:ListItem Selected="True" Value="-1">All authorities</asp:ListItem>
                         </asp:DropDownList>
                     </div>
 
@@ -439,7 +327,7 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:BoundField DataField="Name" HeaderText="Department" />
-                                    <asp:BoundField DataField="City" HeaderText="City" />
+                                    <asp:BoundField DataField="City" HeaderText="Town/City" />
                                     <asp:BoundField DataField="Authority" HeaderText="Authority" />
                                     <asp:TemplateField HeaderText="Detail">
                                         <ItemTemplate>
