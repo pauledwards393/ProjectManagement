@@ -433,6 +433,7 @@
     <Content Include="newJobsheet1.xls" />
     <Content Include="newJobsheet_design.xls" />
     <Content Include="JobSheet_2017-08-08.xls" />
+    <Content Include="JobSheet_2018-12-09.xls" />
     <None Include="Project.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>Project.Designer.cs</LastGenOutput>
