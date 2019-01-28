@@ -64,7 +64,7 @@
                                                 <asp:RequiredFieldValidator ControlToValidate="TxtPorjectname" ID="ProjectNameValidator" runat="server" ErrorMessage="* Please add a project name" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Start Date">
+                                        <asp:TemplateField HeaderText="Start Date" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label ID="LBLStartDate" runat="server" Text='<%# Eval("StartDate","{0:d}")  %>'></asp:Label>
                                             </ItemTemplate>
@@ -73,6 +73,7 @@
                                                 <cc1:CalendarExtender ID="CalendarExtender1" runat="server" Enabled="True" TargetControlID="TxtStartdate"
                                                     Format="dd/MM/yyyy">
                                                 </cc1:CalendarExtender>
+                                                <asp:RequiredFieldValidator ControlToValidate="TxtStartdate" ID="StartDateValidator" runat="server" ErrorMessage="* Please enter a start date" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="End Date">
@@ -124,7 +125,7 @@
                                                         TypeName="ProjectManagement.Web.Providers.DepartmentProvider" />
                                             </InsertItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Sector">
+                                        <asp:TemplateField HeaderText="Sector" HeaderStyle-CssClass="mandatory">
                                             <ItemTemplate>
                                                 <asp:Label ID="LBLSector" runat="server" Text='<%# Eval("SectorList") %>'></asp:Label>
                                             </ItemTemplate>
@@ -134,6 +135,23 @@
                                                     CssClass="MySelect" DataTextField="Name" OnDataBound="DDLSector_DataBound" DataValueField="Sector_ID"></asp:ListBox>
                                                 <asp:SqlDataSource ID="SqlDataSource5" runat="server" ConnectionString="<%$ ConnectionStrings:MBProjectConnectionString %>"
                                                     SelectCommand="SELECT [Sector_ID], [Name] FROM [Sector]"></asp:SqlDataSource>
+                                                <asp:RequiredFieldValidator ControlToValidate="DDLSector" ID="SectorValidator" runat="server" ErrorMessage="* Please choose at least one sector" Display="None"></asp:RequiredFieldValidator>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Client Type" HeaderStyle-CssClass="mandatory">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" Text='<%# Eval("ClientType")%>'></asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList ID="DDLClientType" runat="server" DataSourceID="ClientTypeDataSource" SelectedValue='<%# Eval("ClientTypeId") %>'
+                                                    DataTextField="Name" DataValueField="Id" ClientIDMode="Static" AppendDataBoundItems="true">
+                                                    <Items>
+                                                       <asp:ListItem Text="-- Select client type --" Value="" />
+                                                    </Items>
+                                                </asp:DropDownList>
+                                                <asp:ObjectDataSource ID="ClientTypeDataSource" runat="server" SelectMethod="GetClientTypes"
+                                                    TypeName="ProjectManagement.Web.Providers.ClientTypeProvider" />
+                                                <asp:RequiredFieldValidator ControlToValidate="DDLClientType" ID="ValClientType" runat="server" ErrorMessage="* Please add a client type" Display="None"></asp:RequiredFieldValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Manager[MBL]">
@@ -305,7 +323,7 @@
                                                 <asp:TextBox runat="server" ID="txtPlanningAuthority" Value='<%# Eval("PlanningAuthorityId") %>' ClientIDMode="Static" CssClass="hidden"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Project City">
+                                        <asp:TemplateField HeaderText="Project Town/City">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("ProjectCity") %>'></asp:Label>
                                             </ItemTemplate>

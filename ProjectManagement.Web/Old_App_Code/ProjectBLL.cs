@@ -60,9 +60,9 @@ public class ProjectBLL
         return Adapter.GetData();
     }
 
-    public Project.ProjectDataTable GetProjects(Int32? statusId, Int32? departmentId, Int32? sectorId, string projectSearchText)
+    public Project.ProjectDataTable GetProjects(Int32? statusId, Int32? departmentId, Int32? sectorId, int? authorityId, string projectSearchText)
     {
-        return Adapter.GetProjects(statusId, departmentId, sectorId, projectSearchText);
+        return Adapter.GetProjects(statusId, departmentId, sectorId, authorityId, projectSearchText);
     }
 
     //public  int InsertBasics(string _pCode, int _status, int _dep, double _lat, double _lon, string _projectName)
@@ -227,12 +227,12 @@ public class ProjectBLL
                 updateQuery = "UPDATE Project " +
                     "SET [Project Code] = @projectcode, [Project Name] = @projectname, StartDate = @startdate, EndDate = @enddate, Contact = @Contact, Description = @description, Detailed = @detailed, " +
                     "StatusID = @StatusID, ProjectManager = @ProjectManager, DepartmentID = @DepartmentID, CountyId = @CountyId, PlanningAuthorityId = @PlanningAuthorityId, " +
-                    "ClientAddressId = @ClientAddressId, InvoiceAddressId = @InvoiceAddressId, Introducer = @Introducer, InvoiceContact = @InvoiceContact, ProjectCity = @ProjectCity " +
+                    "ClientAddressId = @ClientAddressId, InvoiceAddressId = @InvoiceAddressId, Introducer = @Introducer, InvoiceContact = @InvoiceContact, ProjectCity = @ProjectCity, ClientTypeId = @ClientTypeId " +
                     "WHERE(Project_ID = @project_id)";
 
                 insertQuery = "INSERT INTO Project " +
-                    "([Project Code], [Project Name], StartDate, EndDate, Lat, Lon, Contact, Description, Detailed, StatusID, ProjectManager, DepartmentID, CountyId, PlanningAuthorityId, ClientAddressId, InvoiceAddressId, Introducer, InvoiceContact, ProjectCity) " +
-                    "VALUES (@projectcode, @projectname, @startdate, @enddate, @Latitude, @Longitude, @Contact, @description, @detailed, @StatusID, @ProjectManager, @DepartmentID, @CountyId, @PlanningAuthorityId, @ClientAddressId, @InvoiceAddressId, @Introducer, @InvoiceContact, @ProjectCity);" +
+                    "([Project Code], [Project Name], StartDate, EndDate, Lat, Lon, Contact, Description, Detailed, StatusID, ProjectManager, DepartmentID, CountyId, PlanningAuthorityId, ClientAddressId, InvoiceAddressId, Introducer, InvoiceContact, ProjectCity, ClientTypeId) " +
+                    "VALUES (@projectcode, @projectname, @startdate, @enddate, @Latitude, @Longitude, @Contact, @description, @detailed, @StatusID, @ProjectManager, @DepartmentID, @CountyId, @PlanningAuthorityId, @ClientAddressId, @InvoiceAddressId, @Introducer, @InvoiceContact, @ProjectCity, @ClientTypeId);" +
                     "SELECT SCOPE_IDENTITY();";
 
                 cmd.Parameters.Clear();
@@ -253,6 +253,7 @@ public class ProjectBLL
                 cmd.Parameters.AddWithValue("@Introducer", project.Introducer);
                 cmd.Parameters.AddWithValue("@InvoiceContact", project.InvoiceContact);
                 cmd.Parameters.AddWithValue("@ProjectCity", string.IsNullOrEmpty(project.ProjectCity) ? (object)DBNull.Value : project.ProjectCity);
+                cmd.Parameters.AddWithValue("@ClientTypeId", project.ClientTypeId);
 
                 var projectId = project.Id;
 

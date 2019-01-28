@@ -204,6 +204,7 @@ public partial class Detail : System.Web.UI.Page
         TextBox TxtDescription = (TextBox)DetailsView2.FindControl("TxtDescription");
         TextBox TxtProjectManager = (TextBox)DetailsView2.FindControl("TxtManager");
         DropDownList DDLCounty = (DropDownList)DetailsView2.FindControl("DDLCounty");
+        DropDownList DDLClientType = (DropDownList)DetailsView2.FindControl("DDLClientType");
         TextBox TxtPlanningAuthority = (TextBox)DetailsView2.FindControl("txtPlanningAuthority");
         Label LblLat = (Label)DetailsView2.FindControl("LblLat");
         Label LblLng = (Label)DetailsView2.FindControl("LblLng");
@@ -238,6 +239,7 @@ public partial class Detail : System.Web.UI.Page
         var project = new ProjectManagement.Web.Models.Project
         {
             ClientAddress = clientAddress, // New
+            ClientTypeId = int.Parse(DDLClientType.SelectedValue),
             Code = GetTextFieldValue("TxtProjectCode"),
             Contact = TxtContact.Text,
             CountyId = !string.IsNullOrWhiteSpace(DDLCounty.SelectedValue) ? int.Parse(DDLCounty.SelectedValue) : (int?)null,
@@ -699,7 +701,7 @@ public partial class Detail : System.Web.UI.Page
         Project.ProjectDataTable p = projectBLL.GetDataByID(ProjectID);
         Project.ProjectRow row = p.Rows[0] as Project.ProjectRow;
 
-        String originalJobSheetPath = Server.MapPath("JobSheet_2017-08-08.xls");
+        String originalJobSheetPath = Server.MapPath("JobSheet_2018-12-09.xls");
         String modifiedJobSheetPath = Server.MapPath("newJobsheet1.xls");
 
         File.Copy(originalJobSheetPath, modifiedJobSheetPath, true);
@@ -730,6 +732,23 @@ public partial class Detail : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
             }
 
+            var sectors = row["SectorList"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(sectors))
+            {
+                cmd.CommandText = String.Format(updateQuery, "G8", sectors);
+                cmd.ExecuteNonQuery();
+            }
+
+            var startDate = row["StartDate"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(startDate))
+            {
+                var formattedStartDate = Convert.ToDateTime(startDate).ToShortDateString();
+                cmd.CommandText = String.Format(updateQuery, "G10", formattedStartDate);
+                cmd.ExecuteNonQuery();
+            }
+
             if (!row.IsStatusNull())
             {
                 cmd.CommandText = String.Format(updateQuery, "G11", row.Status.Trim());
@@ -750,14 +769,22 @@ public partial class Detail : System.Web.UI.Page
                 cmd.ExecuteNonQuery();
             }
 
+            var clientType = row["ClientType"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(clientType))
+            {
+                cmd.CommandText = String.Format(updateQuery, "G20", clientType);
+                cmd.ExecuteNonQuery();
+            }
+
             if (!row.IsContactNull())
             {
-                cmd.CommandText = String.Format(updateQuery, "A21", row.Contact);
+                cmd.CommandText = String.Format(updateQuery, "A23", row.Contact);
                 cmd.ExecuteNonQuery();
             }
                    
             var clientAddressFields = GetAddressFieldNames("Client", row);
-            var rowIndex = 24;
+            var rowIndex = 26;
 
             foreach (var field in clientAddressFields)
             {
@@ -771,12 +798,12 @@ public partial class Detail : System.Web.UI.Page
 
             if (!string.IsNullOrWhiteSpace(invoiceContact))
             {
-                cmd.CommandText = String.Format(updateQuery, "G21", invoiceContact);
+                cmd.CommandText = String.Format(updateQuery, "G23", invoiceContact);
                 cmd.ExecuteNonQuery();
             }
 
             var invoiceAddressFields = GetAddressFieldNames("Invoice", row);
-            rowIndex = 24;
+            rowIndex = 26;
 
             foreach (var field in invoiceAddressFields)
             {

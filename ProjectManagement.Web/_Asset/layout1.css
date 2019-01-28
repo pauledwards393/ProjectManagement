@@ -149,7 +149,7 @@ div#footer {
 	display: 						block;
 	width: 							131px;
 	height: 						24px;
-	border-left: 				1px solid #007ea2;
+	border-right: 				1px solid #007ea2;
 }
 #prim_links .block-menu li a.active {
 	background-color:		#007ea2;
