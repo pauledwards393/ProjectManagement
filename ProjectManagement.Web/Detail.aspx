@@ -1,5 +1,5 @@
 <%@ Page Language="C#" MasterPageFile="~/MasterPage2.master" AutoEventWireup="true" Inherits="Detail" Title="Mayer Brown Project Management System (Beta)"
-    EnableEventValidation="false" Codebehind="Detail.aspx.cs" %>
+    EnableEventValidation="false" Codebehind="Detail.aspx.cs" Culture="en-GB" %>
 
 <%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
     Namespace="System.Web.UI" TagPrefix="ajax" %>
@@ -75,7 +75,16 @@
                                                     Format="dd/MM/yyyy">
                                                 </cc1:CalendarExtender>
                                                 <asp:RequiredFieldValidator ControlToValidate="TxtStartdate" ID="StartDateValidator" runat="server" ErrorMessage="* Please enter a start date" Display="None"></asp:RequiredFieldValidator>
-                                            </EditItemTemplate>
+												<asp:CompareValidator
+													Display="None"
+													ID="StartDateTypeValidator"
+													runat="server" 
+													Type="Date"
+													Operator="DataTypeCheck"
+													ControlToValidate="TxtStartdate" 
+													ErrorMessage="* Please enter a valid start date.">
+												</asp:CompareValidator>
+											</EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="End Date">
                                             <ItemTemplate>
@@ -86,6 +95,15 @@
                                                 <cc1:CalendarExtender ID="CalendarExtender2" runat="server" Enabled="true" TargetControlID="TxtEndDate"
                                                     Format="dd/MM/yyyy">
                                                 </cc1:CalendarExtender>
+												<asp:CompareValidator
+													Display="None"
+													ID="EndDateTypeValidator"
+													runat="server" 
+													Type="Date"
+													Operator="DataTypeCheck"
+													ControlToValidate="TxtEndDate" 
+													ErrorMessage="* Please enter a valid end date.">
+												</asp:CompareValidator>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="mandatory">
