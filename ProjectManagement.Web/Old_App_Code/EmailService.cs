@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 public class EmailService
 {
-    public static void SendEmail(String name, String[] bodyParameters, List<Attachment> attachments)
+    public static void SendEmail(String name, String[] subjectParameters, String[] bodyParameters, List<Attachment> attachments)
     {
         using (Stream stream = File.OpenRead(HttpContext.Current.Server.MapPath(@"~\App_Data\Emails.xml")))
         {
@@ -42,16 +42,22 @@ public class EmailService
                     mailMessage.CC.Add(ccAddress);
             }
 
-            mailMessage.Subject = subjectNode.InnerText;
+			// Replace parameters in the subject of the email template
+			mailMessage.Subject = subjectParameters != null ?
+				string.Format(subjectNode.InnerText, subjectParameters).Trim() : subjectNode.InnerText;
 
-            // Replace parameters in the body of the email template
-            mailMessage.Body = String.Format(bodyNode.InnerText, bodyParameters).Trim();
+			// Replace parameters in the body of the email template
+			mailMessage.Body = bodyParameters != null ?
+				string.Format(bodyNode.InnerText, bodyParameters).Trim() : bodyNode.InnerText;
 
             // Remove the multiple spaces introduced at the beginning of each line with the tabbing in the XML document
             mailMessage.Body = Regex.Replace(mailMessage.Body, @"[ ]{2,}", String.Empty);
 
-            foreach (Attachment attachment in attachments)
-                mailMessage.Attachments.Add(attachment);
+			if (attachments != null)
+			{
+				foreach (Attachment attachment in attachments)
+					mailMessage.Attachments.Add(attachment);
+			}
 
             SmtpClient smtp = new SmtpClient();
 

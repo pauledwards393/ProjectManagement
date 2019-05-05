@@ -8,7 +8,7 @@
     <from>no-reply@pmdb.com</from>
 
     <!-- Change email 'to' addresses here. You can add multiple if you separate them with commas. -->
-    <to>riceboy999@hotmail.com</to>
+    <to>test@hotmail.com</to>
 
     <!-- Change email 'cc' addresses here. You can add multiple if you separate them with commas. Leave blank if you don't want to cc anyone. -->
     <cc></cc>
@@ -21,5 +21,13 @@
       {0} Body {1}
     </body>
     
+  </email>
+
+  <email name="statusChange">
+    <from>no-reply@pmdb.com</from>
+    <to>test@hotmail.com</to>
+    <cc></cc>
+    <subject>{0} has gone live</subject>
+    <body></body>
   </email>
 </emails>

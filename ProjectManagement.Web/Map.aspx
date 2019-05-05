@@ -297,11 +297,20 @@
                             pnlPopup.style.display = 'none';
                         }
 
-                        function changeStatus(_projectID, defaultStatus, ClientID) {
+						
+
+                        function changeStatus(_projectID, projectCode, el) {
                             if (confirm("Are you sure you want to change the project status?")) {
-                                PageMethods.UpdateStatus(_projectID, ClientID.value);
-                            } else {
-                                ClientID.value = defaultStatus;
+								var statusIdCell = el.parentNode.previousSibling;
+								var previousValue = statusIdCell.innerHTML;
+								var value = el.value;
+
+								var onStatusChangeSuccess = function () {
+									statusIdCell.innerHTML = '';
+									statusIdCell.appendChild(document.createTextNode(value));
+								}
+
+                                PageMethods.UpdateStatus(_projectID, projectCode, +statusIdCell.innerHTML, +value, onStatusChangeSuccess);
                             }
                         }
             
@@ -322,7 +331,7 @@
                                     <asp:TemplateField HeaderText="Status">
                                         <ItemTemplate>
                                             <asp:DropDownList ID="ddlStatus" runat="server" DataSourceID="SqlDataSource3" DataTextField="Status"
-                                                DataValueField="Status_ID" CssClass="mySelect" AutoPostBack="true" AppendDataBoundItems="True">
+                                                DataValueField="Status_ID" CssClass="mySelect" AutoPostBack="false" AppendDataBoundItems="True">
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>

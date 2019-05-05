@@ -351,6 +351,7 @@
     <Content Include="_Asset\style.css" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="count.aspx.cs">
       <DependentUpon>count.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

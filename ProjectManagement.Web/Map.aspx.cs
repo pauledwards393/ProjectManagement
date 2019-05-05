@@ -79,8 +79,8 @@ public partial class Map : System.Web.UI.Page
                 }
                 row.Project_Code = row.Project_Code.Replace("'", "\"");
                 script.AppendLine(string.Format("markers.push(addDatamarkers({0},{1},'{2}','{3}','{4}','{5}','{6}'));", row.lat, row.lon, Server.HtmlEncode(row.Project_Code), iconPath, row.Project_ID, row.Status, row.Name));
-            }
-            script.Append("</script>");
+			}
+			script.Append("</script>");
             ClientScript.RegisterStartupScript(this.GetType(), "add", script.ToString());
         }
         GridView1.DataBind();
@@ -99,12 +99,13 @@ public partial class Map : System.Web.UI.Page
             string strProjectID = _TextProjectID.Text;
             string status = e.Row.Cells[2].Text;
             string department = e.Row.Cells[4].Text;
+			string projectCode = e.Row.Cells[0].Text;
             _mapbutton.Attributes.Add("onclick", string.Format("getView({0},{1}, '{2}')", _TextLat.Text, _TextLon.Text, strProjectID));
 
             DropDownList ddlStatus = (DropDownList)e.Row.FindControl("ddlStatus");
             ddlStatus.SelectedValue = status;
-            ddlStatus.Attributes.Add("onchange", string.Format("changeStatus({0}, {1}, {2})", strProjectID, status, ddlStatus.ClientID));
-            LinkButton _DetailButton = (LinkButton)e.Row.FindControl("LTNDetail");
+			ddlStatus.Attributes.Add("onchange", string.Format("changeStatus({0}, '{1}', {2})", strProjectID, projectCode, ddlStatus.ClientID));
+			LinkButton _DetailButton = (LinkButton)e.Row.FindControl("LTNDetail");
             Label Detailed_entry = (Label)e.Row.FindControl("LblDetail");
             string strDetail = Detailed_entry.Text;
             if (strDetail == "True")
@@ -178,11 +179,16 @@ public partial class Map : System.Web.UI.Page
         UpdatePanel1.Update();
     }
 
-    [System.Web.Services.WebMethod]
-    public static void UpdateStatus(int projectid, int statusValue)
+	[System.Web.Services.WebMethod]
+    public static void UpdateStatus(int projectid, string projectCode, int existingStatusValue, int statusValue)
     {
         ProjectBLL Adapter = new ProjectBLL();
         Adapter.updateProjectStatus(projectid, statusValue);
+
+		if (existingStatusValue != (int)Constants.Status.Spec || statusValue != (int)Constants.Status.Live) return; 
+
+		string[] subjectParameters = { projectCode };
+		EmailService.SendEmail("statusChange", subjectParameters, null, null);
     }
 
     [System.Web.Services.WebMethod]

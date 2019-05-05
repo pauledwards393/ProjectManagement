@@ -41,6 +41,7 @@
                                         <asp:TemplateField Visible="False">
                                             <ItemTemplate>
                                                 <asp:Label runat="server" Text='<%# Eval("Project_ID") %>' ID="LBLProjectID"></asp:Label>
+												<asp:Label runat="server" Text='<%# Eval("StatusID") %>' ID="LblPreviousStatus"></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Project Code" HeaderStyle-CssClass="mandatory">
